@@ -11,7 +11,7 @@ spec:
   nfs:
     path: /tank/appdata/homer
     server: 172.16.1.10
-  PersistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
     name: nfs-homer-pvc
