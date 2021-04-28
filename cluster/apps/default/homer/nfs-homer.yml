@@ -16,7 +16,7 @@ spec:
     namespace: default
     name: nfs-homer-pvc
 ---
-appVersion: v1
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-homer-pvc
