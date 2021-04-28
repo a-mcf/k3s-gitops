@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: homer-config-pv
+  name: nfs-homer-pv
 spec:
   capacity:
     storage: 128Mi    
@@ -14,4 +14,15 @@ spec:
   PersistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
-    name: homer-config-pvc
+    name: nfs-homer-pvc
+---
+appVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-homer-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
