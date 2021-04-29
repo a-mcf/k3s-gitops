@@ -20,6 +20,9 @@ spec:
       repository: b4bz/homer
       tag: 21.03.2
       pullPolicy: IfNotPresent
+    env:
+      UID: 2316
+      GID: 2316
     ingress:
       enabled: true
       annotations:
