@@ -21,8 +21,8 @@ spec:
       tag: latest
       pullPolicy: IfNotPresent
     env:
-      UID: 2316
-      GID: 2316
+      USERMAP_UID: 2316
+      USERMAP_GID: 2316
     ingress:
       enabled: true
       annotations:
