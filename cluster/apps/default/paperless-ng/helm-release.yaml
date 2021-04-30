@@ -46,7 +46,7 @@ spec:
         mountPath: /usr/src/paperless/media
       consume:
         enabled: true
-        existingClaim: nfs-paperless-cosume-pvc
+        existingClaim: nfs-paperless-consume-pvc
         mountPath: /usr/src/paperless/consume
       export:
         enabled: true
