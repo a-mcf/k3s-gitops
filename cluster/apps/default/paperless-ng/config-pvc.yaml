@@ -61,7 +61,7 @@ metadata:
   name: nfs-paperless-consume-pv
 spec:
   capacity:
-    storage: 128Mi    
+    storage: 50Gi    
   accessModes:
   - ReadWriteOnce
   nfs:
@@ -81,7 +81,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 128Mi
+      storage: 50Gi
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -89,7 +89,7 @@ metadata:
   name: nfs-paperless-export-pv
 spec:
   capacity:
-    storage: 128Mi    
+    storage: 50Gi   
   accessModes:
   - ReadWriteOnce
   nfs:
