@@ -23,6 +23,7 @@ spec:
     env:
       USERMAP_UID: 2316
       USERMAP_GID: 2316
+      PAPERLESS_CONSUMER_POLLING: 30
     ingress:
       enabled: true
       annotations:
