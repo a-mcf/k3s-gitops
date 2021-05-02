@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-paperless-data-pv
+spec:
+  capacity:
+    storage: 50Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/paperless-data
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-paperless-data-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-paperless-data-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-paperless-media-pv
+spec:
+  capacity:
+    storage: 50Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/paperless-media
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-paperless-media-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-paperless-media-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-paperless-consume-pv
+spec:
+  capacity:
+    storage: 50Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/paperless-consume
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-paperless-consume-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-paperless-consume-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-paperless-export-pv
+spec:
+  capacity:
+    storage: 50Gi   
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/paperless-export
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-paperless-export-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-paperless-export-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
