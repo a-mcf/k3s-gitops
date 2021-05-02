@@ -1,4 +1,6 @@
 Research:
-Figure out why this was required:
- 1504  kubectl get validatingwebhookconfigurations
- 1505  kubectl delete validatingwebhookconfigurations ingress-nginx-admission
+Figure out why this was required to get new deploys to validate:
+ ```
+ kubectl get validatingwebhookconfigurations
+ kubectl delete validatingwebhookconfigurations ingress-nginx-admission
+ ```

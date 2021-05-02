@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-heimdall-pv
+spec:
+  capacity:
+    storage: 500Mi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/heimdall
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-heimdall-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-heimdall-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500i
