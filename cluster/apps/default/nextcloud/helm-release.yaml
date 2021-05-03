@@ -51,16 +51,19 @@ spec:
             'filelocking.enabled' => 'true',
             'loglevel' => 2
           );
-      mariadb:
-        enabled: true
-        db:
-          name: nextcloud
-          user: nextcloud
-          password: "${NEXTCLOUD_DB_PASSWORD}"
-        replication:
-          enabled: false
-        master:
-          persistence:
-            enabled: true
-            existingClaim: nfs-nextcloud-mariadb-pvc
+    internalDatabase:
+      enabled: false
+      name: nextcloud
+    mariadb:
+      enabled: true
+      db:
+        name: nextcloud
+        user: nextcloud
+        password: "${NEXTCLOUD_DB_PASSWORD}"
+      replication:
+        enabled: false
+      master:
+        persistence:
+          enabled: true
+          existingClaim: nfs-nextcloud-mariadb-pvc
               
