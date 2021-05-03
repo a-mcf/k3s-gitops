@@ -52,10 +52,10 @@ spec:
             'loglevel' => 2
           );
       mariadb:
-      enabled: true
-      db:
-        name: nextcloud
-        user: nextcloud
-        password: "${NEXTCLOUD_DB_PASSWORD}"
+        enabled: true
+        db:
+          name: nextcloud
+          user: nextcloud
+          password: "${NEXTCLOUD_DB_PASSWORD}"
       replication:
-    enabled: false
+        enabled: false
