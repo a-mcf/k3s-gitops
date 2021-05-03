@@ -57,5 +57,10 @@ spec:
           name: nextcloud
           user: nextcloud
           password: "${NEXTCLOUD_DB_PASSWORD}"
-      replication:
-        enabled: false
+        replication:
+          enabled: false
+        master:
+          persistence:
+            enabled: true
+            existingClaim: nfs-nextcloud-mariadb-pvc
+              

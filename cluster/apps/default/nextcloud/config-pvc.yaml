@@ -29,3 +29,34 @@ spec:
   resources:
     requests:
       storage: 500Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nextcloud-mariadb-pv
+spec:
+  capacity:
+    storage: 10Gi   
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/nextcloud-mariadb
+    server: 172.16.1.10
+  mountOptions:
+  - async
+  - noatime
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-nextcloud-data-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nextcloud-mariadb-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
