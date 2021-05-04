@@ -42,13 +42,10 @@ spec:
   nfs:
     path: /tank/appdata/nextcloud-mariadb
     server: 172.16.1.10
-  mountOptions:
-  - async
-  - noatime
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
-    name: nfs-nextcloud-data-pvc
+    name: nfs-nextcloud-mariadb-pvc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
