@@ -62,6 +62,8 @@ spec:
         password: "${NEXTCLOUD_DB_PASSWORD}"
       replication:
         enabled: false
+      rootUser:
+        password: "${NEXTCLOUD_DB_PASSWORD}"
       master:
         persistence:
           enabled: true
