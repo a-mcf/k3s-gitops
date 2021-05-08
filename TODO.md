@@ -6,3 +6,4 @@
  - Monitoring / Prometheus
  - Investigate Longhorn
  - Figure out how to taint master in the config
+ - MySQL (MariaDB) backups in Kubernetes?
