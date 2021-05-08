@@ -50,9 +50,3 @@ spec:
         enabled: true
         existingClaim: nfs-photoprism-import-pvc
         mountPath: /photoprism/import
-      #additionalVolumeMounts:
-      #- name: import
-      #  persistentVolumeClaim:
-      #    claimName: nfs-photoprism-import-pvc
-      #  mountPath: "/photoprism/import"
-      #  readOnly: false
