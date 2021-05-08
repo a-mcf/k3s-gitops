@@ -24,6 +24,7 @@ spec:
       UID: 2316
       GID: 2316
       TZ: "America/New York"
+      PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
     ingress:
       enabled: true
       annotations:
