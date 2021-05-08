@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-photoprism-storage-pv
+spec:
+  capacity:
+    storage: 500Gi  
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/photoprism-storage
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-photoprism-storage-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-photoprism-storage-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-photoprism-originals-pv
+spec:
+  capacity:
+    storage: 2000Gi  
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/user_files/shared/photos/originals
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-photoprism-originals-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-photoprism-originals-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2000Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-photoprism-import-pv
+spec:
+  capacity:
+    storage: 500Gi  
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/user_files/shared/photos/import
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-photoprism-import-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-photoprism-import-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
