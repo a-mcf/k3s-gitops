@@ -21,7 +21,7 @@ spec:
       pullPolicy: IfNotPresent
       tag: "20201122"
     env:
-      UID: 2316
+      UID: 2317
       GID: 2316
       TZ: "America/New York"
       PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
