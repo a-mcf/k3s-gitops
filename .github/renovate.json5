@@ -77,7 +77,8 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["photoprism/photoprism"]
+      "matchPackageNames": ["photoprism/photoprism"],
+      "versioning": "loose"
     }
   ]
 }
