@@ -74,17 +74,6 @@
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["patch"],
       "labels": ["renovate/helm", "dep/patch"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["photoprism/photoprism"],
-      "versioning": "loose",
-      "labels":["renovate/docker", "dep/patch"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["jonaswinkler/paperless-ng"],
-      "labels":["renovate/docker", "dep/patch"]
     }
   ]
 }
