@@ -78,11 +78,13 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["photoprism/photoprism"],
-      "versioning": "loose"
+      "versioning": "loose",
+      "labels":["renovate/docker", "dep/patch"]
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["jonaswinkler/paperless-ng"]
+      "matchPackageNames": ["jonaswinkler/paperless-ng"],
+      "labels":["renovate/docker", "dep/patch"]
     }
   ]
 }
