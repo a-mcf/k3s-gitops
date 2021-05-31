@@ -25,6 +25,7 @@ spec:
       GID: 2316
       TZ: "America/New York"
       PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
+      PHOTOPRISM_DISABLE_CHOWN: "true"
     ingress:
       enabled: true
       annotations:
