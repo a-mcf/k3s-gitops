@@ -79,6 +79,10 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["photoprism/photoprism"],
       "versioning": "loose"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["jonaswinkler/paperless-ng"]
     }
   ]
 }
