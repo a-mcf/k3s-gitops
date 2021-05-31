@@ -74,6 +74,10 @@
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["patch"],
       "labels": ["renovate/helm", "dep/patch"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["photoprism/photoprism"]
     }
   ]
 }
