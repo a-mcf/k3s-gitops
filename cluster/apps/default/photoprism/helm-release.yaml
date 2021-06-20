@@ -27,17 +27,19 @@ spec:
       PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
       PHOTOPRISM_DISABLE_CHOWN: "true"
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-      hosts:
-      - host: "photoprism.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "photoprism.${SECRET_DOMAIN}"
+      main:
+        primary: true
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+        - host: "photoprism.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "photoprism.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

@@ -28,17 +28,19 @@ spec:
       PUID: 2316
       PGID: 2316
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-      hosts:
-      - host: "heimdall.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "heimdall.${SECRET_DOMAIN}"
+      main:
+        primary: true
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+        - host: "heimdall.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "heimdall.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
