@@ -66,7 +66,7 @@ spec:
         mountPath: /media-tv
       music:
         enabled: true
-        existingClaim: nfs-movies-pvc
+        existingClaim: nfs-music-pvc
         mountPath: /media-music
     #additionalVolumeMounts:
     #- name: media-nas
