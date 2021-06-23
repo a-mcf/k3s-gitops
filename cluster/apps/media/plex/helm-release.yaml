@@ -23,6 +23,7 @@ spec:
       tag: v1.23.2.4656-85f0adf5b
     env:
       TZ: "America/New_York"
+      PLEX_CLAIM: ${PLEX_CLAIM}
     podSecurityContext:
       runAsUser: 2316
       runAsGroup: 2317
