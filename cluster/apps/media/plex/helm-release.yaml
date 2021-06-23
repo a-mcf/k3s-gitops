@@ -62,15 +62,15 @@ spec:
       movies:
         enabled: true
         existingClaim: nfs-movies-pvc
-        mountPath: /media-movies
+        mountPath: /movies
       tv:
         enabled: true
         existingClaim: nfs-tv-pvc
-        mountPath: /media-tv
+        mountPath: /tv
       music:
         enabled: true
         existingClaim: nfs-music-pvc
-        mountPath: /media-music
+        mountPath: /music
     #additionalVolumeMounts:
     #- name: media-nas
     #  mountPath: "/data"
