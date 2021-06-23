@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-plex-pv
+  namespace: media
 spec:
   capacity:
     storage: 20Gi    
@@ -20,6 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-plex-pvc
+  namespace: media
 spec:
   accessModes:
   - ReadWriteOnce
@@ -31,6 +33,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-movies-pv
+  namespace: media
 spec:
   capacity:
     storage: 1000Gi    
@@ -48,6 +51,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-movies-pvc
+  namespace: media
 spec:
   accessModes:
   - ReadWriteOnce
@@ -59,6 +63,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-tv-pv
+  namespace: media
 spec:
   capacity:
     storage: 1000Gi    
@@ -76,6 +81,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-tv-pvc
+  namespace: media
 spec:
   accessModes:
   - ReadWriteOnce
@@ -87,6 +93,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-music-pv
+  namespace: media
 spec:
   capacity:
     storage: 100Gi    
@@ -104,6 +111,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-music-pvc
+  namespace: media
 spec:
   accessModes:
   - ReadWriteOnce
