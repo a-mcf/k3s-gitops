@@ -13,7 +13,7 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: media
     name: nfs-plex-pvc
 ---
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: media
     name: nfs-movies-pvc
 ---
 apiVersion: v1
@@ -69,7 +69,7 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: media
     name: nfs-tv-pvc
 ---
 apiVersion: v1
@@ -97,7 +97,7 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: media
     name: nfs-tv-pvc
 ---
 apiVersion: v1
