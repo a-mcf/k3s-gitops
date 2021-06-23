@@ -62,7 +62,7 @@ spec:
         mountPath: /media-movies
       tv:
         enabled: true
-        existingClaim: nfs-movies-pvc
+        existingClaim: nfs-tv-pvc
         mountPath: /media-tv
       music:
         enabled: true
