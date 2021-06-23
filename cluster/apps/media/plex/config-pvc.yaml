@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-plex-pv
+spec:
+  capacity:
+    storage: 20Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/plex
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-plex-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-plex-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-movies-pv
+spec:
+  capacity:
+    storage: 1000Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /mnt/dumpster/movies
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-movies-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-movies-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-tv-pv
+spec:
+  capacity:
+    storage: 1000Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /mnt/dumpster/tv
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-tv-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-tv-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-music-pv
+spec:
+  capacity:
+    storage: 100Gi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/user_files/shared/music
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-tv-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-music-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
