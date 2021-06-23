@@ -55,10 +55,10 @@ spec:
       config:
         enabled: true
         existingClaim: nfs-plex-pvc
-      #transcode:
-      #  enabled: true
-      #  type: emptyDir
-      #  medium: Memory
+      transcode:
+        enabled: true
+        type: emptyDir
+        medium: Memory
       movies:
         enabled: true
         existingClaim: nfs-movies-pvc
@@ -71,10 +71,4 @@ spec:
         enabled: true
         existingClaim: nfs-music-pvc
         mountPath: /music
-    #additionalVolumeMounts:
-    #- name: media-nas
-    #  mountPath: "/data"
-    #additionalVolumes:
-    #- name: media-nas
-    #  persistentVolumeClaim:
-    #    claimName: media-nfs-tank-share-pvc
+
