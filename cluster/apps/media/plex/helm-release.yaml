@@ -24,7 +24,7 @@ spec:
     env:
       TZ: "America/New_York"
       PLEX_CLAIM: ${PLEX_CLAIM}
-      # ADVERTISE_IP: "http://${PLEX_SVC_IP}:32400/"
+      ADVERTISE_IP: ${PLEX_ADVERTISE_IP}
     podSecurityContext:
       runAsUser: 2316
       runAsGroup: 2317
