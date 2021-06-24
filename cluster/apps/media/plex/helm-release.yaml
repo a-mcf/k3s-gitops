@@ -24,7 +24,7 @@ spec:
     env:
       TZ: "America/New_York"
       PLEX_CLAIM: ${PLEX_CLAIM}
-      ADVERTISE_IP: "http://172.16.1.101:32400/"
+      ADVERTISE_IP: "http://${PLEX_SVC_IP}:32400/"
     podSecurityContext:
       runAsUser: 2316
       runAsGroup: 2317
@@ -38,7 +38,7 @@ spec:
         enabled: true
         type: LoadBalancer
         externalIPs:
-        - 172.16.1.101
+        - "${PLEX_SVC_IP}"
         externalTrafficPolicy: Local
         port:
           port: 32400
