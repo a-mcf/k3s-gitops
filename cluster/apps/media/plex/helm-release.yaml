@@ -68,12 +68,15 @@ spec:
         enabled: true
         existingClaim: nfs-movies-pvc
         mountPath: /movies
+        readOnly: true
       tv:
         enabled: true
         existingClaim: nfs-tv-pvc
         mountPath: /tv
+        readOnly: true
       music:
         enabled: true
         existingClaim: nfs-music-pvc
         mountPath: /music
+        readOnly: true
 
