@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/plex
-      tag: 1.23.3.4707-ebb5fe9f3
+      tag: v1.23.3.4707-ebb5fe9f3
     env:
       TZ: "America/New_York"
       PLEX_CLAIM: ${PLEX_CLAIM}
