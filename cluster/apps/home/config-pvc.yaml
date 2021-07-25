@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: home-assistant-config-pv
+  name: nfs-home-assistant-config-pv
 spec:
   capacity:
     storage: 500Mi    
@@ -14,12 +14,12 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: home
-    name: home-assistant-config-pvc
+    name: nfs-home-assistant-config-pvc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-config-pvc
+  name: nfs-home-assistant-config-pvc
 spec:
   accessModes:
   - ReadWriteOnce
