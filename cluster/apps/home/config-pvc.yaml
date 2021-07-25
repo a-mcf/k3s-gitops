@@ -5,7 +5,7 @@ metadata:
   name: nfs-home-assistant-config-pv
 spec:
   capacity:
-    storage: 500Mi    
+    storage: 5Gi    
   accessModes:
   - ReadWriteOnce
   nfs:
