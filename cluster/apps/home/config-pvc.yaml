@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: home-assistant-config-pv
+spec:
+  capacity:
+    storage: 500Mi    
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/home-assistant-config
+    server: ${NFS_SERVER}
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: home
+    name: home-assistant-config-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
