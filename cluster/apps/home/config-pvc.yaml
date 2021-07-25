@@ -10,7 +10,7 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/home-assistant-config
-    server: "${NFS_SERVER}"
+    server: "${NFS_SERVER_IP}"
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: home
@@ -19,6 +19,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: home
   name: nfs-home-assistant-config-pvc
 spec:
   accessModes:
