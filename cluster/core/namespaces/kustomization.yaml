@@ -6,4 +6,3 @@ resources:
 - metallb-system.yaml
 - networking.yaml
 - home.yaml
-- default.yaml
