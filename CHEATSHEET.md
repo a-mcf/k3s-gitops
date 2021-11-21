@@ -1,6 +1,6 @@
 Manually sync Flux with your Git repository
 ```sh
-flux --kubeconfig=./kubeconfig reconcile source git flux-system
+flux reconcile source git flux-system
 ```
 
 Show the health of you kustomizations
