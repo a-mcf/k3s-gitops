@@ -19,7 +19,7 @@ spec:
     image:
       repository: photoprism/photoprism
       pullPolicy: IfNotPresent
-      tag: "20210523"
+      tag: "20211018"
     env:
       UID: 2317
       GID: 2316
