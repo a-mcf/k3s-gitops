@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 #- default
 - networking
-#- media
+- media
 - system-upgrade
 - home
