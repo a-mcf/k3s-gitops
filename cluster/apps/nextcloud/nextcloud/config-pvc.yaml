@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-nextcloud-data-pv
-  namespace: default
+  namespace: nextcloud
 spec:
   capacity:
     storage: 500Gi   
@@ -17,14 +17,14 @@ spec:
   - noatime
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: nextcloud
     name: nfs-nextcloud-data-pvc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-nextcloud-data-pvc
-  namespace: default
+  namespace: nextcloud
 spec:
   accessModes:
   - ReadWriteOnce
@@ -36,7 +36,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-nextcloud-mariadb-pv
-  namespace: default
+  namespace: nextcloud
 spec:
   capacity:
     storage: 10Gi   
@@ -47,14 +47,14 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
+    namespace: nextcloud
     name: nfs-nextcloud-mariadb-pvc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-nextcloud-mariadb-pvc
-  namespace: default
+  namespace: nextcloud
 spec:
   accessModes:
   - ReadWriteOnce
