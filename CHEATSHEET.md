@@ -22,3 +22,13 @@ Show the health of your `HelmRepository`s
 ```sh
 flux get sources helm -A
 ```
+
+Delete pods in an error state:
+```sh
+kubectl delete pods --field-selector status.phase=Failed
+```
+
+Get details on a helm release:
+```sh
+kubectl describe -n <namespace> helmrelease/<release>
+```
