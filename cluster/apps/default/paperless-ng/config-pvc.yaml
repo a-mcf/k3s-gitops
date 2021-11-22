@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-paperless-data-pv
+  namespace: default
 spec:
   capacity:
     storage: 50Gi    
@@ -20,6 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-data-pvc
+  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce
@@ -31,6 +33,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-paperless-media-pv
+  namespace: default
 spec:
   capacity:
     storage: 50Gi    
@@ -48,6 +51,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-media-pvc
+  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce
@@ -59,6 +63,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-paperless-consume-pv
+  namespace: default
 spec:
   capacity:
     storage: 50Gi    
@@ -76,6 +81,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-consume-pvc
+  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce
@@ -87,6 +93,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-paperless-export-pv
+  namespace: default
 spec:
   capacity:
     storage: 50Gi   
@@ -104,6 +111,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-export-pvc
+  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce

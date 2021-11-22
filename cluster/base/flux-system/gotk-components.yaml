@@ -562,7 +562,6 @@ spec:
                   defaults to master branch.
                 properties:
                   branch:
-                    default: master
                     description: The Git branch to checkout, defaults to master.
                     type: string
                   commit:
@@ -3751,6 +3750,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: flux-system
     app.kubernetes.io/part-of: flux
+
     app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: helm-controller
