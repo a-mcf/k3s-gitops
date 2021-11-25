@@ -32,3 +32,13 @@ Get details on a helm release:
 ```sh
 kubectl describe -n <namespace> helmrelease/<release>
 ```
+
+Get a shell on a running container:
+```
+kubectl exec --stdin --tty shell-demo -- /bin/bash
+```
+
+Get helm history:
+```
+helm history <release_name>
+```
