@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-kube-prometheus-stack-pv
+  namespace: default
+spec:
+  capacity:
+    storage: 20Gi  
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /tank/appdata/kube-prometheus-stack
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: nfs-kube-prometheus-stack-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-kube-prometheus-stack-pvc
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
