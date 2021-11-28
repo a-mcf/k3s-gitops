@@ -17,14 +17,15 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    ingress:
-      enabled: true
-      pathType: Prefix
-      ingressClassName: "nginx"
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-      hosts:
-        - "prometheus.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - "prometheus.${SECRET_DOMAIN}"
+    prometheus:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "nginx"
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+          - "prometheus.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - "prometheus.${SECRET_DOMAIN}"
