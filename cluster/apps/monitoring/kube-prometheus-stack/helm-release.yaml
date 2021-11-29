@@ -74,6 +74,6 @@ spec:
           #  key: objstore.yml
         securityContext:
           runAsGroup: 2316
-          runAsNonRoot: false
+          runAsNonRoot: true
           runAsUser: 2316
           fsGroup: 2316
