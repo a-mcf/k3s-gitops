@@ -73,7 +73,7 @@ spec:
           #  name: thanos-objstore
           #  key: objstore.yml
         securityContext:
-          runAsGroup: 2316
+          runAsGroup: 0
           runAsNonRoot: true
-          runAsUser: 2316
-          fsGroup: 2316
+          runAsUser: 0
+          fsGroup: 0
