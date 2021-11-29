@@ -72,8 +72,8 @@ spec:
           #objectStorageConfig:
           #  name: thanos-objstore
           #  key: objstore.yml
-      securityContext:
-        runAsGroup: 2316
-        runAsNonRoot: true
-        runAsUser: 2316
-        fsGroup: 2316
+        securityContext:
+          runAsGroup: 2316
+          runAsNonRoot: true
+          runAsUser: 2316
+          fsGroup: 2316
