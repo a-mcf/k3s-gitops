@@ -11,7 +11,7 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/prometheus
-    server: 172.16.1.10
+    server: ${NFS_SERVER}
   persistentVolumeReclaimPolicy: Retain
   #claimRef:
   #  namespace: monitoring
