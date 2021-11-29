@@ -13,18 +13,18 @@ spec:
     path: /tank/appdata/prometheus
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: monitoring
-    name: nfs-prometheus-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-prometheus-pvc
-  namespace: monitoring
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
+  #claimRef:
+  #  namespace: monitoring
+  #  name: nfs-prometheus-pvc
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: nfs-prometheus-pvc
+#  namespace: monitoring
+#spec:
+#  accessModes:
+#  - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 10Gi

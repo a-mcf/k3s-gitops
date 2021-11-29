@@ -59,7 +59,13 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              existingClaim: nfs-prometheus-pvc
+              volumeName: nfs-prometheus-pv
+              accessModes: 
+                - ReadWriteOnce
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 10Gi
         thanos:
           image: quay.io/thanos/thanos:v0.23.1
           version: v0.22.0
