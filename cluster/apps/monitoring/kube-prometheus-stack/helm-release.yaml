@@ -57,15 +57,15 @@ spec:
         enableAdminAPI: true
         walCompression: true
         storageSpec:
+          # this is a hack:
+          # https://github.com/helm/charts/issues/9288#issuecomment-711165029
           volumeClaimTemplate:
             spec:
-              volumeName: nfs-prometheus-pv
-              accessModes: 
-                - ReadWriteOnce
-              storageClassName: local-path
+              storageClassName: standard
               resources:
                 requests:
                   storage: 10Gi
+              selector: {}
         thanos:
           image: quay.io/thanos/thanos:v0.23.1
           version: v0.22.0
