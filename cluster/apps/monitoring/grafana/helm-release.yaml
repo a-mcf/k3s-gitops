@@ -62,6 +62,25 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        # list of datasources that should be deleted from the database
+        #deleteDatasources:
+        #  - name: Loki
+        #    orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            # toggle this back when using thanos
+            #url: http://thanos-query:9090/
+            url: http://prometheus-stack-prometheus:9090
+            isDefault: true
+        #  - name: Loki
+        #    type: loki
+        #    access: proxy
+        #    url: http://loki:3100
     serviceMonitor:
       enabled: true
     ingress:
