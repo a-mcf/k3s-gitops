@@ -18,19 +18,19 @@ spec:
       interval: 5m
   values:
   # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
-    grafana:
-      enabled: true
-      adminPassword: prom-operator
-      ingress:
-        enabled: true
-        pathType: Prefix
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-        hosts:
-          - "grafana.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - "grafana.${SECRET_DOMAIN}"
+   # grafana:
+   #   enabled: true
+   #   adminPassword: prom-operator
+   #   ingress:
+   #     enabled: true
+   #     pathType: Prefix
+   #     annotations:
+   #       kubernetes.io/ingress.class: "nginx"
+   #     hosts:
+   #       - "grafana.${SECRET_DOMAIN}"
+   #     tls:
+   #       - hosts:
+   #           - "grafana.${SECRET_DOMAIN}"
     prometheus:
       ingress:
         enabled: true
