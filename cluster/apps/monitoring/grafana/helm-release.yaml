@@ -84,9 +84,9 @@ spec:
     dashboards:
       default:
         # ref: https://grafana.com/grafana/dashboards/6417
-        prometheus:
+        k8s:
           gnetId: 6417
-          revision: 4
+          revision: 1
           datasource: Prometheus
         zfs:
           gnetId: 7845
