@@ -4,5 +4,5 @@ resources:
 # helm release must be applied prior to the pvc
 # due to a hack in the way the PVC is configured.
 # see the comment in the helm-release.yaml file
-- helm-release.yaml
-- config-pvc.yaml
+#- helm-release.yaml
+#- config-pvc.yaml
