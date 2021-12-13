@@ -32,18 +32,19 @@ spec:
             - "loki.${SECRET_DOMAIN}"
     serviceMonitor:
       enabled: true
-    config:
+    #config:
       #ruler:
       #  storage:
       #    type: local
       #    local:
       #      directory: /rules
       #  rule_path: /tmp/scratch
-        alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
-        ring:
-          kvstore:
-            store: inmemory
-        enable_api: true
+      #  alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
+      #  ring:
+      #    kvstore:
+      #      store: inmemory
+      #
+      #  enable_api: true
   # TODO: https://github.com/grafana/helm-charts/pull/700
   postRenderers:
     - kustomize:
