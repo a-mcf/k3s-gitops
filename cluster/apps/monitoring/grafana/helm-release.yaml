@@ -77,10 +77,10 @@ spec:
             #url: http://thanos-query:9090/
             url: http://kube-prometheus-stack-prometheus:9090
             isDefault: true
-        #  - name: Loki
-        #    type: loki
-        #    access: proxy
-        #    url: http://loki:3100
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki:3100
     dashboards:
       default:
         # ref: https://grafana.com/grafana/dashboards/6417
