@@ -47,7 +47,7 @@ spec:
     extraPorts:
       syslog:
         name: syslog
-        containerPort: 514
+        containerPort: 1514
         service:
           type: LoadBalancer
           externalIPs:
