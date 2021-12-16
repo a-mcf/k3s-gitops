@@ -26,7 +26,7 @@ spec:
         extraScrapeConfigs: |
           - job_name: syslog
             syslog:
-              listen_address: 0.0.0.0:1514
+              listen_address: 0.0.0.0:514
               label_structured_data: true
               labels:
                 job: "syslog"
@@ -47,7 +47,7 @@ spec:
     extraPorts:
       syslog:
         name: syslog
-        containerPort: 1514
+        containerPort: 514
         service:
           type: LoadBalancer
           externalIPs:
