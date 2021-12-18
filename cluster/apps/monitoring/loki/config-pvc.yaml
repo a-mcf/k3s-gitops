@@ -6,7 +6,7 @@ metadata:
   namespace: monitoring
 spec:
   capacity:
-    storage: 30i    
+    storage: 30gi    
   accessModes:
   - ReadWriteOnce
   nfs:
