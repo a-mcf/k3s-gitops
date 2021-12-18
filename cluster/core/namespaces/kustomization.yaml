@@ -8,3 +8,4 @@ resources:
 - home.yaml
 - nextcloud.yaml
 - monitoring.yaml
+- longhorn-system.yaml
