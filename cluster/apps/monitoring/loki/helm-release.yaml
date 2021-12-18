@@ -52,6 +52,11 @@ spec:
     persistence:
       enabled: true
       existingClaim: nfs-loki-pvc
+    securityContext:
+      fsGroup: 2316
+      runAsGroup: 2316
+      runAsNonRoot: true
+      runAsUser: 2316
   # TODO: https://github.com/grafana/helm-charts/pull/700
   postRenderers:
     - kustomize:
