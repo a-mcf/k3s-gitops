@@ -46,12 +46,12 @@ spec:
       #
       #  enable_api: true
     ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
-  ## If you set enabled as "True", you need :
-  ## - create a pv which above 10Gi and has same namespace with loki
-  ## - keep storageClassName same with below setting
-  persistence:
-    enabled: true
-    existingClaim: nfs-loki-pvc
+    ## If you set enabled as "True", you need :
+    ## - create a pv which above 10Gi and has same namespace with loki
+    ## - keep storageClassName same with below setting
+    persistence:
+      enabled: true
+      existingClaim: nfs-loki-pvc
   # TODO: https://github.com/grafana/helm-charts/pull/700
   postRenderers:
     - kustomize:
