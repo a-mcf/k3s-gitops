@@ -14,7 +14,7 @@ spec:
     server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: home
+    namespace: monitoring
     name: nfs-loki-pvc
 ---
 apiVersion: v1
