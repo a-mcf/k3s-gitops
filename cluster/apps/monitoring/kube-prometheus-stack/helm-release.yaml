@@ -67,7 +67,7 @@ spec:
                   storage: 10Gi
               selector: {}
         thanos:
-          image: quay.io/thanos/thanos:v0.23.1
+          image: quay.io/thanos/thanos:v0.24.0
           version: v0.22.0
           #objectStorageConfig:
           #  name: thanos-objstore
