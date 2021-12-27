@@ -13,7 +13,7 @@ spec:
     path: /tank/appdata/homer
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
+  #storageClassName: ""
   claimRef:
     namespace: default
     name: nfs-homer-pvc
@@ -24,7 +24,7 @@ metadata:
   name: nfs-homer-pvc
   namespace: default
 spec:
-  storageClassName: nfs
+  storageClassName: ""
   accessModes:
   - ReadWriteMany
   resources:
