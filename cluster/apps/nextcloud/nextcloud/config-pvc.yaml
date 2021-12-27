@@ -26,6 +26,7 @@ metadata:
   name: nfs-nextcloud-data-pvc
   namespace: nextcloud
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:

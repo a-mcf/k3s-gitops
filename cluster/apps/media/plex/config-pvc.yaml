@@ -23,6 +23,7 @@ metadata:
   name: nfs-plex-pvc
   namespace: media
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:

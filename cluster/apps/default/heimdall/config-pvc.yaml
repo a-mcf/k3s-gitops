@@ -23,6 +23,7 @@ metadata:
   name: nfs-heimdall-pvc
   namespace: default
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:

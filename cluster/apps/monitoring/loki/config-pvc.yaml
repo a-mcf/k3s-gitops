@@ -23,6 +23,7 @@ metadata:
   name: nfs-loki-pvc
   namespace: monitoring
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:

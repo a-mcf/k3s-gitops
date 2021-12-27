@@ -23,6 +23,7 @@ metadata:
   name: nfs-home-assistant-config-pvc
   namespace: home
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:
