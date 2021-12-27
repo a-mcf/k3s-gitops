@@ -8,7 +8,7 @@ spec:
   capacity:
     storage: 128Mi    
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   nfs:
     path: /tank/appdata/homer
     server: 172.16.1.10
