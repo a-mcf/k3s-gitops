@@ -16,6 +16,8 @@ spec:
         name: longhorn
         namespace: flux-system
   values:
+    persistence:
+      defaultClass: true
     ingress:
       enabled: true
       annotations:
