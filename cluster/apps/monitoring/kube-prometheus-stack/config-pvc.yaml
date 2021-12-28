@@ -16,10 +16,6 @@ spec:
     path: /tank/appdata/prometheus
     server: ${NFS_SERVER}
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: monitoring
-    name: prometheus-kube-prometheus-stack-prometheus-db-prometheus-kube-prometheus-stack-prometheus-0
-    uid: 589ae38d-b8e7-4ef6-b7f7-3dbcb9b07a5a
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -33,3 +29,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  volumeName: nfs-prometheus-pv

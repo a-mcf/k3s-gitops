@@ -13,10 +13,6 @@ spec:
     path: /tank/appdata/plex
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: media
-    name: nfs-plex-pvc
-    uid: 456b1f3c-d9ba-44ca-8228-dcb2bedf5874
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -30,6 +26,7 @@ spec:
   resources:
     requests:
       storage: 20Gi
+  volumeName: nfs-plex-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -45,10 +42,6 @@ spec:
     path: /mnt/dumpster/movies
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: media
-    name: nfs-movies-pvc
-    uid: c81b5366-7f01-46a8-80d9-20785196a948
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -62,6 +55,7 @@ spec:
   resources:
     requests:
       storage: 1000Gi
+  volumeName: nfs-movies-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -77,10 +71,6 @@ spec:
     path: /mnt/dumpster/tv
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: media
-    name: nfs-tv-pvc
-    uid: 194ec638-52ef-4fc7-ab5d-8856b14340d0 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -94,6 +84,7 @@ spec:
   resources:
     requests:
       storage: 1000Gi
+  volumeName: nfs-tv-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -109,10 +100,6 @@ spec:
     path: /tank/user_files/shared/music
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: media
-    name: nfs-music-pvc
-    uid: 584a7fbc-ed15-4aea-ad47-ac74bcaa7880 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -126,3 +113,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
+  volumeName: nfs-music-pv

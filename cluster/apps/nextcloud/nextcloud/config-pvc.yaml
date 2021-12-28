@@ -16,10 +16,6 @@ spec:
   - async
   - noatime
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: nextcloud
-    name: nfs-nextcloud-data-pvc
-    uid: ae03a2bc-7377-475c-8d0f-c88a754a4e97
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -33,6 +29,7 @@ spec:
   resources:
     requests:
       storage: 500Gi
+  volumeName: nfs-nextcloud-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -48,10 +45,6 @@ spec:
     path: /tank/appdata/nextcloud-mariadb
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: nextcloud
-    name: nfs-nextcloud-mariadb-pvc
-    uid: 35c677da-4cc9-4fdf-b8b3-9399ad23d73a
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -65,3 +58,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  volumeName: nfs-nextcloud-mariadb-pv
