@@ -18,7 +18,7 @@ spec:
     kind: PersistentVolumeClaim
     namespace: default
     name: nfs-homer-pvc
-    uid: 8b2c1dd8-d696-4546-88be-5244960309fd # this is a hack. See issue #141
+    uid: a5ce4516-735e-4065-9ca0-88bf84efa115 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

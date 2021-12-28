@@ -13,10 +13,10 @@ spec:
     path: /tank/appdata/paperless-data
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
   claimRef:
     namespace: default
     name: nfs-paperless-data-pvc
+    uid: 7f259b6a-1792-4758-8973-6f84d13dd9d
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -45,10 +45,10 @@ spec:
     path: /tank/appdata/paperless-media
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
   claimRef:
     namespace: default
     name: nfs-paperless-media-pvc
+    uid: c8890daf-5015-45ff-92df-16478efe1f0e
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -77,10 +77,10 @@ spec:
     path: /tank/appdata/paperless-consume
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
   claimRef:
     namespace: default
     name: nfs-paperless-consume-pvc
+    uid: ee378caa-03d4-4b48-be0e-d71280964ee0
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -119,6 +119,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-export-pvc
   namespace: default
+  uid: cd9a9982-add1-47b2-9386-fbfe93f4677e
 spec:
   storageClassName: ""
   accessModes:

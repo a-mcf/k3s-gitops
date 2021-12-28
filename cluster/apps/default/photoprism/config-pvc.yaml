@@ -16,6 +16,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-photoprism-storage-pvc
+    uid: 042093b8-3e34-44fe-a471-85c229d4dda1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -47,6 +48,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-photoprism-originals-pvc
+    uid: 89f3cb31-d72f-4728-a15b-d8c84a75c56c
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -78,6 +80,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-photoprism-import-pvc
+    uid: a4bca61a-acbb-49e0-9157-5cc2e80e9bed
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
