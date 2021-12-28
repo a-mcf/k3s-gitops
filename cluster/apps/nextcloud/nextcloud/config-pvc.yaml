@@ -19,7 +19,7 @@ spec:
   claimRef:
     namespace: nextcloud
     name: nfs-nextcloud-data-pvc
-    #uid: ce483ebd-5ce8-49c2-a398-47476a048904
+    uid: ae03a2bc-7377-475c-8d0f-c88a754a4e97
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -51,7 +51,7 @@ spec:
   claimRef:
     namespace: nextcloud
     name: nfs-nextcloud-mariadb-pvc
-    #uid: 024e2ea7-0c5f-465c-924b-7e2568dc69b9
+    uid: 35c677da-4cc9-4fdf-b8b3-9399ad23d73a
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
