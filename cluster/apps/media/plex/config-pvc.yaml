@@ -48,7 +48,7 @@ spec:
   claimRef:
     namespace: media
     name: nfs-movies-pvc
-    uid: 2ffc1852-6df8-493a-b1be-0df293611ae7
+    uid: 58b94b45-626a-4cef-bc35-90836741db2d
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -56,6 +56,7 @@ metadata:
   name: nfs-movies-pvc
   namespace: media
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:
@@ -87,6 +88,7 @@ metadata:
   name: nfs-tv-pvc
   namespace: media
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:
@@ -118,6 +120,7 @@ metadata:
   name: nfs-music-pvc
   namespace: media
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:
