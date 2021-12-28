@@ -16,6 +16,7 @@ spec:
   claimRef:
     namespace: monitoring
     name: nfs-loki-pvc
+    uid: 201fbf4f-f360-47c8-8e54-72a9f137e6e5
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

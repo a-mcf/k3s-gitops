@@ -18,14 +18,13 @@ spec:
     kind: PersistentVolumeClaim
     namespace: default
     name: nfs-homer-pvc
-    uid: f2323aba-163a-469e-bffd-72f74b11224d
+    uid: 8b2c1dd8-d696-4546-88be-5244960309fd # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-homer-pvc
   namespace: default
-  uid: f2323aba-163a-469e-bffd-72f74b11224d
 spec:
   storageClassName: ""
   accessModes:
