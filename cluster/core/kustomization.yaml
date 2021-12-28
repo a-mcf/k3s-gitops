@@ -4,5 +4,5 @@ resources:
 - namespaces
 - metallb-system
 - cert-manager
-- system-upgrade
+#- system-upgrade
 - longhorn-system
