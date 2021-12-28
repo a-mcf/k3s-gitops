@@ -16,7 +16,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-heimdall-pvc
-    uid: 4853c3d1-6ad7-4d93-9b7a-40fb939993eb
+    uid: #4853c3d1-6ad7-4d93-9b7a-40fb939993eb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
