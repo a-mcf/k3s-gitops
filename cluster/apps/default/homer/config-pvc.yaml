@@ -18,7 +18,7 @@ spec:
     kind: PersistentVolumeClaim
     namespace: default
     name: nfs-homer-pvc
-    uid: 4ddc2cbd-e14a-40cc-a88d-7ad8a1fe7af4
+    uid: f2323aba-163a-469e-bffd-72f74b11224d
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
