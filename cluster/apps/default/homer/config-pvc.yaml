@@ -14,8 +14,11 @@ spec:
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
     namespace: default
     name: nfs-homer-pvc
+    #uid: 4ddc2cbd-e14a-40cc-a88d-7ad8a1fe7af4
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
