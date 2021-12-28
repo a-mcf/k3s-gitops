@@ -5,6 +5,6 @@ resources:
 - networking
 #- default
 #- media
-#- home
+- home
 - nextcloud
 - monitoring
