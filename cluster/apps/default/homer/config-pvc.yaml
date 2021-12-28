@@ -13,12 +13,6 @@ spec:
     path: /tank/appdata/homer
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  #claimRef:
-  #  apiVersion: v1
-  #  kind: PersistentVolumeClaim
-  #  namespace: default
-  #  name: nfs-homer-pvc
-  #  uid: a5ce4516-735e-4065-9ca0-88bf84efa115 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

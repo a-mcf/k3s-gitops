@@ -13,10 +13,6 @@ spec:
     path: /tank/appdata/home-assistant-config
     server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: home
-    name: nfs-home-assistant-config-pvc
-    uid: 1efc6827-407a-4c83-b0de-b0dc6e853a8a
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -30,3 +26,4 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  volumeName: nfs-home-assistant-config-pv
