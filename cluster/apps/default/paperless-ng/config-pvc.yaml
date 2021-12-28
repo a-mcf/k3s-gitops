@@ -16,7 +16,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-paperless-data-pvc
-    uid: 7f259b6a-1792-4758-8973-6f84d13dd9d
+    uid: 7f259b6a-1792-4758-8973-6f84d13dd9db
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -113,6 +113,7 @@ spec:
   claimRef:
     namespace: default
     name: nfs-paperless-export-pvc
+    uid: cd9a9982-add1-47b2-9386-fbfe93f4677e
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
