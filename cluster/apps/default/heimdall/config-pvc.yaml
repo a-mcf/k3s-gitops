@@ -13,10 +13,6 @@ spec:
     path: /tank/appdata/heimdall
     server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    namespace: default
-    name: nfs-heimdall-pvc
-    uid: #4853c3d1-6ad7-4d93-9b7a-40fb939993eb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -30,3 +26,4 @@ spec:
   resources:
     requests:
       storage: 500Mi
+  volumeName: nfs-heimdall-pv
