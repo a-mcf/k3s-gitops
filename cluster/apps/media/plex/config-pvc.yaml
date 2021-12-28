@@ -16,7 +16,7 @@ spec:
   claimRef:
     namespace: media
     name: nfs-plex-pvc
-    uid: 521a52c3-b3ab-4ef8-a987-8328b85f2f1e
+    #uid: 521a52c3-b3ab-4ef8-a987-8328b85f2f1e
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -48,7 +48,7 @@ spec:
   claimRef:
     namespace: media
     name: nfs-movies-pvc
-    uid: 58b94b45-626a-4cef-bc35-90836741db2d
+    #uid: 58b94b45-626a-4cef-bc35-90836741db2d
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -80,7 +80,7 @@ spec:
   claimRef:
     namespace: media
     name: nfs-tv-pvc
-    uid: 2ffc1852-6df8-493a-b1be-0df293611ae7 # this is a hack. See issue #141
+    #uid: 2ffc1852-6df8-493a-b1be-0df293611ae7 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -112,7 +112,7 @@ spec:
   claimRef:
     namespace: media
     name: nfs-music-pvc
-    uid: 935ea96e-1328-4c1a-bee3-053265d78f20 # this is a hack. See issue #141
+    #uid: 935ea96e-1328-4c1a-bee3-053265d78f20 # this is a hack. See issue #141
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

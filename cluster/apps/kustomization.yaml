@@ -4,7 +4,7 @@ resources:
 - system-upgrade
 - networking
 - default
-#- media
+- media
 - home
 - nextcloud
 - monitoring
