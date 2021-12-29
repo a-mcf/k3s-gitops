@@ -107,7 +107,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: nfs-paperless-export-pvc
   namespace: default
-  uid: cd9a9982-add1-47b2-9386-fbfe93f4677e
 spec:
   storageClassName: ""
   accessModes:
