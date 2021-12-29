@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
 - system-upgrade
 - networking
-- default
+#- default
 - media
 - home
 - nextcloud
