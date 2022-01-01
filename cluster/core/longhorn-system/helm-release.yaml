@@ -21,6 +21,7 @@ spec:
     defaultSettings:
       #backupTarget: ~
       defaultDataPath: /var/lib/longhorn_data
+      storageMinimalAvailablePercentage: 10
     ingress:
       enabled: true
       annotations:
