@@ -18,6 +18,9 @@ spec:
   values:
     persistence:
       defaultClass: true
+    defaultSettings:
+      #backupTarget: ~
+      defaultDataPath: /var/lib/longhorn_data
     ingress:
       enabled: true
       annotations:
