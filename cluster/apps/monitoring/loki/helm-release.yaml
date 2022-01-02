@@ -17,10 +17,8 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    #image:
-    #  repository: ghcr.io/k8s-at-home/loki
     ingress:
-      enabled: true
+      enabled: false
       annotations:
         kubernetes.io/ingress.class: "nginx"
       hosts:
@@ -32,23 +30,6 @@ spec:
             - "loki.${SECRET_DOMAIN}"
     serviceMonitor:
       enabled: true
-    #config:
-      #ruler:
-      #  storage:
-      #    type: local
-      #    local:
-      #      directory: /rules
-      #  rule_path: /tmp/scratch
-      #  alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
-      #  ring:
-      #    kvstore:
-      #      store: inmemory
-      #
-      #  enable_api: true
-    ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
-    ## If you set enabled as "True", you need :
-    ## - create a pv which above 10Gi and has same namespace with loki
-    ## - keep storageClassName same with below setting
     persistence:
       enabled: true
       existingClaim: nfs-loki-pvc
