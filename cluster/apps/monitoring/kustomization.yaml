@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
 - kube-prometheus-stack
 - grafana
-- loki
-- promtail
+- loki-stack
+#- loki
+#- promtail
