@@ -31,11 +31,6 @@ spec:
         tls:
           - hosts:
               - "grafana2.${SECRET_DOMAIN}"
-      datasources:
-        - name: Loki
-          type: loki
-          access: proxy
-          url: http://loki:3100
     prometheus:
       ingress:
         enabled: true
