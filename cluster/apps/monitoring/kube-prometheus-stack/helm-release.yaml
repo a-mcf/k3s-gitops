@@ -19,8 +19,8 @@ spec:
   values:
   # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
     grafana:
-      enabled: false
-      adminPassword: prom-operator
+      enabled: true
+      adminPassword: "${SECRET_GRAFANA_PASSWORD}"
       ingress:
         enabled: true
         pathType: Prefix
@@ -31,6 +31,11 @@ spec:
         tls:
           - hosts:
               - "grafana2.${SECRET_DOMAIN}"
+      datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki:3100
     prometheus:
       ingress:
         enabled: true
