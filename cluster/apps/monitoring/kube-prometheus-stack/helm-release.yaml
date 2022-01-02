@@ -38,6 +38,7 @@ spec:
                   storage: 10Gi
   # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
     grafana:
+      adminPassword: "${SECRET_GRAFANA_PASSWORD}"
       ingress:
         enabled: true
         pathType: Prefix
