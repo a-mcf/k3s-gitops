@@ -4,7 +4,6 @@ resources:
 - kube-prometheus-stack
 - loki
 - promtail
-- unifi-poller
-#- grafana
+#- unifi-poller
 #- loki-stack -- an experiment.
 
