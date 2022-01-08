@@ -26,13 +26,13 @@ spec:
           receiver: 'slack-notifications'
           resolve_timeout: 5m 
         receivers:
-          - name: "null"
-          - name: 'slack-notifications'
-            slack_configs:
-            - channel: '#prometheus' 
-              send_resolved: true
-              username: "Prometheus"
-              icon_url: https://avatars3.githubusercontent.com/u/3380462
+          # - name: "null"
+          # - name: 'slack-notifications'
+          #   slack_configs:
+          #   - channel: '#prometheus' 
+          #     send_resolved: true
+          #     username: "Prometheus"
+          #     icon_url: https://avatars3.githubusercontent.com/u/3380462
       #         title: |-
       #           [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
       #           {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
@@ -54,7 +54,7 @@ spec:
       #           *Details:*
       #             {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
       #             {{ end }}
-      # #           {{ end }}         
+      #           {{ end }}         
       ingress:
         enabled: true
         pathType: Prefix
