@@ -46,6 +46,7 @@ spec:
                 *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
               {{ end }}
             send_resolved: true
+      
       # config:
       #   global:
       #     #slack_api_url: "${SECRET_SLACK_WEBHOOK}"
