@@ -18,7 +18,6 @@ spec:
       interval: 5m
   values:
     alertmanager:
-      enabled: true
       config:
         global:
           slack_api_url: "${SECRET_SLACK_WEBHOOK}"
