@@ -168,14 +168,22 @@ spec:
     #   enabled: true
     #   endpoints:
     #     - 172.16.1.50
-    # kubeEtcd:
-    #   enabled: true
-    #   endpoints:
-    #     - 172.16.1.50
     #   service:
     #     enabled: true
-    #     port: 2381
-    #     targetPort: 2381
+    #     port: 10249
+    #     targetPort: 10249
+    #   serviceMonitor:
+    #     enabled: true
+    #     https: true
+    #     insecureSkipVerify: true
+    kubeEtcd:
+      enabled: true
+      endpoints:
+        - 172.16.1.50
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
     # prometheusOperator:
     #   prometheusConfigReloader:
     #     resources:
