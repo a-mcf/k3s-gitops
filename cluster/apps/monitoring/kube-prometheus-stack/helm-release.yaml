@@ -148,10 +148,10 @@ spec:
       enabled: true
     kubeApiServer:
       enabled: true
-    # kubeControllerManager:
-    #   enabled: true
-    #   endpoints:
-    #     - 172.16.1.50
+     kubeControllerManager:
+       enabled: true
+       endpoints:
+         - 172.16.1.50
     # kubeScheduler:
     #   enabled: true
     #   endpoints:
