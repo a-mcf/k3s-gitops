@@ -18,40 +18,52 @@ spec:
       interval: 5m
   values:
     alertmanager:
+      enabled: true
       config:
         global:
-          slack_api_url: "${SECRET_SLACK_WEBHOOK}"
           resolve_timeout: 5m
+          slack_api_url: "${SECRET_SLACK_WEBHOOK}"
         route:
-          receiver: 'slack-notifications'
+          group_by: ['job']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: 'null'
+          routes:
+          - match:
+              alertname: Watchdog
+            receiver: 'null'
+          - receiver: 'slack-notifications'
+            continue: true
         receivers:
-          - name: 'slack-notifications'
-            slack_configs:
-            - channel: '#prometheus'
-              send_resolved: true
-              icon_url: https://avatars3.githubusercontent.com/u/3380462
-              title: |-
-                [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
-                {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
-                  {{" "}}(
-                  {{- with .CommonLabels.Remove .GroupLabels.Names }}
-                    {{- range $index, $label := .SortedPairs -}}
-                      {{ if $index }}, {{ end }}
-                      {{- $label.Name }}="{{ $label.Value -}}"
-                    {{- end }}
-                  {{- end -}}
-                  )
-                {{- end }}
-              text: <-
-                {{ range .Alerts -}}
-                *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+        - name: 'null'
+        - name: 'slack-notifications'
+          slack_configs:
+          - channel: "#prometheus"
+            title: |-
+              [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
+              {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
+                {{" "}}(
+                {{- with .CommonLabels.Remove .GroupLabels.Names }}
+                  {{- range $index, $label := .SortedPairs -}}
+                    {{ if $index }}, {{ end }}
+                    {{- $label.Name }}="{{ $label.Value -}}"
+                  {{- end }}
+                {{- end -}}
+                )
+              {{- end }}
+            text: <-
+              {{ range .Alerts -}}
+              *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
 
-                *Description:* {{ .Annotations.description }}
+              *Description:* {{ .Annotations.description }}
 
-                *Details:*
-                  {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                  {{ end }}
-                {{ end }}         
+              *Details:*
+                {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                {{ end }}
+              {{ end }}  
+            send_resolved: true
+
       ingress:
         enabled: true
         pathType: Prefix
@@ -173,13 +185,13 @@ spec:
         port: 10249
         targetPort: 10249
     kubeEtcd:
-      enabled: true
-      endpoints:
-        - 172.16.1.50
-      service:
-        enabled: true
-        port: 2381
-        targetPort: 2381
+      enabled: false # turn this off until I get a chance to try a multi-master cluster.
+      # endpoints:
+      #   - 172.16.1.50
+      # service:
+      #   enabled: true
+      #   port: 2381
+      #   targetPort: 2381
     prometheus:
       ingress:
         enabled: true
