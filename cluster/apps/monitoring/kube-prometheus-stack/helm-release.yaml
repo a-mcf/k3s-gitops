@@ -110,6 +110,24 @@ spec:
           enabled: true
         datasources:
           enabled: true
+        kubeApiServer:
+      enabled: true
+    kubeControllerManager:
+      enabled: true
+      endpoints:
+        - 192.168.42.10
+        - 192.168.42.11
+        - 192.168.42.12
+    kubeScheduler:
+      enabled: true
+    kubeProxy:
+      enabled: true
+    kubeEtcd:
+      enabled: true
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
     prometheus:
       ingress:
         enabled: true
