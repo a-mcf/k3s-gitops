@@ -191,6 +191,15 @@ spec:
         tls:
           - hosts:
               - "prometheus.${SECRET_DOMAIN}"
+    prometheusOperator:
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 100Mi
       thanosService:
         enabled: false
       thanosServiceMonitor:
