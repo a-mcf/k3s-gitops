@@ -37,7 +37,7 @@ spec:
       - name: 'null'
       - name: 'slack-notifications'
         slack_configs:
-        - channel: ${your_slack_channel}
+        - channel: "#prometheus"
           title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Test Alertmanager'
           text: >-
             {{ range .Alerts }}
