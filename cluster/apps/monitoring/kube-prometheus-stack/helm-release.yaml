@@ -176,10 +176,10 @@ spec:
         enabled: true
         port: 10249
         targetPort: 10249
-      serviceMonitor:
-        enabled: true
-        https: true
-        insecureSkipVerify: true
+      # serviceMonitor:
+      #   enabled: true
+      #   https: true
+      #   insecureSkipVerify: true
     kubeEtcd:
       enabled: true
       endpoints:
