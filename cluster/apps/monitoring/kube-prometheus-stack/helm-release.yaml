@@ -18,6 +18,10 @@ spec:
       interval: 5m
   values:
     alertmanager:
+      config:
+        global:
+          slack_api_url: "${SECRET_SLACK_WEBHOOK}"
+          resolve_timeout: 5m
       ingress:
         enabled: true
         pathType: Prefix
