@@ -18,12 +18,13 @@ spec:
       interval: 5m
   values:
     alertmanager:
-      # config:
-      #   global:
-      #     slack_api_url: "${SECRET_SLACK_WEBHOOK}"
-      #     resolve_timeout: 5m
-      #   route:
-      #     receiver: 'slack-notifications'
+      config:
+        global:
+          slack_api_url: "${SECRET_SLACK_WEBHOOK}"
+          resolve_timeout: 5m
+        route:
+          receiver: 'slack-notifications'
+          resolve_timeout: 5m
       #   receivers:
       #     - name: 'slack-notifications'
       #       slack_configs:
