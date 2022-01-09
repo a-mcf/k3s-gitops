@@ -66,6 +66,7 @@ spec:
       compactor:
         working_directory: /data/loki/boltdb-shipper-compactor
         shared_store: filesystem
+      # https://grafana.com/docs/loki/latest/rules/
       ruler:
         storage:
           type: local

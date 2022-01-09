@@ -217,6 +217,13 @@ spec:
       thanosServiceMonitor:
         enabled: false
       prometheusSpec:
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        #retention: 6h
+        enableAdminAPI: true
+        walCompression: true
         storageSpec:
           # this is a hack:
           # https://github.com/helm/charts/issues/9288#issuecomment-711165029
