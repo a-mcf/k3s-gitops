@@ -87,7 +87,7 @@ spec:
           kvstore:
             store: inmemory
         enable_api: true
-      alerting_groups:
+    alerting_groups:
       #
       # SMART Failures
       #
