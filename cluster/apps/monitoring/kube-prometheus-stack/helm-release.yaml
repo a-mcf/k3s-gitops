@@ -185,7 +185,7 @@ spec:
         port: 10249
         targetPort: 10249
     kubeEtcd:
-      enabled: false # turn this off until I get a chance to try a multi-master cluster.
+      enabled: false # turn this off until I get a chance to try a multi-master cluster. 
       # endpoints:
       #   - 172.16.1.50
       # service:
