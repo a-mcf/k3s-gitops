@@ -18,9 +18,7 @@ spec:
   values:
     image:
       repository: nextcloud
-      tag: 23.0.0-apache
-    #env:
-    #  OVERWRITEPROTOCOL: 'https'
+      tag: 21.0.1-fpm-alpine
     ingress:
       enabled: true
       annotations:
@@ -51,6 +49,11 @@ spec:
             'filelocking.enabled' => 'true',
             'loglevel' => 2
           );
+    nginx:
+      enabled: true
+      image:
+        repository: nginx
+        tag: 1.19.10-alpine
     internalDatabase:
       enabled: false
       name: nextcloud
@@ -68,3 +71,5 @@ spec:
         persistence:
           enabled: true
           existingClaim: nfs-nextcloud-mariadb-pvc
+    lifecycle:
+      postStartCommand: ["/bin/sh", "-c", "crond"]
