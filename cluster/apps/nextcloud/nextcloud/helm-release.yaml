@@ -38,7 +38,7 @@ spec:
       enabled: true
       existingClaim: nfs-nextcloud-data-pvc
     cronjob:
-      enabled: true
+      enabled: false
     metrics:
       enabled: true
     nextcloud:
