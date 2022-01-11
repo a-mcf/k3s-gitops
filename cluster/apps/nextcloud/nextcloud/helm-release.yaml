@@ -74,4 +74,4 @@ spec:
           enabled: true
           existingClaim: nfs-nextcloud-mariadb-pvc
     #lifecycle:
-    #  postStartCommand: ["/bin/sh", "-c", "crond"]
+    #  postStartCommand: ["/bin/sh", "-c", "/bin/crond"]
