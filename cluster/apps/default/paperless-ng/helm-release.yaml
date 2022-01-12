@@ -59,7 +59,7 @@ spec:
       enabled: true
       architecture: standalone
       auth:  
-        enabled: false
+        enabled: true
         password: "${SECRET_PAPERLESS_REDIS_PASSWORD}"
         usePasswordFiles: false
 
