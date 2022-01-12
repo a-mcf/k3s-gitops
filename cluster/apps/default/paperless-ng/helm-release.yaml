@@ -54,4 +54,6 @@ spec:
         enabled: true
         existingClaim: nfs-paperless-export-pvc
         mountPath: /usr/src/paperless/export
+    redis:
+      enabled: true
 
