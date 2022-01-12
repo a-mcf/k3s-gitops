@@ -24,7 +24,7 @@ spec:
       USERMAP_UID: 2316
       USERMAP_GID: 2316
       PAPERLESS_CONSUMER_POLLING: 30
-      PAPERLESS_REDIS: redis://paperless-redis-master:6379
+      PAPERLESS_REDIS: "redis://default:${SECRET_PAPERLESS_REDIS_PASSWORD}@paperless-redis-master:6379"
     ingress:
       main:
         enabled: true
@@ -58,4 +58,8 @@ spec:
     redis:
       enabled: true
       architecture: standalone
+      auth:  
+        enabled: false
+        password: "${SECRET_PAPERLESS_REDIS_PASSWORD}"
+        usePasswordFiles: false
 
