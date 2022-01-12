@@ -24,6 +24,7 @@ spec:
       USERMAP_UID: 2316
       USERMAP_GID: 2316
       PAPERLESS_CONSUMER_POLLING: 30
+      PAPERLESS_REDIS: redis://paperless-redis-master:6379
     ingress:
       main:
         enabled: true
@@ -56,4 +57,5 @@ spec:
         mountPath: /usr/src/paperless/export
     redis:
       enabled: true
+      architecture: standalone
 
