@@ -26,8 +26,8 @@ spec:
       PLEX_CLAIM: ${PLEX_CLAIM}
       ADVERTISE_IP: ${PLEX_ADVERTISE_IP}
     podSecurityContext:
-      runAsUser: 2316
-      runAsGroup: 2317
+      #runAsUser: 2316
+      #runAsGroup: 2317
       #supplementalGroups:
       #- 44
       #- 109
