@@ -27,9 +27,9 @@ spec:
       ADVERTISE_IP: ${PLEX_ADVERTISE_IP}
     podSecurityContext:
       runAsUser: 2316
-      runAsGroup: 2317
+      runAsGroup: 2316
       runAsNonRoot: true
-      fsGroup: 2317
+      fsGroup: 2316
       fsGroupChangePolicy: OnRootMismatch
       
       #supplementalGroups:
@@ -61,7 +61,7 @@ spec:
         - hosts:
           - "plex.${SECRET_DOMAIN}"
     persistence:
-      config:
+      configold:
         enabled: true
         #existingClaim: longhorn-plex-pvc
         existingClaim: nfs-plex-pvc
@@ -84,7 +84,7 @@ spec:
         existingClaim: nfs-music-pvc
         mountPath: /music
         readOnly: true
-      longhornconfig:
+      config:
         enabled: true
         existingClaim: longhorn-plex-pvc
 
