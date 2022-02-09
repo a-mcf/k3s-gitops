@@ -63,8 +63,8 @@ spec:
     persistence:
       config:
         enabled: true
-        #existingClaim: longhorn-plex-pvc
-        existingClaim: nfs-plex-pvc
+        existingClaim: longhorn-plex-pvc
+        #existingClaim: nfs-plex-pvc
       transcode:
         enabled: true
         type: emptyDir
@@ -84,8 +84,8 @@ spec:
         existingClaim: nfs-music-pvc
         mountPath: /music
         readOnly: true
-      confignew:
-        enabled: true
-        existingClaim: longhorn-plex-pvc
+      #confignew:
+      #  enabled: true
+      #  existingClaim: longhorn-plex-pvc
 
 
