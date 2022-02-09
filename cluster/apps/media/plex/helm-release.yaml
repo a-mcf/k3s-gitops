@@ -61,7 +61,7 @@ spec:
         - hosts:
           - "plex.${SECRET_DOMAIN}"
     persistence:
-      configold:
+      config:
         enabled: true
         #existingClaim: longhorn-plex-pvc
         existingClaim: nfs-plex-pvc
@@ -84,7 +84,7 @@ spec:
         existingClaim: nfs-music-pvc
         mountPath: /music
         readOnly: true
-      config:
+      confignew:
         enabled: true
         existingClaim: longhorn-plex-pvc
 
