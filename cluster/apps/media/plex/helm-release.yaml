@@ -81,4 +81,8 @@ spec:
         existingClaim: nfs-music-pvc
         mountPath: /music
         readOnly: true
+      longhornconfig:
+        enabled: true
+        existingClaim: longhorn-plex-pvc
+
 
