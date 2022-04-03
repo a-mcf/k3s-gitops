@@ -10,9 +10,9 @@ metadata:
   namespace: monitoring
 spec:
   interval: 5m
-  rollback:
-    enable: true
-    maxRetries: 10
+  # rollback:
+  #   enable: true
+  #   maxRetries: 10
   chart:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
