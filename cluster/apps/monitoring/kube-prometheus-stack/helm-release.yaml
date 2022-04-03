@@ -6,6 +6,9 @@ metadata:
   namespace: monitoring
 spec:
   interval: 5m
+  rollback:
+    retry: true
+    maxRetries: 10
   chart:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
