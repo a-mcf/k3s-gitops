@@ -1,6 +1,7 @@
 # this resource sometimes require that a validating webhook be deleted
 # when the chart is upgraded. 
 # https://github.com/prometheus-community/helm-charts/issues/108
+# retries can be forced by changing maxRetries below. 0 is infinite.
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
