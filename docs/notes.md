@@ -42,3 +42,10 @@ Get helm history:
 ```
 helm history <release_name>
 ```
+
+Force retries of failed helm releases by suspending / resuming:
+https://github.com/fluxcd/helm-controller/issues/454
+```
+flux suspend hr <name>
+flux resume hr <name>
+```
