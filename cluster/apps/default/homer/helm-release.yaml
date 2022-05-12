@@ -40,5 +40,5 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-homer-pvc
+        existingClaim: nfs-nebula-home-pvc #nfs-homer-pvc
         mountPath: /www/assets

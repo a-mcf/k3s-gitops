@@ -27,3 +27,32 @@ spec:
     requests:
       storage: 128Mi
   volumeName: nfs-homer-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-homer-pv
+  namespace: default
+spec:
+  capacity:
+    storage: 128Mi    
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /tank/appdata/homer
+    server: 172.16.1.10
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-homer-pvc
+  namespace: default
+spec:
+  storageClassName: ""
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  volumeName: nfs-nebula-homer-pv
