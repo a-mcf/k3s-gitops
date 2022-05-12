@@ -38,6 +38,8 @@ spec:
     storage: 128Mi    
   accessModes:
   - ReadWriteMany
+  mountOptions:
+  - nfsvers=4
   nfs:
     path: /tank/appdata/homer
     server: "${NFS_SERVER_NEBULA}"
