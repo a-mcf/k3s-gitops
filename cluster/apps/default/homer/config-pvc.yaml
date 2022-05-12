@@ -40,6 +40,7 @@ spec:
   - ReadWriteMany
   mountOptions:
   - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/homer
     server: "${NFS_SERVER_NEBULA}"
