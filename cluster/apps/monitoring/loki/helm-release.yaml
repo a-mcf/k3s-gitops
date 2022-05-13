@@ -96,7 +96,7 @@ spec:
 
     persistence:
       enabled: true
-      existingClaim: nfs-loki-pvc
+      existingClaim: nfs-nebula-loki-pvc
     securityContext:
       fsGroup: 2316
       runAsGroup: 2316
