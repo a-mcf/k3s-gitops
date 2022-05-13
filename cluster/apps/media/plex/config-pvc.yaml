@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-movies-pv
+  name: nfs-movies-pv
   namespace: media
 spec:
   capacity:
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-movies-pvc
+  name: nfs-movies-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -44,7 +44,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-tv-pv
+  name: nfs-tv-pv
   namespace: media
 spec:
   capacity:
@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-tv-pvc
+  name: nfs-tv-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -71,7 +71,7 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-tv-pv
+  volumeName: nfs-tv-pv
 ---
 apiVersion: v1
 kind: PersistentVolume

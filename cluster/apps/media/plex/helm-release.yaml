@@ -71,12 +71,12 @@ spec:
         medium: Memory
       movies:
         enabled: true
-        existingClaim: nfs-nebula-movies-pvc
+        existingClaim: nfs-movies-pvc
         mountPath: /movies
         readOnly: true
       tv:
         enabled: true
-        existingClaim: nfs-nebula-tv-pvc
+        existingClaim: nfs-tv-pvc
         mountPath: /tv
         readOnly: true
       music:
