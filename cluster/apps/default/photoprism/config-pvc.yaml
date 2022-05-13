@@ -11,7 +11,7 @@ spec:
   - ReadWriteOnce
   mountOptions:
   - nfsvers=4
-  - port=20
+  - port=2049
   nfs:
     path: /tank/appdata/photoprism-storage
     server: "${NFS_SERVER_NEBULA}"
@@ -43,7 +43,7 @@ spec:
   - ReadWriteOnce
   mountOptions:
   - nfsvers=4
-  - port=20
+  - port=2049
   nfs:
     path: /tank/user_files/shared/photos/originals
     server: "${NFS_SERVER_NEBULA}"
@@ -75,7 +75,7 @@ spec:
   - ReadWriteOnce
   mountOptions:
   - nfsvers=4
-  - port=20
+  - port=2049
   nfs:
     path: /tank/user_files/shared/photos/import
     server: "${NFS_SERVER_NEBULA}"
