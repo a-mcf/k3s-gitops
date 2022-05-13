@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-paperless-data-pv
+  name: nfs-paperless-data-pv
   namespace: default
 spec:
   capacity:
@@ -11,13 +11,13 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/paperless-data
-    server: "${NFS_SERVER_NEBULA}"
+    server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-paperless-data-pvc
+  name: nfs-paperless-data-pvc
   namespace: default
 spec:
   storageClassName: ""
@@ -26,12 +26,12 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  volumeName: nfs-nebula-paperless-data-pv
+  volumeName: nfs-paperless-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-paperless-media-pv
+  name: nfs-paperless-media-pv
   namespace: default
 spec:
   capacity:
@@ -40,13 +40,13 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/paperless-media
-    server: "${NFS_SERVER_NEBULA}"
+    server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-paperless-media-pvc
+  name: nfs-paperless-media-pvc
   namespace: default
 spec:
   storageClassName: ""
@@ -55,12 +55,12 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  volumeName: nfs-nebula-paperless-media-pv
+  volumeName: nfs-paperless-media-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-paperless-consume-pv
+  name: nfs-paperless-consume-pv
   namespace: default
 spec:
   capacity:
@@ -69,13 +69,13 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/paperless-consume
-    server: "${NFS_SERVER_NEBULA}"
+    server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-paperless-consume-pvc
+  name: nfs-paperless-consume-pvc
   namespace: default
 spec:
   storageClassName: ""
@@ -84,12 +84,12 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  volumeName: nfs-nebula-paperless-consume-pv
+  volumeName: nfs-paperless-consume-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-paperless-export-pv
+  name: nfs-paperless-export-pv
   namespace: default
 spec:
   capacity:
@@ -98,14 +98,14 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/paperless-export
-    server: "${NFS_SERVER_NEBULA}"
+    server: 172.16.1.10
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-paperless-export-pvc
+  name: nfs-paperless-export-pvc
   namespace: default
 spec:
   storageClassName: ""
@@ -114,4 +114,4 @@ spec:
   resources:
     requests:
       storage: 128Mi
-  volumeName: nfs-nebula-paperless-export-pv
+  volumeName: nfs-paperless-export-pv

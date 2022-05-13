@@ -41,19 +41,19 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-paperless-data-pvc
+        existingClaim: nfs-nebula-paperless-data-pvc
         mountPath: /usr/src/paperless/data
       media:
         enabled: true
-        existingClaim: nfs-paperless-media-pvc
+        existingClaim: nfs-nebula-paperless-media-pvc
         mountPath: /usr/src/paperless/media
       consume:
         enabled: true
-        existingClaim: nfs-paperless-consume-pvc
+        existingClaim: nfs-nebula-paperless-consume-pvc
         mountPath: /usr/src/paperless/consume
       export:
         enabled: true
-        existingClaim: nfs-paperless-export-pvc
+        existingClaim: nfs-nebula-paperless-export-pvc
         mountPath: /usr/src/paperless/export
     redis:
       enabled: true
