@@ -53,7 +53,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-home-assistant-config-pvc
+        existingClaim: nfs-nebula-home-assistant-config-pvc
     #addons:
     resources:
       requests:
