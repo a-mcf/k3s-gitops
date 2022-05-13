@@ -44,4 +44,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-heimdall-pvc
+        existingClaim: nfs-nebula-heimdall-pvc
