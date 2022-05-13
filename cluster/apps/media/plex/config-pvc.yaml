@@ -12,38 +12,38 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: longhorn
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-nebula-plex-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 20Gi    
-  accessModes:
-  - ReadWriteOnce
-  mountOptions:
-  - nfsvers=4
-  - port=2049
-  nfs:
-    path: /tank/appdata/plex
-    server: "${NFS_SERVER_NEBULA}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-nebula-plex-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
-  volumeName: nfs-nebula-plex-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs-nebula-plex-pv
+#   namespace: media
+# spec:
+#   capacity:
+#     storage: 20Gi    
+#   accessModes:
+#   - ReadWriteOnce
+#   mountOptions:
+#   - nfsvers=4
+#   - port=2049
+#   nfs:
+#     path: /tank/appdata/plex
+#     server: "${NFS_SERVER_NEBULA}"
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs-nebula-plex-pvc
+#   namespace: media
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 20Gi
+#   volumeName: nfs-nebula-plex-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
