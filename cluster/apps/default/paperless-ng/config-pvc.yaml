@@ -9,6 +9,9 @@ spec:
     storage: 50Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/paperless-data
     server: "${NFS_SERVER_NEBULA}"
@@ -38,6 +41,9 @@ spec:
     storage: 50Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/paperless-media
     server: "${NFS_SERVER_NEBULA}"
@@ -67,6 +73,9 @@ spec:
     storage: 50Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/paperless-consume
     server: "${NFS_SERVER_NEBULA}"
@@ -96,6 +105,9 @@ spec:
     storage: 50Gi   
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/paperless-export
     server: "${NFS_SERVER_NEBULA}"
