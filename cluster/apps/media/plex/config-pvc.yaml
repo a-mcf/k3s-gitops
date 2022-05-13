@@ -39,7 +39,7 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-movies-pv
+  volumeName: nfs-movies-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
