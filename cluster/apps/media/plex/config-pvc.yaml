@@ -28,7 +28,7 @@ spec:
   - port=2049
   nfs:
     path: /tank/appdata/plex
-    server: "{NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -60,7 +60,7 @@ spec:
   - port=2049
   nfs:
     path: /mnt/dumpster/movies
-    server: "{NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -92,7 +92,7 @@ spec:
   - port=2049
   nfs:
     path: /mnt/dumpster/tv
-    server: "{NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -124,7 +124,7 @@ spec:
   - port=2049
   nfs:
     path: /tank/user_files/shared/music
-    server: "{NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
