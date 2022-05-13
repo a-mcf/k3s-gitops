@@ -64,7 +64,6 @@ spec:
       config:
         enabled: true
         existingClaim: longhorn-plex-pvc
-        #existingClaim: nfs-nebula-plex-pvc
       transcode:
         enabled: true
         type: emptyDir
@@ -84,8 +83,3 @@ spec:
         existingClaim: nfs-nebula-music-pvc
         mountPath: /music
         readOnly: true
-      #confignew:
-      #  enabled: true
-      #  existingClaim: longhorn-plex-pvc
-
-

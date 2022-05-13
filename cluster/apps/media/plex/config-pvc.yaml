@@ -51,9 +51,6 @@ spec:
     storage: 1000Gi    
   accessModes:
   - ReadWriteOnce
-  mountOptions:
-  - nfsvers=4
-  - port=2049
   nfs:
     path: /mnt/dumpster/tv
     server: "${NFS_SERVER}"
