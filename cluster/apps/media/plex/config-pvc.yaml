@@ -16,22 +16,25 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-plex-pv
+  name: nfs-nebula-nebula-plex-pv
   namespace: media
 spec:
   capacity:
     storage: 20Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/plex
-    server: 172.16.1.10
+    server: "{NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-plex-pvc
+  name: nfs-nebula-nebula-plex-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -40,27 +43,30 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  volumeName: nfs-plex-pv
+  volumeName: nfs-nebula-nebula-plex-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-movies-pv
+  name: nfs-nebula-nebula-movies-pv
   namespace: media
 spec:
   capacity:
     storage: 1000Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /mnt/dumpster/movies
-    server: 172.16.1.10
+    server: "{NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-movies-pvc
+  name: nfs-nebula-nebula-movies-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -69,27 +75,30 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-movies-pv
+  volumeName: nfs-nebula-nebula-movies-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-tv-pv
+  name: nfs-nebula-nebula-tv-pv
   namespace: media
 spec:
   capacity:
     storage: 1000Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /mnt/dumpster/tv
-    server: 172.16.1.10
+    server: "{NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-tv-pvc
+  name: nfs-nebula-nebula-tv-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -98,27 +107,30 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-tv-pv
+  volumeName: nfs-nebula-nebula-tv-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-music-pv
+  name: nfs-nebula-nebula-music-pv
   namespace: media
 spec:
   capacity:
     storage: 100Gi    
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/user_files/shared/music
-    server: 172.16.1.10
+    server: "{NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-music-pvc
+  name: nfs-nebula-nebula-music-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -127,4 +139,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  volumeName: nfs-music-pv
+  volumeName: nfs-nebula-nebula-music-pv

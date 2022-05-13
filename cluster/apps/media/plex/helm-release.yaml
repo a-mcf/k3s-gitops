@@ -64,24 +64,24 @@ spec:
       config:
         enabled: true
         existingClaim: longhorn-plex-pvc
-        #existingClaim: nfs-plex-pvc
+        #existingClaim: nfs-nebula-plex-pvc
       transcode:
         enabled: true
         type: emptyDir
         medium: Memory
       movies:
         enabled: true
-        existingClaim: nfs-movies-pvc
+        existingClaim: nfs-nebula-movies-pvc
         mountPath: /movies
         readOnly: true
       tv:
         enabled: true
-        existingClaim: nfs-tv-pvc
+        existingClaim: nfs-nebula-tv-pvc
         mountPath: /tv
         readOnly: true
       music:
         enabled: true
-        existingClaim: nfs-music-pvc
+        existingClaim: nfs-nebula-music-pvc
         mountPath: /music
         readOnly: true
       #confignew:
