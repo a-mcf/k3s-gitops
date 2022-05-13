@@ -4,4 +4,4 @@ resources:
 - heimdall
 - homer
 - paperless-ng
-#- photoprism
+- photoprism
