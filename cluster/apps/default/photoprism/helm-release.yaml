@@ -44,13 +44,13 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-photoprism-storage-pvc
+        existingClaim: nfs-nebula-photoprism-storage-pvc
         mountPath: /photoprism/storage
       originals:
         enabled: true
-        existingClaim: nfs-photoprism-originals-pvc
+        existingClaim: nfs-nebula-photoprism-originals-pvc
         mountPath: /photoprism/originals
       import:
         enabled: true
-        existingClaim: nfs-photoprism-import-pvc
+        existingClaim: nfs-nebula-photoprism-import-pvc
         mountPath: /photoprism/import
