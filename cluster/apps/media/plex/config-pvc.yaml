@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-nebula-plex-pv
+  name: nfs-nebula-plex-pv
   namespace: media
 spec:
   capacity:
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-nebula-plex-pvc
+  name: nfs-nebula-plex-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -43,12 +43,12 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  volumeName: nfs-nebula-nebula-plex-pv
+  volumeName: nfs-nebula-plex-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-nebula-movies-pv
+  name: nfs-nebula-movies-pv
   namespace: media
 spec:
   capacity:
@@ -66,7 +66,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-nebula-movies-pvc
+  name: nfs-nebula-movies-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -75,12 +75,12 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-nebula-movies-pv
+  volumeName: nfs-nebula-movies-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-nebula-tv-pv
+  name: nfs-nebula-tv-pv
   namespace: media
 spec:
   capacity:
@@ -98,7 +98,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-nebula-tv-pvc
+  name: nfs-nebula-tv-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -107,12 +107,12 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-nebula-tv-pv
+  volumeName: nfs-nebula-tv-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-nebula-music-pv
+  name: nfs-nebula-music-pv
   namespace: media
 spec:
   capacity:
@@ -130,7 +130,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-nebula-music-pvc
+  name: nfs-nebula-music-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -139,4 +139,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  volumeName: nfs-nebula-nebula-music-pv
+  volumeName: nfs-nebula-music-pv
