@@ -11,10 +11,12 @@ spec:
   - ReadWriteOnce
   nfs:
     path: /tank/appdata/nextcloud-data
-    server: 172.16.1.10
+    server: "${NFS_SERVER_NEBULA}"
   mountOptions:
   - async
   - noatime
+  - nfsvers=4
+  - port=2049
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -41,9 +43,12 @@ spec:
     storage: 10Gi   
   accessModes:
   - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
   nfs:
     path: /tank/appdata/nextcloud-mariadb
-    server: 172.16.1.10
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
