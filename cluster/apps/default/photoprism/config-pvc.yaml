@@ -14,7 +14,7 @@ spec:
   - port=20
   nfs:
     path: /tank/appdata/photoprism-storage
-    server: 172.16.1.10
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -46,7 +46,7 @@ spec:
   - port=20
   nfs:
     path: /tank/user_files/shared/photos/originals
-    server: 172.16.1.10
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -78,7 +78,7 @@ spec:
   - port=20
   nfs:
     path: /tank/user_files/shared/photos/import
-    server: 172.16.1.10
+    server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
