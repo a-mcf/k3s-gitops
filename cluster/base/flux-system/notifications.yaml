@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 type: Generic
 data:
-  address: "${SECRET_SLACK_FLUX_WEBHOOK}"
+  address: "${SECRET_SLACK_FLUX_WEBHOOK_BASE64}"
 ---
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Provider
