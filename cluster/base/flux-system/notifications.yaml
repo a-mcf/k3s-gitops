@@ -13,7 +13,7 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
-  name: flux-deployments
+  name: fluxcd-slack
   namespace: flux-system
 spec:
   providerRef:
