@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: slack-url
+    name: slack-webhook-url
     namespace: flux-system
 type: Generic
 data:
@@ -12,8 +12,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2022-05-14T21:58:04Z"
-    mac: ENC[AES256_GCM,data:tvZzedWUphXz3iC9bi6Fm/r051fErMHBNMMAPgCCRbzmSsj5DnyKtnmxxcmLt5ha4tkTBGzPx1eCQgU+6T7TEaZB8xxJ7KNlDrxRy++8K2EdEwYE8GGfARgGvLedulyfEyKvYY7KDOTwcBKDLxzNlTCIY0D1F5aieiwj6RNLcW8=,iv:BnOvqFqLdtJ7NsoiNdTi8zS1F44G9+Lok1TwDuG2BmM=,tag:6dJjw5A2+JzT0mUJBnrZQw==,type:str]
+    lastmodified: "2022-05-15T00:01:02Z"
+    mac: ENC[AES256_GCM,data:2k0e+1O0OIcMh1WNqHLjU+Ck2etkjnEtqvrrFADmKVDn7qDLtP8e7hFcPw1z7LpK6ux+Hv2Mc2vuC4KxbMey7j1Us/46YD6VunMJm4b6h1PmxQl0udE4l/KO8KzcGl14z8qxizDFFPNWA/Pb5CXfyFE1QfWYGrrG7Ep8wXZmSRE=,iv:A5U9+CzS2i6ufsAZqXRPg2tdIPyUcDv2ngvfaFFmDvQ=,tag:fT6660iJ0LDtmiKdWZyj6A==,type:str]
     pgp:
         - created_at: "2022-05-14T21:27:48Z"
           enc: |
