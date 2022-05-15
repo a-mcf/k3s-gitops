@@ -1,19 +1,19 @@
 apiVersion: v1
+data:
+    address: ENC[AES256_GCM,data:Fq12sHPRsKUUbzj0VWgzx/dxtugozq/1DFJL47o38YxRNRMG9vQaTLzfIvY8hngOQHGt8oKI42ZPKoTkr8yoSETSdpRk4fV3WKpUvnj2eKp+HxbZiWV2fuQvJvPIAeTsD9iQH+fT5wMsP+nl,iv:v6GvZ12DU7ohcSyd5WjJKgpeLJb7RA49GZReID766zw=,tag:DgjUZJUd5wxn9riGYnJSwA==,type:str]
 kind: Secret
 metadata:
-    name: slack-webhook-url
+    name: slack-url
     namespace: flux-system
-type: Generic
-data:
-    address: ENC[AES256_GCM,data:+kMLMvbm0zreMDBfDs5p8ZL+wN3A8nAZ82PLIf90gunQBm/9iQSyRpm/GLGN4bSo+1J+V73IkPjoUtPCt4t3l3RJ5yqtaoiRtOxqPpmdPWQpb2oqjk3FYsQK0dO0BHwY2uSmGE2gQeJUS7/+,iv:2+KP5vTJoQ6ZlE4CknouuknS13Go/S21IF/lzgyiEY4=,tag:0jwFtwc4tK89+UigQCK3kw==,type:str]
+type: Opaque
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2022-05-15T00:01:02Z"
-    mac: ENC[AES256_GCM,data:2k0e+1O0OIcMh1WNqHLjU+Ck2etkjnEtqvrrFADmKVDn7qDLtP8e7hFcPw1z7LpK6ux+Hv2Mc2vuC4KxbMey7j1Us/46YD6VunMJm4b6h1PmxQl0udE4l/KO8KzcGl14z8qxizDFFPNWA/Pb5CXfyFE1QfWYGrrG7Ep8wXZmSRE=,iv:A5U9+CzS2i6ufsAZqXRPg2tdIPyUcDv2ngvfaFFmDvQ=,tag:fT6660iJ0LDtmiKdWZyj6A==,type:str]
+    lastmodified: "2022-05-15T01:34:17Z"
+    mac: ENC[AES256_GCM,data:+S20KBz14CHhlSzpHPG0arAKQbYzNc/+lbLtibZdPLsGT3M7HSnG38OeCpLHEnuLVaSRqnbVZC56QfDTrwl0aIPGCQX3oyGMs3BGK67poRfBFvWYFu7Jph3YQ6EXVl10Nho8eP5zJ0PAVF0VfM7eDoHXoY5WoqHlxpiHyjYZ7dc=,iv:dO37qdl9vhwQPqBXLJL40Oirmh9y2Sg/Slj/2o1DTBs=,tag:nyGJ/q6h7/lzsofK7xBG6w==,type:str]
     pgp:
         - created_at: "2022-05-14T21:27:48Z"
           enc: |
