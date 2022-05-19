@@ -58,7 +58,7 @@ spec:
   - nfsvers=4
   - port=2049
   nfs:
-    path: /dumpster/media/video
+    path: /dumpster/video
     server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
