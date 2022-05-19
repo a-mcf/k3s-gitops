@@ -73,9 +73,9 @@ spec:
         existingClaim: nfs-nebula-music-pvc
         mountPath: /music
         readOnly: true
-      video:
-        enabled: true
-        existingClaim: nfs-nebula-video-pvc
-        mountPath: /video
-        readOnly: true
+      # video:
+      #   enabled: true
+      #   existingClaim: nfs-nebula-video-pvc
+      #   mountPath: /video
+      #   readOnly: true
 

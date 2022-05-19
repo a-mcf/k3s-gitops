@@ -43,35 +43,35 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-nebula-music-pv
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-nebula-video-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 100Gi    
-  accessModes:
-  - ReadWriteOnce
-  mountOptions:
-  - nfsvers=4
-  - port=2049
-  nfs:
-    path: /dumpster/video
-    server: "${NFS_SERVER_NEBULA}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-nebula-video-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
-  volumeName: nfs-nebula-video-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs-nebula-video-pv
+#   namespace: media
+# spec:
+#   capacity:
+#     storage: 100Gi    
+#   accessModes:
+#   - ReadWriteOnce
+#   mountOptions:
+#   - nfsvers=4
+#   - port=2049
+#   nfs:
+#     path: /dumpster/video
+#     server: "${NFS_SERVER_NEBULA}"
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs-nebula-video-pvc
+#   namespace: media
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi
+#   volumeName: nfs-nebula-video-pv
