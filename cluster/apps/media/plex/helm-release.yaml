@@ -68,18 +68,14 @@ spec:
         enabled: true
         type: emptyDir
         medium: Memory
-      movies:
-        enabled: true
-        existingClaim: nfs-movies-pvc
-        mountPath: /movies
-        readOnly: true
-      tv:
-        enabled: true
-        existingClaim: nfs-tv-pvc
-        mountPath: /tv
-        readOnly: true
       music:
         enabled: true
         existingClaim: nfs-nebula-music-pvc
         mountPath: /music
         readOnly: true
+      video:
+        enabled: true
+        existingClaim: nfs-nebula-video-pvc
+        mountPath: /video
+        readOnly: true
+

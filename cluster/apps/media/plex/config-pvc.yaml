@@ -15,64 +15,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-movies-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 1000Gi    
-  accessModes:
-  - ReadWriteOnce
-  nfs:
-    path: /mnt/dumpster/movies
-    server: "${NFS_SERVER}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-movies-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1000Gi
-  volumeName: nfs-movies-pv
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-tv-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 1000Gi    
-  accessModes:
-  - ReadWriteOnce
-  nfs:
-    path: /mnt/dumpster/tv
-    server: "${NFS_SERVER}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-tv-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1000Gi
-  volumeName: nfs-tv-pv
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
   name: nfs-nebula-music-pv
   namespace: media
 spec:
@@ -101,3 +43,35 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-nebula-music-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-video-pv
+  namespace: media
+spec:
+  capacity:
+    storage: 100Gi    
+  accessModes:
+  - ReadWriteOnce
+  mountOptions:
+  - nfsvers=4
+  - port=2049
+  nfs:
+    path: /dumpster/media/video
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-video-pvc
+  namespace: media
+spec:
+  storageClassName: ""
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeName: nfs-nebula-video-pv
