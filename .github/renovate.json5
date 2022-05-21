@@ -117,6 +117,14 @@
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["patch"],
       "labels": ["renovate/helm", "dep/patch"]
+    },
+    {
+      "description": "Use loose versioning for certain dependencies",
+      "matchDatasources": ["docker", "github-releases"],
+      "versioning": "loose",
+      "matchPackageNames": [
+        "ghcr.io/k8s-at-home/plex"
+      ]
     }
   ]
 }
