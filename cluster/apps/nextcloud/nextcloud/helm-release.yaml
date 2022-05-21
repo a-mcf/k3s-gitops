@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: nextcloud
-      tag: 23.0.4-apache
+      tag: 23.0.5-apache
       #repository: nextcloud
       #tag: 23.0.0-fpm-alpine
     ingress:
