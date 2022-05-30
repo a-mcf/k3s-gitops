@@ -6,17 +6,17 @@ metadata:
   namespace: nextcloud
 spec:
   capacity:
-    storage: 500Gi   
+    storage: 500Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   nfs:
     path: /tank/appdata/nextcloud-data
     server: "${NFS_SERVER_NEBULA}"
   mountOptions:
-  - async
-  - noatime
-  - nfsvers=4
-  - port=2049
+    - async
+    - noatime
+    - nfsvers=4
+    - port=2049
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -27,7 +27,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 500Gi
@@ -40,12 +40,12 @@ metadata:
   namespace: nextcloud
 spec:
   capacity:
-    storage: 10Gi   
+    storage: 10Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/nextcloud-mariadb
     server: "${NFS_SERVER_NEBULA}"
@@ -59,7 +59,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi

@@ -6,12 +6,12 @@ metadata:
   namespace: default
 spec:
   capacity:
-    storage: 50Gi    
+    storage: 50Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/paperless-data
     server: "${NFS_SERVER_NEBULA}"
@@ -25,7 +25,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 50Gi
@@ -38,12 +38,12 @@ metadata:
   namespace: default
 spec:
   capacity:
-    storage: 50Gi    
+    storage: 50Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/paperless-media
     server: "${NFS_SERVER_NEBULA}"
@@ -57,7 +57,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 50Gi
@@ -70,12 +70,12 @@ metadata:
   namespace: default
 spec:
   capacity:
-    storage: 50Gi    
+    storage: 50Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/paperless-consume
     server: "${NFS_SERVER_NEBULA}"
@@ -89,7 +89,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 50Gi
@@ -102,12 +102,12 @@ metadata:
   namespace: default
 spec:
   capacity:
-    storage: 50Gi   
+    storage: 50Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/paperless-export
     server: "${NFS_SERVER_NEBULA}"
@@ -122,7 +122,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 128Mi

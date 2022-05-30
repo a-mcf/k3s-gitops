@@ -9,12 +9,12 @@ metadata:
 spec:
   storageClassName: "standard"
   capacity:
-    storage: 10Gi  
+    storage: 10Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/appdata/prometheus
     server: ${NFS_SERVER_NEBULA}
@@ -28,7 +28,7 @@ metadata:
 spec:
   storageClassName: "standard"
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi

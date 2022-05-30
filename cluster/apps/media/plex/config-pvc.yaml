@@ -19,12 +19,12 @@ metadata:
   namespace: media
 spec:
   capacity:
-    storage: 100Gi    
+    storage: 100Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /tank/user_files/shared/music
     server: "${NFS_SERVER_NEBULA}"
@@ -38,7 +38,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi
@@ -51,12 +51,12 @@ metadata:
   namespace: media
 spec:
   capacity:
-    storage: 100Gi    
+    storage: 100Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   mountOptions:
-  - nfsvers=4
-  - port=2049
+    - nfsvers=4
+    - port=2049
   nfs:
     path: /dumpster/video
     server: "${NFS_SERVER_NEBULA}"
@@ -70,7 +70,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi

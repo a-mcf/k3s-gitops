@@ -28,4 +28,3 @@ spec:
       annotations:
         kubernetes.io/ingress.class: "nginx"
       host: "longhorn.${SECRET_DOMAIN}"
-    

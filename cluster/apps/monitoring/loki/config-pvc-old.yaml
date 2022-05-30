@@ -6,9 +6,9 @@ metadata:
   namespace: monitoring
 spec:
   capacity:
-    storage: 30Gi    
+    storage: 30Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   nfs:
     path: /tank/appdata/loki
     server: "${NFS_SERVER}"
@@ -22,7 +22,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 30Gi
