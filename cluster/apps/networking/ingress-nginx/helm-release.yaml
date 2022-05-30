@@ -39,6 +39,8 @@ spec:
           cpu: 100m
         limits:
           memory: 500Mi
+      # add sidecar for slack nebula to allow
+      # remote access
       extraContainers:
         - name: nebula
           image: buildsociety/nebula:v1.2.0
@@ -53,7 +55,7 @@ spec:
             - mountPath: /dev/net/tun
               name: devnet
           args: ["-config", "/config/config.yaml" ] 
-      volumes:
+      extraVolumes:
         - name: nebula-conf
           secret:
             secretName: nebula-conf
