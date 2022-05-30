@@ -39,3 +39,27 @@ spec:
           cpu: 100m
         limits:
           memory: 500Mi
+      extraContainers:
+        - name: nebula
+          image: buildsociety/nebula:v1.2.0
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config/config.yaml
+              readOnly: true
+              name: nebula-conf
+            - mountPath: /dev/net/tun
+              name: devnet
+          args: ["-config", "/config/config.yaml" ] 
+      volumes:
+        - name: nebula-conf
+          secret:
+            secretName: nebula-conf
+            items:
+              - key: nebula.conf
+                path: config.yaml
+        - name: devnet
+          hostPath:
+            path: /dev/net/tun
