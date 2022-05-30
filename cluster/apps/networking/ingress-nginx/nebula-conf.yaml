@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: nebula-conf
+    namespace: networking
 stringData:
     nebula.conf: ENC[AES256_GCM,data:HTIjyUSQu7ceMxGEPTUG+cBoaWdGHRRinlb1Jj75zEnjUfUnQChCeRCaWR3G/VL49z15fLSi5PB9TEtVg8T+2OH3iP1WvabfdznUEYUjmF+7avvunFCfj5FvDdT5iHwPBNjITmqYon9Y7vw7mXRem7eydpUrN+mFLq1G6fWpjaPHHwBPl/mLDsJKbFfhAiFI3eUs3T1krxBu6TQ5sEf6SjSvaaniisqyi7cs7pAd3ItM9NeUKoo3KxTbFV5MuCBh4BXkq05M0VQpnITXpCR5pY2t+Mi6m5cIIUlT9/35TeZ50N/NHOHSzswNv3BQoRmeJS+t1LQE8I0MCbheDgDtAuatULf/EbAd1v+JF+CnUlpQE5ErWfa+ZevtDmc5K9oTbLxWcBI/5PDaFHmkINPZo0czb6NDF9QlJA6cs32YF4t4uUfUWHGs2+v7XoHOJJOdnI4g4w+Gor7cUOZozywUiN1jI5iXBc0eSzLn35A6AsELyVD9jkkZmBdg274CG8utoEngXM2Rcs2lrDcEHicU84IwlXGNKVdQJgApFz+KT0bp6VI6bXIvKjo4xhEqQcAdhK5PHJKMqDRJs5igycXgShQIkshQlaNI5ujVSLF1haHAlGnsoK9YmVkOhjn4c5gLEg==,iv:EuOa6ddGuJWojyIyF/CWA9Z27oGbsZEUolrUJpUkjPQ=,tag:w8hh9G9j2yhhlfxxCQOZ6Q==,type:str]
 sops:
@@ -10,8 +11,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2022-05-30T19:15:22Z"
-    mac: ENC[AES256_GCM,data:N+Ztfo7+YP/BIOB4iZNY6eCEBvpEevZ1BatiZaFKz7PqdLvqhxuPPSGyxJrsbFmEMJwcZyal/EJpLViWFo0bRA+U8rckIBa1ChOvsY9wrc7D9XG1MFKCArldl684qeqykpOZqqU5lyvqSixyn9n0j1zYDD0K5b2X1icZOJi2Ii0=,iv:uO6XnLrfNYMjOEgLoXFSbCnjasW7cZwCxeBkBheFS2A=,tag:ZHIm2dBgwCE8uimx5P8SqQ==,type:str]
+    lastmodified: "2022-05-30T19:28:18Z"
+    mac: ENC[AES256_GCM,data:NR4wXbj4Dr+boPLeoxucHybjS3XrG/cKjHtx23jUTKKqHQ9NRWvwd+h11Jv7xsaApIOpS+HvH0+0STiFvfVsn4+LEDOgUQRnF03535uDjDTGlTGODxtX1ZApRC6QljsQ8w2eVr9wf01TU7xbVzs2TiOhzBCdqCLwZM/vYJr2wDo=,iv:eaZNq/il+fqC9mC/BMn4YfnOc6JUaCKnIbsbbAS+rY8=,tag:t5uLZsLGcFDvu4l2KxLbnA==,type:str]
     pgp:
         - created_at: "2022-05-30T19:12:36Z"
           enc: |
