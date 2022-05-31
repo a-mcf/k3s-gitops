@@ -43,7 +43,7 @@ spec:
       # remote access
       extraContainers:
         - name: nebula
-          image: buildsociety/nebula:v1.2.0
+          image: buildsociety/nebula:v1.5.2
           securityContext:
             capabilities:
               add:
