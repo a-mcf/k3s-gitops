@@ -50,7 +50,7 @@ spec:
               add:
                 - NET_ADMIN
           volumeMounts:
-            - mountPath: /config/config.yaml
+            - mountPath: /config
               readOnly: true
               name: nebula-conf
             - mountPath: /dev/net/tun
