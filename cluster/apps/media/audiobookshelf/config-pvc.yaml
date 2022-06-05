@@ -55,4 +55,4 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-music-pv
+  volumeName: nfs-nebula-audiobooks-pv
