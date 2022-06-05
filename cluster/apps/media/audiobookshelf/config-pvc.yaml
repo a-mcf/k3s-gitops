@@ -86,7 +86,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1i
+      storage: 1Gi
   volumeName: nfs-nebula-audiobookshelf-backups-pv
-
-#
