@@ -28,11 +28,11 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-music-pv
+  name: nfs-nebula-audiobooks-pv
   namespace: media
 spec:
   capacity:
-    storage: 100Gi
+    storage: 1000Gi
   accessModes:
     - ReadWriteOnce
   mountOptions:
@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-music-pvc
+  name: nfs-nebula-audiobooks-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -54,5 +54,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: 1000Gi
   volumeName: nfs-nebula-music-pv
