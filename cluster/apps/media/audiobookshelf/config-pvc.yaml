@@ -60,11 +60,11 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-audiobookshelf-backup-pv
+  name: nfs-nebula-audiobookshelf-backups-pv
   namespace: media
 spec:
   capacity:
-    storage: 1000Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   mountOptions:
@@ -78,7 +78,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-audiobookshelf-backup-pvc
+  name: nfs-nebula-audiobookshelf-backups-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -86,7 +86,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1000Gi
-  volumeName: nfs-nebula-audiobookshelf-pv
+      storage: 1i
+  volumeName: nfs-nebula-audiobookshelf-backups-pv
 
 #
