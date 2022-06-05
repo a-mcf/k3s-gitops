@@ -56,3 +56,37 @@ spec:
     requests:
       storage: 1000Gi
   volumeName: nfs-nebula-audiobooks-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-audiobookshelf-backup-pv
+  namespace: media
+spec:
+  capacity:
+    storage: 1000Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/backups/apps/audiobookshelf
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-audiobookshelf-backup-pvc
+  namespace: media
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  volumeName: nfs-nebula-audiobookshelf-pv
+
+#
