@@ -1,0 +1,55 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: audiobookshelf
+  namespace: media
+spec:
+  releaseName: audiobookshelf
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: audiobookshelf
+      version: 1.1.3
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/advplyr/audiobookshelf
+      tag: 2.0.19
+    env:
+      TZ: "America/New_York"
+      AUDIOBOOKSHELF_UID: 2316
+      AUDIOBOOKSHELF_GID: 2316
+    ingress:
+      main:
+        primary: true
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+          - host: "audiobookshelf.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "audiobookshelf.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: longhorn-audiobookshelf-config-pvc
+        mountpath: /config
+      metadata:
+        enabled: true
+        existingClaim: longhorn-audiobookshelf-metadata-pvc
+        mountpath: /metadata
+      audiobooks:
+        enabled: true
+        existingClaim: nfs-nebula-audiobooks-pvc
+        mountPath: /audiobooks
+        readOnly: true
