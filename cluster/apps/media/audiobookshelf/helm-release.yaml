@@ -56,5 +56,5 @@ spec:
       backups:
         enabled: true
         existingClaim: nfs-nebula-audiobookshelf-backups-pvc
-        mountPath: /backups
+        mountPath: /metadata/backups
         readOnly: true
