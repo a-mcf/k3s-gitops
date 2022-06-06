@@ -19,7 +19,7 @@ spec:
     persistence:
       defaultClass: true
     defaultSettings:
-      #backupTarget: ~
+      backupTarget: nfs://192.168.09.10:/dumpster/backups/apps/longhorn
       defaultDataPath: /var/lib/longhorn_data
       defaultReplicaCount: 2
       storageMinimalAvailablePercentage: 10
