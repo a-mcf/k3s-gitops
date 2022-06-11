@@ -30,3 +30,16 @@ spec:
     requests:
       storage: 30Gi
   volumeName: nfs-nebula-loki-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-loki-pvc
+  namespace: monitoring
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn

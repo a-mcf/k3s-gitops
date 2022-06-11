@@ -18,7 +18,7 @@ spec:
       interval: 5m
   values:
     ingress:
-      enabled: true
+      enabled: false
       annotations:
         kubernetes.io/ingress.class: "nginx"
       hosts:
@@ -96,7 +96,10 @@ spec:
 
     persistence:
       enabled: true
-      existingClaim: nfs-nebula-loki-pvc
+      accessModes:
+        - ReadWriteOnce
+      size: 20Gi
+      existingClaim: longhorn-loki-pvc #nfs-nebula-loki-pvc
     securityContext:
       fsGroup: 2316
       runAsGroup: 2316
