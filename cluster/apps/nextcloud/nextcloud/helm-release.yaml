@@ -26,6 +26,13 @@ spec:
       annotations:
         kubernetes.io/ingress.class: "nginx"
         nginx.ingress.kubernetes.io/proxy-body-size: 4G
+        # nginx.ingress.kubernetes.io/server-snippet: |-
+        #   location = /.well-known/carddav {
+        #       return 301 https://$host/remote.php/dav;
+        #   }
+        #   location = /.well-known/caldav {
+        #       return 301 https://$host/remote.php/dav;
+        #   }
       hosts:
         - host: "nextcloud.${SECRET_DOMAIN}"
           paths:
