@@ -10,37 +10,37 @@ spec:
     spec:
       # renovate: registryUrl=https://grafana.github.io/helm-charts
       chart: promtail
-      version: 4.2.1
+      version: 5.1.0
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
       interval: 5m
   values:
-    config:
-      lokiAddress: http://loki:3100/loki/api/v1/push
-      snippets:
-        extraScrapeConfigs: |
-          - job_name: syslog
-            syslog:
-              listen_address: 0.0.0.0:1514
-              label_structured_data: true
-              labels:
-                job: "syslog"
-            relabel_configs:
-            - source_labels: ['__syslog_message_hostname']
+    clients:
+      - url: http://loki:3100/loki/api/v1/push
+    snippets:
+      extraScrapeConfigs: |
+        - job_name: syslog
+          syslog:
+            listen_address: 0.0.0.0:1514
+            label_structured_data: true
+            labels:
+              job: "syslog"
+          relabel_configs:
+          - source_labels: ['__syslog_message_hostname']
+            target_label: 'hostname'
+        - job_name: journal
+          journal:
+            path: /var/log/journal
+            max_age: 12h
+            labels:
+              job: systemd-journal
+          relabel_configs:
+            - source_labels: ['__journal__systemd_unit']
+              target_label: 'unit'
+            - source_labels: ['__journal__hostname']
               target_label: 'hostname'
-          - job_name: journal
-            journal:
-              path: /var/log/journal
-              max_age: 12h
-              labels:
-                job: systemd-journal
-            relabel_configs:
-              - source_labels: ['__journal__systemd_unit']
-                target_label: 'unit'
-              - source_labels: ['__journal__hostname']
-                target_label: 'hostname'
     extraPorts:
       syslog:
         name: syslog
