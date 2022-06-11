@@ -26,10 +26,11 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
-        # this isn't working
+        # this isn't working, gets a 503
         # https://www.howtogeek.com/devops/how-to-add-http-basic-authentication-to-a-kubernetes-nginx-ingress/
-        nginx.ingress.kubernetes.io/auth-type: basic-auth
-        nginx.ingress.kubernetes.io/ssl-redirect: false
-        nginx.ingress.kubernetes.io/auth-secret: longhorn-basic
-        nginx.ingress.kubernetes.io/auth-realm: Authentication Required
+        # https://longhorn.io/docs/1.2.4/deploy/accessing-the-ui/longhorn-ingress/
+        # nginx.ingress.kubernetes.io/auth-type: basic-auth
+        # nginx.ingress.kubernetes.io/ssl-redirect: false
+        # nginx.ingress.kubernetes.io/auth-secret: longhorn-basic
+        # nginx.ingress.kubernetes.io/auth-realm: Authentication Required
       host: "longhorn.${SECRET_DOMAIN}"
