@@ -20,9 +20,12 @@ spec:
       repository: b4bz/homer
       tag: 22.02.2
       pullPolicy: IfNotPresent
-    env:
-      UID: 2316
-      GID: 2316
+    podSecurityContext:
+      runAsUser: 2316
+      runAsGroup: 2316
+      runAsNonRoot: true
+      fsGroup: 2316
+      fsGroupChangePolicy: OnRootMismatch
     ingress:
       main:
         primary: true
