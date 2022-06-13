@@ -75,3 +75,35 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-nebula-video-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-plex-audiobooks-pv
+  namespace: media
+spec:
+  capacity:
+    storage: 1000Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/audiobooks
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-plex-audiobooks-pvc
+  namespace: media
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000Gi
+  volumeName: nfs-nebula-plex-audiobooks-pv
