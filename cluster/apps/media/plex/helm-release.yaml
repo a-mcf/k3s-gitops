@@ -81,5 +81,5 @@ spec:
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-plex-audiobooks-pvc
-        mountPath: /audibooks
+        mountPath: /audiobooks
         readOnly: true
