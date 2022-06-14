@@ -32,7 +32,7 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
-  name: fluxcd-slack-alert
+  name: fluxcd-slack-alert-error-only
   namespace: flux-system
 spec:
   providerRef:
