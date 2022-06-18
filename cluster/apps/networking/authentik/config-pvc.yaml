@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: authentik-postgresql-pvc
-  namespace: security
+  namespace: networking
 spec:
   accessModes:
     - ReadWriteOnce
