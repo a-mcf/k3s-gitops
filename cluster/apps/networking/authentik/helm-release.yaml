@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.goauthentik.io
       chart: authentik
-      version: 4.0.3
+      version: 2022.6.1
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/goauthentik/server
-      tag: 2022.5.2
+      tag: 2022.6.2
 
     ingress:
       enabled: true
@@ -38,7 +38,7 @@ spec:
     geoip:
       enabled: false
     authentik:
-      email:
+      #email:
       #   host: smtp.mailgun.com
       #   port: 465
       #   username: ${SECRET_MAILGUN_USERNAME}
@@ -55,7 +55,7 @@ spec:
         # host: authentik-postgresql
         # name: authentik
         # user: authentik
-        password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+        password: ${SECRET_AUTHENTIK_SECRET_KEY}
       redis:
         # host: authentik-redis-master
         password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
