@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
   values:
     persistence:
-      defaultClass: true
+      defaultClass: false
     defaultSettings:
       backupTarget: nfs://192.168.09.10:/dumpster/backups/apps/longhorn
       defaultDataPath: /var/lib/longhorn_data
