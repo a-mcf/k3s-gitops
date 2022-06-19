@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - ingress-longhorn-authentik.yaml
-  #- basic-auth-secret.sops.yaml
+
