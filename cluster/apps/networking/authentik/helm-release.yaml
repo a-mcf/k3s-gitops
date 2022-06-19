@@ -38,18 +38,15 @@ spec:
     geoip:
       enabled: false
     authentik:
-      #email:
-      #   host: smtp.mailgun.com
-      #   port: 465
-      #   username: ${SECRET_MAILGUN_USERNAME}
-      #   password: ${SECRET_MAILGUN_PASSWORD}
-      #   use_ssl: true
-      #   from: id@${SECRET_DOMAIN}
+      email:
+        # host: smtp.mailgun.com
+        # port: 465
+        # username: ${SECRET_MAILGUN_USERNAME}
+        # password: ${SECRET_MAILGUN_PASSWORD}
+        # use_ssl: true
+        # from: authentik@${SECRET_DOMAIN}
       secret_key: ${SECRET_AUTHENTIK_SECRET_KEY}
       log_level: debug
-
-      # outposts:
-      #   docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
 
       postgresql:
         # host: authentik-postgresql
