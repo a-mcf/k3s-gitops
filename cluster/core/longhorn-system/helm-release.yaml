@@ -23,7 +23,7 @@ spec:
       defaultReplicaCount: 2
       storageMinimalAvailablePercentage: 10
     ingress:
-      enabled: false
+      enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
         # Basic Auth - this isn't working, gets a 503
