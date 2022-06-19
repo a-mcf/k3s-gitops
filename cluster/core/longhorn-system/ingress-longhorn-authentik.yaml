@@ -8,11 +8,13 @@ spec:
     - host: "longhorn.${SECRET_DOMAIN}"
       http:
         paths:
-          - backend:
+          - path: /outpost.goauthentik.io
+            pathType: Prefix
+            backend:
               # Or, to use an external Outpost, create an ExternalName service and reference that here.
               # See https://kubernetes.io/docs/concepts/services-networking/service/#externalname
               service:
                 name: ak-outpost-authentik-embedded-outpost.networking.svc.cluster.local
                 port:
                   number: 80
-            path: /outpost.goauthentik.io
+            
