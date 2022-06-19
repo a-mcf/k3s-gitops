@@ -11,8 +11,10 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: authentik-outpost
-    namespace: longhorn-system
+  name: authentik-outpost
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  namespace: longhorn-system
 spec:
   rules:
     - host: "longhorn.${SECRET_DOMAIN}"
