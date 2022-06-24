@@ -26,6 +26,7 @@ spec:
       TZ: "America/New York"
       PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
       PHOTOPRISM_DISABLE_CHOWN: "true"
+      ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
     ingress:
       main:
         primary: true
