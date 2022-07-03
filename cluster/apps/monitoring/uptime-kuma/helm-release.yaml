@@ -28,15 +28,12 @@ spec:
       TZ: "America/New_York"
       UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: 0
 
-<<<<<<< HEAD
-=======
     service:
       main:
         ports:
           http:
             port: 3001
 
->>>>>>> f14b6cc... feat: add uptime-kuma
     ingress:
       main:
         primary: true
@@ -51,6 +48,7 @@ spec:
         tls:
           - hosts:
               - "uptime.${SECRET_DOMAIN}"
+
     persistence:
       config:
         enabled: true
