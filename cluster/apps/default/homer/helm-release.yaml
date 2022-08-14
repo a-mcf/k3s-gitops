@@ -27,7 +27,7 @@ spec:
       runAsGroup: 2316
       runAsNonRoot: true
       #fsGroup: 2316
-      fsGroupChangePolicy: OnRootMismatch
+      #fsGroupChangePolicy: OnRootMismatch
     ingress:
       main:
         primary: true
