@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: homer
-      version: 7.2.2
+      version: 8.0.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -20,14 +20,10 @@ spec:
       repository: b4bz/homer
       tag: v22.07.2
       pullPolicy: IfNotPresent
-    #env:
-      #INIT_ASSETS: 0
     securityContext:
       runAsUser: 2316
       runAsGroup: 2316
       runAsNonRoot: true
-      #fsGroup: 2316
-      #fsGroupChangePolicy: OnRootMismatch
     ingress:
       main:
         primary: true
