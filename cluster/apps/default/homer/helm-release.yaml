@@ -22,7 +22,7 @@ spec:
       pullPolicy: IfNotPresent
     env:
       INIT_ASSETS: 0
-    podSecurityContext:
+    securityContext:
       runAsUser: 2316
       runAsGroup: 2316
       runAsNonRoot: true
