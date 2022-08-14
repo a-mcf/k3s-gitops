@@ -20,8 +20,8 @@ spec:
       repository: b4bz/homer
       tag: v22.07.2
       pullPolicy: IfNotPresent
-    env:
-      INIT_ASSETS: 0
+    #env:
+      #INIT_ASSETS: 0
     securityContext:
       runAsUser: 2316
       runAsGroup: 2316
