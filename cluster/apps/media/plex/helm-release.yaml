@@ -25,12 +25,12 @@ spec:
       TZ: "America/New_York"
       PLEX_CLAIM: ${PLEX_CLAIM}
       ADVERTISE_IP: ${PLEX_ADVERTISE_IP}
-    podSecurityContext:
+    securityContext:
       runAsUser: 2316
       runAsGroup: 2316
       runAsNonRoot: true
-      fsGroup: 2316
-      fsGroupChangePolicy: OnRootMismatch
+      #fsGroup: 2316
+      #fsGroupChangePolicy: OnRootMismatch
 
       #supplementalGroups:
       #- 44
