@@ -132,11 +132,13 @@ spec:
     #     storageClass: ceph-block
     singleBinary:
       persistence:
-        enabled: true
-        accessModes:
-          - ReadWriteOnce
-        size: 30Gi
-        existingClaim: nfs-nebula-loki-pvc
+        size: 10Gi
+        storageClass: longhorn
+        # enabled: true
+        # accessModes:
+        #   - ReadWriteOnce
+        # size: 30Gi
+        # existingClaim: nfs-nebula-loki-pvc
     #   securityContext:
     #     fsGroup: 2316
     #     runAsGroup: 2316
