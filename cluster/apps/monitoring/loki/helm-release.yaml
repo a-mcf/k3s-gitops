@@ -104,6 +104,26 @@ spec:
     # #         annotations:
     # #           summary: "SMART has reported failures on host {{ $labels.hostname }}"
 
+    # attempt to fix this:
+    # https://github.com/grafana/loki/issues/7047
+    monitoring:
+      dashboards:
+        # -- If enabled, create configmap with dashboards for monitoring Loki
+        enabled: true
+      rules:
+        # -- If enabled, create PrometheusRule resource with Loki recording rules
+        enabled: true
+      alerts:
+        # -- If enabled, create PrometheusRule resource with Loki alerting rules
+        enabled: true
+      serviceMonitor:
+        # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
+        enabled: true
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+
     persistence:
       enabled: true
       accessModes:
