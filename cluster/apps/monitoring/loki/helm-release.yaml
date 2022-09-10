@@ -139,6 +139,12 @@ spec:
         #   - ReadWriteOnce
         # size: 30Gi
         # existingClaim: nfs-nebula-loki-pvc
+      extraVolumes:
+        - name: rules
+          emptyDir: {}
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules
     #   securityContext:
     #     fsGroup: 2316
     #     runAsGroup: 2316
