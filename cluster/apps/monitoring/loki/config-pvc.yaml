@@ -5,7 +5,7 @@ metadata:
   name: nfs-nebula-loki-pv
   namespace: monitoring
 spec:
-  storageClassName: "nfs"
+  storageClassName: "hack"
   capacity:
     storage: 30Gi
   accessModes:
@@ -24,7 +24,7 @@ metadata:
   name: storage-loki-0 # nfs-nebula-loki-pvc
   namespace: monitoring
 spec:
-  storageClassName: "nfs"
+  storageClassName: "hack"
   accessModes:
     - ReadWriteOnce
   resources:

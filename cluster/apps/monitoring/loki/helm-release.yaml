@@ -133,7 +133,7 @@ spec:
     singleBinary:
       persistence:
         size: 30Gi
-        storageClass: nfs
+        storageClass: hack
         # enabled: true
         # accessModes:
         #   - ReadWriteOnce
