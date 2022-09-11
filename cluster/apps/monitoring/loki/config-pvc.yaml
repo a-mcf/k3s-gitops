@@ -5,6 +5,7 @@ metadata:
   name: nfs-nebula-loki-pv
   namespace: monitoring
 spec:
+  storageClassName: "nfs"
   capacity:
     storage: 30Gi
   accessModes:
@@ -20,10 +21,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-loki-pvc
+  name: storage-loki-0 # nfs-nebula-loki-pvc
   namespace: monitoring
 spec:
-  storageClassName: ""
+  storageClassName: "nfs"
   accessModes:
     - ReadWriteOnce
   resources:
