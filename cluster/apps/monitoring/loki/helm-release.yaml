@@ -22,7 +22,7 @@ spec:
         fsGroup: 2316
         runAsGroup: 2316
         runAsNonRoot: true
-      #   runAsUser: 2316
+        runAsUser: 2316
       commonConfig:
         replication_factor: 1
       storage:
