@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - dashboard
   - config-pvc.yaml
-  #- helm-release.yaml
+  - helm-release.yaml
   - prometheus-rule.yaml
