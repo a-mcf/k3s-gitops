@@ -90,15 +90,43 @@ spec:
                 store: memberlist
         analytics:
           reporting_enabled: false
+#     gateway:
+#       enabled: true
+#       replicas: 1
+#       ingress:
+#         enabled: true
+#         ingressClassName: "nginx"
+#         hosts:
+#           - host: &host "loki.${SECRET_DOMAIN}"
+#             paths:
+#               - path: /
+#                 pathType: Prefix
+#         tls:
+#           - hosts:
+#               - *host
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
+      paths:
+        # -- https://github.com/grafana/loki/issues/7080
+        write: []
+        read: []
+        headless:
+          - /api/prom/push
+          - /loki/api/v1/push
+          - /api/prom/tail
+          - /loki/api/v1/tail
+          - /loki/api
+          - /api/prom/rules
+          - /loki/api/v1/rules
+          - /prometheus/api/v1/rules
+          - /prometheus/api/v1/alerts
       hosts:
-        - "loki.${SECRET_DOMAIN}"
+        - &host "loki.${SECRET_DOMAIN}"
       tls:
         - hosts:
-            - "loki.${SECRET_DOMAIN}"
+            - *host
     singleBinary:
       persistence:
         size: 30Gi
