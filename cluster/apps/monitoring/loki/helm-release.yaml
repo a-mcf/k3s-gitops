@@ -90,20 +90,6 @@ spec:
                 store: memberlist
         analytics:
           reporting_enabled: false
-#     gateway:
-#       enabled: true
-#       replicas: 1
-#       ingress:
-#         enabled: true
-#         ingressClassName: "nginx"
-#         hosts:
-#           - host: &host "loki.${SECRET_DOMAIN}"
-#             paths:
-#               - path: /
-#                 pathType: Prefix
-#         tls:
-#           - hosts:
-#               - *host
     ingress:
       enabled: true
       annotations:
