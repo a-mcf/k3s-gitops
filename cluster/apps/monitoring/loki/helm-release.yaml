@@ -137,14 +137,16 @@ spec:
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
-    test:
-      # -- revisit later, requries self monitioring.
-      enabled: false
     monitoring:
-      selfMonitoring:
-        # -- revisit this later, it requires crds
+      serviceMonitor:
         enabled: false
-        lokiCanary:
+        metricsInstance:
           enabled: false
+      selfMonitoring:
+        enabled: false
         grafanaAgent:
           installOperator: false
+        lokiCanary:
+          enabled: false
+    test:
+      enabled: false
