@@ -139,6 +139,9 @@ spec:
           mountPath: /rules
     monitoring:
       selfMonitoring:
-        enabled: true
+        # -- revisit this later, it requires crds
+        enabled: false
+        lokiCanary:
+          enabled: false
         grafanaAgent:
-          installOperator: true
+          installOperator: false
