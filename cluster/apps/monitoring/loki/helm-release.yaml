@@ -139,6 +139,6 @@ spec:
           mountPath: /rules
     monitoring:
       selfMonitoring:
-        enabled: false
+        enabled: true
         grafanaAgent:
-          installOperator: false
+          installOperator: true
