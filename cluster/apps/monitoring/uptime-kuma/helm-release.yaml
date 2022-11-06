@@ -19,7 +19,7 @@ spec:
 
     image:
       repository: louislam/uptime-kuma
-      tag: 1.18.0
+      tag: 1.18.5
       pullPolicy: IfNotPresent
 
     # -- environment variables. See [application docs](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables) for more details.
