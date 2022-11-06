@@ -137,6 +137,9 @@ spec:
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
+    test:
+      # -- revisit later, requries self monitioring.
+      enabled: false
     monitoring:
       selfMonitoring:
         # -- revisit this later, it requires crds
