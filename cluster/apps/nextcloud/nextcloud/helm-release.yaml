@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://nextcloud.github.io/helm/
       chart: nextcloud
-      version: 3.2.0 # this version needs to be pinned until flux supports helm 3.71+ -- https://github.com/a-mcf/k3s-gitops/issues/116
+      version: 3.3.4 # this version needs to be pinned until flux supports helm 3.71+ -- https://github.com/a-mcf/k3s-gitops/issues/116
       sourceRef:
         kind: HelmRepository
         name: nextcloud
@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: nextcloud
-      tag: 24.0.6-apache
+      tag: 25.0.2-apache
       #repository: nextcloud
       #tag: 23.0.0-fpm-alpine
     ingress:
