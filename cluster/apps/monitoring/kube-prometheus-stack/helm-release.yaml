@@ -246,3 +246,5 @@ spec:
           runAsNonRoot: true
           runAsUser: 2316
           fsGroup: 2316
+      admissionWebhooks:
+        timeoutSeconds: 30
