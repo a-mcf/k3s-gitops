@@ -171,10 +171,10 @@ spec:
       enabled: true
       endpoints:
         - 172.16.1.50
-      service:
-        enabled: true
-        port: 10257
-        targetPort: 10257
+      # service:
+      #   enabled: true
+      #   port: 10257
+      #   targetPort: 10257
     kubeScheduler:
       enabled: true
       endpoints:
@@ -187,10 +187,10 @@ spec:
       enabled: true
       endpoints:
         - 172.16.1.50
-      service:
-        enabled: true
-        port: 10249
-        targetPort: 10249
+      # service:
+      #   enabled: true
+      #   port: 10249
+      #   targetPort: 10249
     kubeEtcd:
       enabled: false # turn this off until I get a chance to try a multi-master cluster.
       # endpoints:
