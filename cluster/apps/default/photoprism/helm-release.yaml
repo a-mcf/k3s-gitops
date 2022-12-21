@@ -19,8 +19,10 @@ spec:
     image:
       repository: photoprism/photoprism
       pullPolicy: IfNotPresent
-      tag: "221102-jammy"
+      tag: "220901-bullseye"
     env:
+      # these need to be reworked
+      # https://github.com/photoprism/photoprism/discussions/2799
       UID: 2317
       GID: 2316
       TZ: "America/New York"
