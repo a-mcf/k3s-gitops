@@ -19,7 +19,7 @@ spec:
     image:
       repository: photoprism/photoprism
       pullPolicy: IfNotPresent
-      tag: "20220121"
+      tag: "221102-jammy"
     env:
       UID: 2317
       GID: 2316
