@@ -75,4 +75,4 @@ spec:
       master:
         persistence:
           enabled: true
-          existingClaim: authentik-redis-pvc
+          existingClaim: authentik-redis-master-pvc
