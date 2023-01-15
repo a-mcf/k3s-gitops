@@ -12,3 +12,4 @@ resources:
   - longhorn-charts.yaml
   - authentik-charts.yaml
   - metallb-charts.yaml
+  - external-secrets.yaml
