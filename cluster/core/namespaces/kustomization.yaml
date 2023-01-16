@@ -9,4 +9,4 @@ resources:
   - nextcloud.yaml
   - monitoring.yaml
   - longhorn-system.yaml
-  - external-secrets
+  - external-secrets.yaml
