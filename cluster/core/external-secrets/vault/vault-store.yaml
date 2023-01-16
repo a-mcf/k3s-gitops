@@ -9,6 +9,10 @@ spec:
       server: ${VAULT_ADDR}
       path: "secret"
       version: "v2"
+      caProvider:
+        type: "Secret"
+        name: vault-connect
+        key: ca-bundle
       auth:
         # points to a secret that contains a vault token
         # https://www.vaultproject.io/docs/auth/token
