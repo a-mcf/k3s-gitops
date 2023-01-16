@@ -13,5 +13,6 @@ spec:
         # points to a secret that contains a vault token
         # https://www.vaultproject.io/docs/auth/token
         tokenSecretRef:
+          namespace: external-secrets
           name: "vault-token"
           key: "token"
