@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: vault-token
+    namespace: external-secrets
 stringData:
     token: ENC[AES256_GCM,data:JlauRsOkT62epHnxyAUezlTMQEP8b7BE1eESuw==,iv:TzxdEfCccgDdSt3gg476bFuyJ4UG9CgHwoT0gSohl5A=,tag:QnI0L9ojb87GiJ5lAE1k0Q==,type:str]
 sops:
@@ -11,8 +12,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2023-01-16T20:27:34Z"
-    mac: ENC[AES256_GCM,data:uHq9+ocRsPHGvJ4Qqpz5cM1thv2aRJlcgIsC2woXrtnN+cNp40b1cifBHCcrH4Wlo06LlpUEr1/SWIrl+tdLGAy18PcABkoyGdfPcI9YM8dEVF+XW7t9+Zj9N9f29hdxVAbf1766a3LlLJp18r4XWYMniflkK7hxzRN7Bq0rxgs=,iv:hq6J2pmJ78jajdIBGGHGMSMahnvLLZ82UJY4eLNqwiw=,tag:ahv+yYs8uE6h50Z1qln68w==,type:str]
+    lastmodified: "2023-01-16T21:27:22Z"
+    mac: ENC[AES256_GCM,data:fV+4wS9LPFzbLsoi4j0oACAGooT7F7GCwjNi7BU2F2+YIhXCJbId9z60b8TUGZ8qkp01sX74sJyZolK3Gp24Axky4C+d1RKARjSnKTcjfKe/YCNyTwRDKn+hWqmGwYG2tyerx53S3HeSPWTcC3iWHx1HMk+IaUarrF43YQSlAJI=,iv:dgPmPuSq6FrZgGyqW3SaLfSnwnjvrsOSfkYx7r37YHM=,tag:uWuiP3hPHMRx9Tj/aMtgAQ==,type:str]
     pgp:
         - created_at: "2023-01-16T19:57:57Z"
           enc: |
