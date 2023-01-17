@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - vault-secret-store.yaml
   - vault-connect.sops.yaml
+  - demo-secret.yaml
