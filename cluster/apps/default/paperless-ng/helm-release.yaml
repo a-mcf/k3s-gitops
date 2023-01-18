@@ -74,3 +74,8 @@ spec:
         enabled: true
         password: "${SECRET_PAPERLESS_REDIS_PASSWORD}"
         usePasswordFiles: false
+      master:
+        persistence:
+          enabled: true
+          storageClass: longhorn
+          size: 8Gi
