@@ -76,6 +76,6 @@ spec:
         usePasswordFiles: false
       master:
         persistence:
-          enabled: true
-          storageClass: longhorn
-          size: 8Gi
+          enabled: false
+          # storageClass: longhorn
+          # size: 8Gi
