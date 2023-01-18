@@ -6,5 +6,5 @@ resources:
   - default
   - media
   - home
-  #- nextcloud
   - monitoring
+  - paperless

@@ -10,3 +10,4 @@ resources:
   - monitoring.yaml
   - longhorn-system.yaml
   - external-secrets.yaml
+  - paperless.yaml
