@@ -127,3 +127,16 @@ spec:
     requests:
       storage: 128Mi
   volumeName: nfs-nebula-paperless-export-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-redis-master-pvc
+  namespace: networking
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: longhorn
