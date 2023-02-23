@@ -42,6 +42,11 @@ Get helm history:
 ```
 helm history <release_name>
 ```
+Unstick a helm release reporting >another operation (install/upgrade/rollback) is in progress>
+```
+kubectl get secret -A | grep <app-name> # find the helm secret with the latest version
+kubectl delete secret <secret> -n <namespace> 
+```
 
 Force retries of failed helm releases by suspending / resuming:
 https://github.com/fluxcd/helm-controller/issues/454
