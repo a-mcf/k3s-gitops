@@ -122,7 +122,7 @@
       "description": "Use loose versioning for certain dependencies",
       "matchDatasources": ["docker", "github-releases"],
       "versioning": "loose",
-      "matchPackageNames": [
+      "matchPackagePatterns": [
         "plex"
       ]
     }
