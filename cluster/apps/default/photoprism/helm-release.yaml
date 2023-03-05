@@ -23,7 +23,7 @@ spec:
     env:
       # these need to be reworked
       # https://github.com/photoprism/photoprism/discussions/2799
-      UID: 2317
+      UID: 1199
       GID: 2316
       TZ: "America/New York"
       PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
