@@ -31,7 +31,7 @@ spec:
     crds: CreateReplace
   values:
     crds:
-      enabled: false
+      enabled: true
     prometheusRule:
       enabled: true
     prometheus:
