@@ -19,7 +19,7 @@ spec:
     image:
       repository: photoprism/photoprism
       pullPolicy: IfNotPresent
-      tag: "220901-bullseye"
+      tag: 221117-jammy
     env:
       # these need to be reworked
       # https://github.com/photoprism/photoprism/discussions/2799
