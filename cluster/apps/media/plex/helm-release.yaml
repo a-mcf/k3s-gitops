@@ -26,7 +26,7 @@ spec:
     env:
       TZ: "America/New_York"
       PLEX_CLAIM: ${PLEX_CLAIM}
-      ADVERTISE_IP: ${PLEX_ADVERTISE_IP}
+      ADVERTISE_IP: "https://plex.${SECRET_DOMAIN}, ${PLEX_ADVERTISE_IP}"
       PUID: 2316
       PGID: 2316
     securityContext:
