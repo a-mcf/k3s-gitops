@@ -81,7 +81,7 @@ spec:
         enabled: true
         existingClaim: nfs-nebula-video-pvc
         mountPath: /video
-        readOnly: true
+        readOnly: false
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-plex-audiobooks-pvc
