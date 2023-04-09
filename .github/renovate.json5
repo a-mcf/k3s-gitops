@@ -5,9 +5,9 @@
   "dependencyDashboardTitle": "Renovate Dashboard",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "schedule": [
-    "before 2am"
-  ],
+  // "schedule": [
+  //   "before 2am"
+  // ],
   // set up ignored deps
   "ignoreDeps": [
     "ghcr.io/fluxcd/helm-controller",
