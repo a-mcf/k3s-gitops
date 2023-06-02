@@ -11,3 +11,4 @@ resources:
   - longhorn-system.yaml
   - external-secrets.yaml
   - paperless.yaml
+  - freshrss.yaml
