@@ -52,7 +52,7 @@ spec:
           hajimari.io/icon: "rss-box"
           hajimari.io/group: "FreshRSS"
         hosts:
-          - host: &host "rss.${SECRET_DOMAIN}"
+          - host: &host "freshrss.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
