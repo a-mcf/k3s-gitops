@@ -14,4 +14,4 @@ resources:
   - authentik-charts.yaml
   - metallb-charts.yaml
   - external-secrets.yaml
-  - hajimari
+  - hajimari.yaml
