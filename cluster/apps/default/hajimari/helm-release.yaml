@@ -38,9 +38,7 @@ spec:
       showAppUrls: false
       defaultEnable: true
       namespaceSelector:
-        matchNames:
-          - home-assistant
-          - unifi
+        any: true
     ingress:
       main:
         enabled: true
