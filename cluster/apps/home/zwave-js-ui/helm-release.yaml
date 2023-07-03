@@ -65,6 +65,7 @@ spec:
         ingressClassName: nginx
         annotations:
           hajimari.io/icon: mdi:z-wave
+          hajimari.io/group: "home automation"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
