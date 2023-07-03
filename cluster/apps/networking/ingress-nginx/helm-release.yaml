@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://kubernetes.github.io/ingress-nginx
       chart: ingress-nginx
-      version: 4.7.0
+      version: 4.7.1
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx-charts
@@ -44,7 +44,7 @@ spec:
       # remote access
       extraContainers:
         - name: nebula
-          image: ghcr.io/a-mcf/nebula-container:1.7.1
+          image: ghcr.io/a-mcf/nebula-container:1.7.2
           securityContext:
             capabilities:
               add:
