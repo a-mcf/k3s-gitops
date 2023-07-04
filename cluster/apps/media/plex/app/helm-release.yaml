@@ -69,7 +69,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: longhorn-plex-pvc
+        existingClaim: longhorn-plex-pvc-static
       transcode:
         enabled: true
         type: emptyDir

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-plex-pvc
+  name: longhorn-plex-pvc-static
   namespace: media
 spec:
   accessModes:
@@ -11,6 +11,8 @@ spec:
     requests:
       storage: 30Gi
   storageClassName: longhorn
+  volumeMode: Filesystem
+  volumeName: pvc-82bdd504-55e7-40e2-b072-fb1a795e9a8e
 ---
 apiVersion: v1
 kind: PersistentVolume
