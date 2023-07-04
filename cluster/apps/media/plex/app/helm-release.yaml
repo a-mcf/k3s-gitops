@@ -33,13 +33,6 @@ spec:
       runAsUser: 2316
       runAsGroup: 2316
       runAsNonRoot: true
-      #fsGroup: 2316
-      #fsGroupChangePolicy: OnRootMismatch
-
-      #supplementalGroups:
-      #- 44
-      #- 109
-      #- 100
     service:
       main:
         primary: true
@@ -69,7 +62,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: longhorn-plex-pvc
+        existingClaim: longhorn-plex-pvc-static
       transcode:
         enabled: true
         type: emptyDir
