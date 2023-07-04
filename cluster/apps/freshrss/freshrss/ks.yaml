@@ -2,10 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: cluster-apps-photoprism
+  name: cluster-apps-freshrss
   namespace: flux-system
 spec:
-  path: ./cluster/apps/default/photoprism/app
+  path: ./cluster/apps/freshrss/freshrss/app
   prune: true
   sourceRef:
     kind: GitRepository
