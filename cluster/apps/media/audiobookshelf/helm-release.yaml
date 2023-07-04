@@ -31,6 +31,7 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
+          hajimari.io/icon: "bookshelf"
         hosts:
           - host: "audiobookshelf.${SECRET_DOMAIN}"
             paths:
