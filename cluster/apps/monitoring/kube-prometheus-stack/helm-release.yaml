@@ -105,7 +105,7 @@ spec:
         pathType: Prefix
         annotations:
           kubernetes.io/ingress.class: "nginx"
-          hajimari.io/name: "Grafana"
+          hajimari.io/appName: "Grafana"
           hajimari.io/icon: "finance"
         hosts:
           - "grafana.${SECRET_DOMAIN}"
