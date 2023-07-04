@@ -105,6 +105,8 @@ spec:
         pathType: Prefix
         annotations:
           kubernetes.io/ingress.class: "nginx"
+          hajimari.io/name: "Grafana"
+          hajimari.io/icon: "finance"
         hosts:
           - "grafana.${SECRET_DOMAIN}"
         tls:
@@ -213,6 +215,7 @@ spec:
         pathType: Prefix
         annotations:
           kubernetes.io/ingress.class: "nginx"
+          hajimari.io/enabled: "false"
         hosts:
           - "prometheus.${SECRET_DOMAIN}"
         tls:
