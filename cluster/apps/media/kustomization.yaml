@@ -2,5 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - audiobookshelf
-  - plex
+  - ./namespace.yaml
+  - ./audiobookshelf/ks.yaml
+  - ./plex/ks.yaml
