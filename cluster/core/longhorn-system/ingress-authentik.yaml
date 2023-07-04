@@ -14,7 +14,7 @@ metadata:
   name: authentik-outpost
   annotations:
     kubernetes.io/ingress.class: nginx
-    hajimari.io/name: "Longhorn"
+    hajimari.io/enable: "false"
   namespace: longhorn-system
 spec:
   rules:
