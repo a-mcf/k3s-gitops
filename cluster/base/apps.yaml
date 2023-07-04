@@ -36,7 +36,6 @@ spec:
             secretRef:
               name: sops-gpg
           postBuild:
-            substitute: {}
             substituteFrom:
               - kind: ConfigMap
                 name: cluster-settings
