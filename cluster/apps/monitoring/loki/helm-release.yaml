@@ -108,6 +108,7 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
+        hajimari.io/enable: "false"
       paths:
         # -- https://github.com/grafana/loki/issues/7080
         write: []

@@ -40,6 +40,8 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
+          hajimari.io/appName: "Uptime Kuma"
+          hajimari.io/icon: "list-status"
         hosts:
           - host: "uptime.${SECRET_DOMAIN}"
             paths:
