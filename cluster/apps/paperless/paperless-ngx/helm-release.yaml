@@ -43,6 +43,8 @@ spec:
           nginx.ingress.kubernetes.io/auth-snippet: |
               proxy_set_header X-Forwarded-Host $http_host;
           hajimari.io/icon: "leaf"
+          hajimari.io/enable: "true"
+          hajimari.io/group: "file storage"
         hosts:
           - host: "paperless.${SECRET_DOMAIN}"
             paths:

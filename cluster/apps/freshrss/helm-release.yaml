@@ -50,7 +50,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "rss-box"
-          hajimari.io/group: "FreshRSS"
+          hajimari.io/group: "media"
         hosts:
           - host: &host "freshrss.${SECRET_DOMAIN}"
             paths:

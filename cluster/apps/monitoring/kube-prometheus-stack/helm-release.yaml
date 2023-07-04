@@ -107,6 +107,8 @@ spec:
           kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Grafana"
           hajimari.io/icon: "finance"
+          hajimari.io/group: "monitoring"
+          hajimari.io/enable: "true"
         hosts:
           - "grafana.${SECRET_DOMAIN}"
         tls:
