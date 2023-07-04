@@ -25,6 +25,7 @@ spec:
       - kind: Secret
         name: cluster-secrets
   patches:
+    # update this when flux is updated
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
         kind: Kustomization
