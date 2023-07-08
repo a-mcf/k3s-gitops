@@ -9,4 +9,4 @@ resources:
   - monitoring
   - paperless
   - freshrss
-  - cloutnative-pg
+  - cloudnative-pg
