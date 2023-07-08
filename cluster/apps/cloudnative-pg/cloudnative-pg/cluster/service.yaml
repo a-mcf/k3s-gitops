@@ -7,7 +7,7 @@ metadata:
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
-  externalIPs: ["${SECRET_CLOUDNATIVE-PG-IP}"]
+  externalIPs: ["${SECRET_CLOUDNATIVE_PG_IP}"]
   ports:
     - name: postgres
       port: 5432
