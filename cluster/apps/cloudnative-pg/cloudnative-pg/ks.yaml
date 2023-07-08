@@ -23,7 +23,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg
-    - name: cluster-apps-external-secrets-stores
+    #- name: cluster-apps-external-secrets-stores
   path: ./cluster/apps/cloudnative-pg/cloudnative-pg/cluster
   prune: true
   sourceRef:
