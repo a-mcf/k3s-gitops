@@ -30,8 +30,6 @@ spec:
         type: microservice
         databases:
           - authentik
-        # roles:
-        #   - authentik
         source:
           externalCluster: authentik-postgresql
 
@@ -41,7 +39,7 @@ spec:
         # Use the correct IP or host name for the source database
         host: authentik-postgresql.networking.svc.cluster.local
         user: authentik
-        dbname: authentik
+        dbname: postgres
       password:
         name: authentik-postgresql
         key: postgresql-password
