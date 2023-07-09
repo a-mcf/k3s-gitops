@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: authentik
-  namespace: networking
+  namespace: authentik
 spec:
   interval: 5m
   chart:
@@ -17,12 +17,12 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      repository: ghcr.io/goauthentik/server
-      tag: 2023.5.4
+    # image:
+    #   repository: ghcr.io/goauthentik/server
+    #   tag: 2023.5.4
 
     ingress:
-      enabled: true
+      enabled: false
       annotations:
         kubernetes.io/ingress.class: "nginx"
         hajimari.io/icon: "login"
@@ -52,16 +52,17 @@ spec:
       log_level: debug
 
       postgresql:
-        # host: authentik-postgresql
-        name: authentik
-        user: authentik
-        password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+        #host: authentik-postgresql
+        #name: authentik
+        #user: authentik
+        #password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+        host: authentik-rw
       redis:
         host: authentik-redis-master
         password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
 
     postgresql:
-      enabled: true
+      enabled: false
       persistence:
         enabled: true
         existingClaim: authentik-postgresql-pvc
@@ -79,3 +80,10 @@ spec:
         persistence:
           enabled: true
           existingClaim: authentik-redis-master-pvc
+  valuesFrom:
+    - targetPath: authentik.postgresql.username
+      kind: Secret
+      name: username
+    - targetPath: authentik.postgresql.password
+      kind: Secret
+      name: password
