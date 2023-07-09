@@ -5,8 +5,6 @@ kind: Cluster
 metadata:
   name: authentikdb
   namespace: authentik
-  # annotations:
-  #   kyverno.io/ignore: "true"
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
@@ -25,19 +23,3 @@ spec:
       shared_buffers: 512MB
   monitoring:
     enablePodMonitor: true
-  # backup:
-  #   retentionPolicy: 30d
-  #   barmanObjectStore:
-  #     wal:
-  #       compression: bzip2
-  #       maxParallel: 8
-  #     destinationPath: s3://cnpg-zd6qkutg/
-  #     endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-  #     serverName: postgres-v3
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: cloudnative-pg-secret
-  #         key: aws-access-key-id
-  #       secretAccessKey:
-  #         name: cloudnative-pg-secret
-  #         key: aws-secret-access-key
