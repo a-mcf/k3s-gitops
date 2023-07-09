@@ -83,7 +83,9 @@ spec:
   valuesFrom:
     - targetPath: authentik.postgresql.username
       kind: Secret
-      name: username
+      name: authentik-app
+      key: username
     - targetPath: authentik.postgresql.password
       kind: Secret
-      name: password
+      name: authentik-app
+      key: password
