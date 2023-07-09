@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: cloudnative-pg
 resources:
   - ./cluster.yaml
+  #- ./secret.sops.yaml
   #- ./scheduledbackup.yaml
   #- ./prometheusrule.yaml
-  - ./secret.sops.yaml
