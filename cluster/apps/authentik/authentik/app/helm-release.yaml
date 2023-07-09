@@ -22,7 +22,7 @@ spec:
     #   tag: 2023.5.4
 
     ingress:
-      enabled: false
+      enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
         hajimari.io/icon: "login"
