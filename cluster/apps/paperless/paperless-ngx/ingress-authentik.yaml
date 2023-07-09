@@ -6,7 +6,7 @@ metadata:
   namespace: default
 spec:
   type: ExternalName
-  externalName: ak-outpost-authentik-embedded-outpost.networking.svc.cluster.local
+  externalName: ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
