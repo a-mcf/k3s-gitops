@@ -84,9 +84,9 @@ spec:
   valuesFrom:
     - targetPath: authentik.postgresql.user
       kind: Secret
-      name: cloudnative-pg-secret
+      name: authentikdb-app
       valuesKey: username
     - targetPath: authentik.postgresql.password
       kind: Secret
-      name: cloudnative-pg-secret
+      name: authentikdb-app
       valuesKey: password
