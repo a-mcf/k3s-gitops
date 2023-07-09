@@ -57,6 +57,7 @@ spec:
         #user: authentik
         #password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
         #user: app
+        name: app
         host: authentikdb-rw
       redis:
         host: authentik-redis-master
