@@ -81,10 +81,10 @@ spec:
           enabled: true
           existingClaim: authentik-redis-master-pvc
   valuesFrom:
-    - targetPath: authentik.postgresql.username
+    - targetPath: authentik.postgresql.user
       kind: Secret
       name: authentikdb-app
-      valuesKey: user
+      valuesKey: username
     - targetPath: authentik.postgresql.password
       kind: Secret
       name: authentikdb-app
