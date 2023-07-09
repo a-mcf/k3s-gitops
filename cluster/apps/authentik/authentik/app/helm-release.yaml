@@ -56,6 +56,7 @@ spec:
         #name: authentik
         #user: authentik
         #password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+        user: app
         host: authentikdb-rw
       redis:
         host: authentik-redis-master
@@ -81,10 +82,10 @@ spec:
           enabled: true
           existingClaim: authentik-redis-master-pvc
   valuesFrom:
-    - targetPath: authentik.postgresql.user
-      kind: Secret
-      name: authentikdb-app
-      valuesKey: username
+    # - targetPath: authentik.postgresql.user
+    #   kind: Secret
+    #   name: authentikdb-app
+    #   valuesKey: username
     - targetPath: authentik.postgresql.password
       kind: Secret
       name: authentikdb-app
