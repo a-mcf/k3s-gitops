@@ -1,0 +1,81 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.goauthentik.io
+      chart: authentik
+      version: 2023.5.4
+      sourceRef:
+        kind: HelmRepository
+        name: authentik-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/goauthentik/server
+      tag: 2023.5.4
+
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+        hajimari.io/icon: "login"
+        hajimari.io/enable: "true"
+        hajimari.io/group: "authentication"
+      hosts:
+        - host: authentik.${SECRET_DOMAIN}
+          paths:
+            - path: /
+
+      tls:
+        - secretName: tls.authentik
+          hosts:
+            - authentik.${SECRET_DOMAIN}
+
+    geoip:
+      enabled: false
+    authentik:
+      email:
+        # host: smtp.mailgun.com
+        # port: 465
+        # username: ${SECRET_MAILGUN_USERNAME}
+        # password: ${SECRET_MAILGUN_PASSWORD}
+        # use_ssl: true
+        # from: authentik@${SECRET_DOMAIN}
+      secret_key: ${SECRET_AUTHENTIK_SECRET_KEY}
+      log_level: debug
+
+      postgresql:
+        # host: authentik-postgresql
+        name: authentik
+        user: authentik
+        password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+      redis:
+        host: authentik-redis-master
+        password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
+
+    postgresql:
+      enabled: true
+      persistence:
+        enabled: true
+        existingClaim: authentik-postgresql-pvc
+
+      postgresqlUsername: authentik
+      postgresqlDatabase: authentik
+      postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+
+    redis:
+      enabled: true
+      auth:
+        enabled: true
+        password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
+      master:
+        persistence:
+          enabled: true
+          existingClaim: authentik-redis-master-pvc
