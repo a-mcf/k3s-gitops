@@ -30,6 +30,8 @@ spec:
         type: microservice
         databases:
           - authentik
+        roles:
+          - authentik
         source:
           externalCluster: authentik-postgresql
 
