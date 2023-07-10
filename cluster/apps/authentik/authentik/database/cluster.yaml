@@ -24,22 +24,22 @@ spec:
   monitoring:
     enablePodMonitor: true
 
-  bootstrap:
-    initdb:
-      import:
-        type: microservice
-        databases:
-          - authentik
-        source:
-          externalCluster: authentik-postgresql
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: microservice
+  #       databases:
+  #         - authentik
+  #       source:
+  #         externalCluster: authentik-postgresql
 
-  externalClusters:
-    - name: authentik-postgresql
-      connectionParameters:
-        # Use the correct IP or host name for the source database
-        host: authentik-postgresql.networking.svc.cluster.local
-        user: authentik
-        dbname: postgres
-      password:
-        name: authentik-postgresql
-        key: postgresql-password
+  # externalClusters:
+  #   - name: authentik-postgresql
+  #     connectionParameters:
+  #       # Use the correct IP or host name for the source database
+  #       host: authentik-postgresql.networking.svc.cluster.local
+  #       user: authentik
+  #       dbname: postgres
+  #     password:
+  #       name: authentik-postgresql
+  #       key: postgresql-password
