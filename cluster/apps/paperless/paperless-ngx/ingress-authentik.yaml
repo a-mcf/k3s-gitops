@@ -27,4 +27,4 @@ spec:
               service:
                 name: authentik-outpost
                 port:
-                  number: 9000
+                  number: 80
