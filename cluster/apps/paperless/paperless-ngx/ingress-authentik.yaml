@@ -25,6 +25,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: authentik-outpost
+                name: authentik.authentik.svc.cluster.local
                 port:
                   number: 80
