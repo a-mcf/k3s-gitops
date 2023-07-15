@@ -3,7 +3,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: authentik-outpost
-  namespace: default
+  namespace: paperless
 spec:
   type: ExternalName
   externalName: authentik.authentik.svc.cluster.local
