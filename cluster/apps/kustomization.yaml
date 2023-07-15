@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   #- system-upgrade
   - authentik
-  - networking
+  - ingress
   - default
   - media
   - home
