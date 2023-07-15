@@ -1,0 +1,36 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: cluster-apps-longhorn
+  namespace: flux-system
+spec:
+  path: ./cluster/apps/longhorn-system/longhorn/app
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: cluster-apps-longhorn-ingress-authentik
+  namespace: flux-system
+spec:
+  path: ./cluster/apps/longhorn-system/longhorn/ingress-authentik
+  dependsOn:
+    - name: cluster-apps-ingress-nginx
+    - name: cluster-apps-authentik
+    - name: cluster-apps-longhorn
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
