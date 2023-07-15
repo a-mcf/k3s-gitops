@@ -9,6 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx
     - name: cluster-apps-authentik
+    - name: cluster-apps-longhorn
   prune: true
   sourceRef:
     kind: GitRepository

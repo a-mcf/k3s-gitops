@@ -6,6 +6,8 @@ metadata:
   namespace: flux-system
 spec:
   path: ./cluster/apps/freshrss/freshrss/app
+  dependsOn:
+    - name: cluster-apps-longhorn
   prune: true
   sourceRef:
     kind: GitRepository
