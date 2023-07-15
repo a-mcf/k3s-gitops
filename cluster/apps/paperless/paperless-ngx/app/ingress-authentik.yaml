@@ -15,7 +15,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     hajimari.io/enable: "false"
-  namespace: default
+  namespace: paperless
 spec:
   rules:
     - host: "paperless.${SECRET_DOMAIN}"
