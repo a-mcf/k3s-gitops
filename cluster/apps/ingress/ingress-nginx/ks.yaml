@@ -6,6 +6,8 @@ metadata:
   namespace: flux-system
 spec:
   path: ./cluster/apps/ingress/ingress-nginx/app
+  dependsOn:
+    - name: cluster-apps-ingress-certificate
   prune: true
   sourceRef:
     kind: GitRepository
@@ -18,10 +20,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-wildcard-certificate
+  name: cluster-apps-ingress-certificate
   namespace: flux-system
 spec:
-  path: ./cluster/apps/ingress/ingress/wildcard-certificate
+  path: ./cluster/apps/ingress/wildcard-certificate
   prune: true
   sourceRef:
     kind: GitRepository
