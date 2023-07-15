@@ -4,7 +4,7 @@ resources:
   - cert-manager.yaml
   - metallb-system.yaml
   - networking.yaml
-  - monitoring.yaml
+  #- monitoring.yaml
   - longhorn-system.yaml
   - external-secrets.yaml
-  - paperless.yaml
+  #- paperless.yaml
