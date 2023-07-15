@@ -4,6 +4,7 @@ resources:
   #- system-upgrade
   - authentik
   - ingress
+  - external-secrets
   - default
   - media
   - home
