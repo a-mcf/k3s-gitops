@@ -23,7 +23,7 @@ metadata:
   name: cluster-apps-ingress-certificate
   namespace: flux-system
 spec:
-  path: ./cluster/apps/ingress/wildcard-certificate
+  path: ./cluster/apps/ingress/certificate
   prune: true
   sourceRef:
     kind: GitRepository
