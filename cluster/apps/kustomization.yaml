@@ -13,3 +13,4 @@ resources:
   - freshrss
   - cloudnative-pg
   - cert-manager
+  - metallb-system
