@@ -8,9 +8,9 @@ spec:
     - ReadWriteOnce
   capacity:
     storage: 10Gi
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: longhorn
-  volumeMode: Filesystem
+persistentVolumeReclaimPolicy: Retain
+storageClassName: longhorn
+volumeMode: Filesystem
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
