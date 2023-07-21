@@ -100,5 +100,5 @@ spec:
       - name: data
         mountPath: /opt/couchdb/data
         accessMode: ReadWriteOnce
-        size: 1Gi
+        size: 10Gi
         storageClass: longhorn
