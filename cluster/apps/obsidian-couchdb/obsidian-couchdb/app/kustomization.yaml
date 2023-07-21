@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: obsidian-couchdb
 resources:
   - helm-release.yaml
+  - obsidian-couchdb.sops.yaml
 configMapGenerator:
   - name: obsidian-couchdb-configmap
     files:
