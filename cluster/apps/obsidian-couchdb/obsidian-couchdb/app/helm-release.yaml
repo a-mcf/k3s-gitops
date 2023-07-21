@@ -81,7 +81,13 @@ spec:
       config-storage:
         enabled: true
         type: emptyDir
-        mountPath: /opt/couchdb/etc/default.d
+        mountPath: /opt/couchdb/data
+        existingClaim: pvc-obsidian-couchdb
+
+      data:
+        enabled: true
+        type: longhorn
+
 
     podSecurityContext:
       runAsUser: 568
@@ -96,9 +102,9 @@ spec:
       limits:
         memory: 146M
 
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /opt/couchdb/data
-        accesMode: ReadWriteOnce
-        size: 10Gi
-        storageClass: longhorn
+    # volumeClaimTemplates:
+    #   - name: data
+    #     mountPath: /opt/couchdb/data
+    #     accesMode: ReadWriteOnce
+    #     size: 10Gi
+    #     storageClass: longhorn
