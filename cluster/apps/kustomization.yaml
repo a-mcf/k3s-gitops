@@ -14,3 +14,4 @@ resources:
   - cloudnative-pg
   - cert-manager
   - metallb-system
+  - obsidian-couchdb
