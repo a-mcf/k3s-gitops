@@ -100,3 +100,4 @@ spec:
       - name: data
         mountPath: /opt/couchdb/data
         existingClaim: pvc-obsidian-couchdb
+        accesMode: ReadWriteOnce
