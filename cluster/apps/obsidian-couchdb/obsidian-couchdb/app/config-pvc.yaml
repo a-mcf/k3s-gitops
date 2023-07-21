@@ -8,9 +8,13 @@ spec:
     - ReadWriteOnce
   capacity:
     storage: 10Gi
-persistentVolumeReclaimPolicy: Retain
-storageClassName: longhorn
-volumeMode: Filesystem
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: pvc-837a3486-ae33-409d-9327-69bb9450895e
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  volumeMode: Filesystem
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
