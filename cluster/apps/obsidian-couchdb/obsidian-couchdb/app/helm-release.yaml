@@ -99,5 +99,6 @@ spec:
     volumeClaimTemplates:
       - name: data
         mountPath: /opt/couchdb/data
-        existingClaim: pvc-obsidian-couchdb
         accesMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: longhorn
