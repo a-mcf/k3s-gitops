@@ -99,6 +99,6 @@ spec:
     volumeClaimTemplates:
       - name: data
         mountPath: /opt/couchdb/data
-        accesMode: ReadWriteOnce
+        accessMode: ReadWriteOnce
         size: 10Gi
         storageClass: longhorn
