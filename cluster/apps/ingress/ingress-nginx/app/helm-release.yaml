@@ -19,6 +19,7 @@ spec:
     controller:
       ingressClass: nginx
       replicaCount: 1
+      allowSnippetAnnotations: true
       service:
         type: LoadBalancer
         loadBalancerIP: "${INGRESS_NGINX_LB}"
