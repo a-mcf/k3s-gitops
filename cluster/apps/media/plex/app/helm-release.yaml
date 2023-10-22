@@ -65,8 +65,10 @@ spec:
         existingClaim: longhorn-plex-pvc-static
       transcode:
         enabled: true
-        type: emptyDir
-        medium: Memory
+        existingClaim: nfs-nebula-video-transcode-pvc
+        mountpath: /transcode
+        #type: emptyDir
+        #medium: Memory
       music:
         enabled: true
         existingClaim: nfs-nebula-music-pvc
