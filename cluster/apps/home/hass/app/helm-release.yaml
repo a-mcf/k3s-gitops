@@ -33,6 +33,7 @@ spec:
   values:
     controllers:
       main:
+        strategy: Recreate
         pod:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
