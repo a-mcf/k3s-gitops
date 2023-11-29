@@ -54,4 +54,5 @@ spec:
       config:
         enabled: true
         existingClaim: uptime-kuma-config-longhorn-pvc
-        mountPath: /app/data
+        globalMounts:
+          - path: /app/data
