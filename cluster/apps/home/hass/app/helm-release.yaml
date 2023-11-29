@@ -1,35 +1,77 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: home-assistant
   namespace: home
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: home-assistant
-      version: 13.4.2
+      chart: app-template
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
+  #   - name: volsync
+  #     namespace: volsync
   values:
-    image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2023.10.5
-    env:
-      TZ: "America/New_York"
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
+    controllers:
+      main:
+        pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2023.10.5
+            env:
+              TZ: America/New_York
+              # POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
+              # POSTGRES_DB: home_assistant
+            # envFrom: *envFrom
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 4Gi
+        # pod:
+        #   securityContext:
+        #     runAsUser: 568
+        #     runAsGroup: 568
+        #     fsGroup: 568
+        #     fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         type: LoadBalancer
-        externalIPs:
-          - "${HOME_ASSISTANT_SVC_IP}"
-        externalTrafficPolicy: Local
+        loadBalancerIP: "${HOME_ASSISTANT_SVC_IP}"
+        ports:
+          http:
+            port: 8123
     ingress:
       main:
         enabled: true
@@ -39,28 +81,16 @@ spec:
           hajimari.io/icon: "home-assistant"
           hajimari.io/group: "home automation"
         hosts:
-          - host: "hass.${SECRET_DOMAIN}"
+          - host: &host "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
-              - "hass.${SECRET_DOMAIN}"
-    probes:
-      liveness:
-        enabled: false
-      readiness:
-        enabled: false
-      startup:
-        enabled: false
+              - *host
     persistence:
       config:
         enabled: true
         existingClaim: nfs-nebula-home-assistant-config-pvc
-    #addons:
-    resources:
-      requests:
-        cpu: 100m
-        memory: 100Mi
-      limits:
-        memory: 4000Mi
