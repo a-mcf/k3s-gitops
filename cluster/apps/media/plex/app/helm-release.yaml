@@ -1,51 +1,106 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: plex
   namespace: media
 spec:
-  releaseName: plex
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: plex
-      version: 6.4.3
+      chart: app-template
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # dependsOn:
+  #   - name: intel-device-plugin-gpu
+  #     namespace: kube-system
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
+  #   - name: volsync
+  #     namespace: volsync
   values:
-    image:
-      # repository: linuxserver/plex
-      # tag: 1.30.1
-      repository: ghcr.io/onedr0p/plex
-      tag: 1.32.7.7621-871adbd44@sha256:f9f77dc5e17cab9fae5ece663a64d026e3c75142b3b60bb4a52bf061957412be
-    env:
-      TZ: "America/New_York"
-      PLEX_CLAIM: ${PLEX_CLAIM}
-      ADVERTISE_IP: "https://plex.${SECRET_DOMAIN}, ${PLEX_ADVERTISE_IP}"
-      PUID: 2316
-      PGID: 2316
-    securityContext:
-      runAsUser: 2316
-      runAsGroup: 2316
-      runAsNonRoot: true
-    service:
+    controllers:
       main:
-        primary: true
-        enabled: true
+        # annotations:
+        #   reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/plex
+              tag: 1.32.7.7621-871adbd44@sha256:f9f77dc5e17cab9fae5ece663a64d026e3c75142b3b60bb4a52bf061957412be
+            env:
+              TZ: America/New_York
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                #gpu.intel.com/i915: 1
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                #gpu.intel.com/i915: 1
+                memory: 12Gi
+        pod:
+          affinity:
+            # podAntiAffinity:
+            #   requiredDuringSchedulingIgnoredDuringExecution:
+            #     - labelSelector:
+            #         matchExpressions:
+            #           - key: app.kubernetes.io/name
+            #             operator: In
+            #             values: ["frigate"]
+            #       topologyKey: kubernetes.io/hostname
+          # nodeSelector:
+          #   intel.feature.node.kubernetes.io/gpu: "true"
+          securityContext:
+            runAsUser: 2316
+            runAsGroup: 2316
+            # fsGroup: 
+            # fsGroupChangePolicy: OnRootMismatch
+            # supplementalGroups: [44, 105, 10000]
+    service:
+      # main:
+      #   type: LoadBalancer
+      #   annotations:
+      #     io.cilium/lb-ipam-ips: 192.168.42.210
+      #   ports:
+      #     http:
+      #       port: 32400
+      main:
         type: LoadBalancer
-        externalIPs:
-          - "${PLEX_SVC_IP}"
-        externalTrafficPolicy: Local
+        loadBalancerIP: "${PLEX_SVC_IP}"
+        #externalTrafficPolicy: Local
         port:
           port: 32400
     ingress:
       main:
-        primary: true
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
@@ -67,8 +122,6 @@ spec:
         enabled: true
         existingClaim: nfs-nebula-video-transcode-pvc
         mountpath: /transcode
-        #type: emptyDir
-        #medium: Memory
       music:
         enabled: true
         existingClaim: nfs-nebula-music-pvc
@@ -84,3 +137,11 @@ spec:
         existingClaim: nfs-nebula-plex-audiobooks-pvc
         mountPath: /audiobooks
         readOnly: true
+     # try this instead of using manual pvcs
+         #   media:
+    #     type: nfs
+    #     server: expanse.turbo.ac
+    #     path: /eros/Media
+    #     globalMounts:
+    #       - path: /media
+    #         readOnly: true
