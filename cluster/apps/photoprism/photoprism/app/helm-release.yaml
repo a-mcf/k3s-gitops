@@ -44,17 +44,15 @@ spec:
               ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
             probes:
               readiness:
-                enabled: false
-                # type: HTTP
-                # spec:
-                #   httpGet:
-                #     path: /api/v1/status
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /api/v1/status
               liveness:
-                enabled: false
-                # type: HTTP
-                # spec:
-                #   httpGet:
-                #     path: /api/v1/status
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /api/v1/status
               startup:
                 enabled: false
             resources:
@@ -74,7 +72,7 @@ spec:
       main:
         ports:
           http:
-            port: 2432
+            port: 2342
     
     ingress:
       main:
