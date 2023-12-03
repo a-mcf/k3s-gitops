@@ -1,0 +1,96 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-photoprism-storage-pv
+  namespace: photoprism
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/appdata/photoprism-storage
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-photoprism-storage-pvc
+  namespace: photoprism
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-nebula-photoprism-storage-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-photoprism-originals-pv
+  namespace: photoprism
+spec:
+  capacity:
+    storage: 2000Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/photos/originals
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-photoprism-originals-pvc
+  namespace: photoprism
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2000Gi
+  volumeName: nfs-nebula-photoprism-originals-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-photoprism-import-pv
+  namespace: photoprism
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/photos/import
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-photoprism-import-pvc
+  namespace: photoprism
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-nebula-photoprism-import-pv
