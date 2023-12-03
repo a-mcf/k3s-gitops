@@ -42,8 +42,8 @@ spec:
       customApps:
         group: Infrastructure
         apps:
-          - name: Proxmox
-            url: ${SECRET_PVE_URL}
+          - name: Proxmox VE
+            url: "${PVE_URL}"
             icon: simple-icons:proxmox
           - name: Unifi
             url: "https://${UNIFI_HOST}"
