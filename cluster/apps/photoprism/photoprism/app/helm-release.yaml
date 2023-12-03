@@ -97,15 +97,19 @@ spec:
       config:
         enabled: true
         existingClaim: nfs-nebula-photoprism-storage-pvc
-        mountPath: /photoprism/storage
+        globalMounts:
+          - path:  /photoprism/storage
       originals:
         enabled: true
         existingClaim: nfs-nebula-photoprism-originals-pvc
-        mountPath: /photoprism/originals
+        globalMounts:
+          - path:  /photoprism/originals
       import:
         enabled: true
         existingClaim: nfs-nebula-photoprism-import-pvc
-        mountPath: /photoprism/import     # try this instead of using manual pvcs
+        globalMounts: 
+         - path: /photoprism/import     
+    # try this instead of using manual pvcs
     #   media:
     #     type: nfs
     #     server: expanse.turbo.ac
