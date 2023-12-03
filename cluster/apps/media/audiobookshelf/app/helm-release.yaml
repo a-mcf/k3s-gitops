@@ -1,33 +1,51 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: audiobookshelf
   namespace: media
 spec:
-  releaseName: audiobookshelf
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: audiobookshelf
-      version: 1.2.2
+      chart: app-template
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    image:
-      repository: ghcr.io/advplyr/audiobookshelf
-      tag: 2.5.0
-    env:
-      TZ: "America/New_York"
-      AUDIOBOOKSHELF_UID: 2316
-      AUDIOBOOKSHELF_GID: 2316
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/advplyr/audiobookshelf
+              tag: 2.5.0
+            env:
+              TZ: "America/New_York"
+              AUDIOBOOKSHELF_UID: 2316
+              AUDIOBOOKSHELF_GID: 2316
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+    
     ingress:
       main:
-        primary: true
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
@@ -35,29 +53,29 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/group: "media"
         hosts:
-          - host: "audiobookshelf.${SECRET_DOMAIN}"
+          - host: &host "audiobookshelf.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
         tls:
           - hosts:
-              - "audiobookshelf.${SECRET_DOMAIN}"
+              - *host
+    
     persistence:
       config:
         enabled: true
         existingClaim: longhorn-audiobookshelf-config-pvc
-        mountpath: /config
       metadata:
         enabled: true
         existingClaim: longhorn-audiobookshelf-metadata-pvc
-        mountpath: /metadata
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-audiobooks-pvc
-        mountPath: /audiobooks
         readOnly: true
       backups:
         enabled: true
         existingClaim: nfs-nebula-audiobookshelf-backups-pvc
-        mountPath: /metadata/backups
-        readOnly: false
+        globalMounts:
+          - path: /metadata/backups
+        readOnly: false    
