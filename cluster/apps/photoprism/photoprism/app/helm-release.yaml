@@ -33,7 +33,7 @@ spec:
             image:
               repository: photoprism/photoprism
               pullPolicy: IfNotPresent
-              tag: "231021"
+              tag: "20220121"
             env:
               # https://github.com/photoprism/photoprism/discussions/2799
               UID: 1199
