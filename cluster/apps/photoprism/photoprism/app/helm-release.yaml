@@ -47,15 +47,17 @@ spec:
               ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
             probes:
               readiness:
-                type: HTTP
-                spec:
-                  httpGet:
-                    path: /api/v1/status
+                enabled: false
+                # type: HTTP
+                # spec:
+                #   httpGet:
+                #     path: /api/v1/status
               liveness:
-                type: HTTP
-                spec:
-                  httpGet:
-                    path: /api/v1/status
+                enabled: false
+                # type: HTTP
+                # spec:
+                #   httpGet:
+                #     path: /api/v1/status
               startup:
                 enabled: false
             resources:
