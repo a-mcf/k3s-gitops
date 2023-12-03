@@ -25,18 +25,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # dependsOn:
-  #   - name: rook-ceph-cluster
-  #     namespace: rook-ceph
-  #   - name: volsync
-  #     namespace: volsync
   values:
     controllers:
       main:
         strategy: Recreate
-        pod:
-          hostNetwork: true
-          dnsPolicy: ClusterFirstWithHostNet
+        # pod:
+        #   #hostNetwork: true
+        #   dnsPolicy: ClusterFirstWithHostNet
         containers:
           main:
             image:
@@ -46,7 +41,6 @@ spec:
               TZ: America/New_York
               # POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
               # POSTGRES_DB: home_assistant
-            # envFrom: *envFrom
             probes:
               liveness:
                 enabled: false
@@ -60,12 +54,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 4Gi
-        # pod:
-        #   securityContext:
-        #     runAsUser: 568
-        #     runAsGroup: 568
-        #     fsGroup: 568
-        #     fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         type: LoadBalancer
