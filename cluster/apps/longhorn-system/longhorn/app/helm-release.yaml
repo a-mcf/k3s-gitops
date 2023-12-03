@@ -37,5 +37,5 @@ spec:
         nginx.ingress.kubernetes.io/auth-snippet: |
             proxy_set_header X-Forwarded-Host $http_host;
         hajimari.io/appName: "Longhorn"
-        hajimari.io/icon: "cow"
+        hajimari.io/icon: "simple-icons:rancher"
       host: "longhorn.${SECRET_DOMAIN}"

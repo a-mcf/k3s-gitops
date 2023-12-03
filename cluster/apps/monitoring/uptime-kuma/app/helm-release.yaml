@@ -37,7 +37,7 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Uptime Kuma"
-          hajimari.io/icon: "list-status"
+          hajimari.io/icon: "simple-icons:uptimekuma"
           hajimari.io/group: "monitoring"
           hajimari.io/enable: "true"
         hosts:

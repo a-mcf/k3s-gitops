@@ -106,7 +106,7 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Grafana"
-          hajimari.io/icon: "finance"
+          hajimari.io/icon: "simple-icons:grafana"
           hajimari.io/group: "monitoring"
           hajimari.io/enable: "true"
         hosts:
