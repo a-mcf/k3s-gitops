@@ -56,6 +56,8 @@ spec:
                 spec:
                   httpGet:
                     path: /api/v1/status
+              startup:
+                enabled: false
             resources:
               requests:
                 cpu: 100m
