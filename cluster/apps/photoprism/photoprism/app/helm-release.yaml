@@ -43,16 +43,14 @@ spec:
               PHOTOPRISM_DISABLE_CHOWN: "true"
               ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
             probes:
-              readiness:
+              readiness: &probe
+                enabled: true
+                custom: true
                 type: HTTP
                 spec:
                   httpGet:
                     path: /api/v1/status
-              liveness:
-                type: HTTP
-                spec:
-                  httpGet:
-                    path: /api/v1/status
+              liveness: *probe
               startup:
                 enabled: false
             resources:
