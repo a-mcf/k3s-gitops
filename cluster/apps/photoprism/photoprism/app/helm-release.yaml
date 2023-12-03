@@ -28,8 +28,6 @@ spec:
   values:
     controllers:
       main:
-        pod:
-          dnsPolicy: ClusterFirstWithHostNet
         containers:
           main:
             image:
@@ -93,7 +91,6 @@ spec:
               - path: /
                 service:
                   name: main
-                  port: http
         tls:
           - hosts:
               - *host
