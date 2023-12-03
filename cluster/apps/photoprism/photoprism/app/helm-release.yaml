@@ -32,10 +32,11 @@ spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
         containers:
-          image:
-            repository: photoprism/photoprism
-            pullPolicy: IfNotPresent
-            tag: "231021"
+          main:
+            image:
+              repository: photoprism/photoprism
+              pullPolicy: IfNotPresent
+              tag: "231021"
             env:
               # https://github.com/photoprism/photoprism/discussions/2799
               UID: 1199
@@ -55,7 +56,6 @@ spec:
                 spec:
                   httpGet:
                     path: /api/v1/status
-
             resources:
               requests:
                 cpu: 100m
