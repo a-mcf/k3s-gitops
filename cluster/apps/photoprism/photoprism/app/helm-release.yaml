@@ -1,51 +1,100 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: photoprism
   namespace: photoprism
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: photoprism
-      version: 7.1.2
+      chart: app-template
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    image:
-      repository: photoprism/photoprism
-      pullPolicy: IfNotPresent
-      tag: "231021"
-    env:
-      # these need to be reworked
-      # https://github.com/photoprism/photoprism/discussions/2799
-      UID: 1199
-      GID: 2316
-      TZ: "America/New York"
-      PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
-      PHOTOPRISM_DISABLE_CHOWN: "true"
-      ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
+    controllers:
+      main:
+        pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+        containers:
+          image:
+            repository: photoprism/photoprism
+            pullPolicy: IfNotPresent
+            tag: "231021"
+            env:
+              # https://github.com/photoprism/photoprism/discussions/2799
+              UID: 1199
+              GID: 2316
+              TZ: "America/New York"
+              PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD}"
+              PHOTOPRISM_DISABLE_CHOWN: "true"
+              ${PHOTOPRISM_SUBSCRIPTION_KEY}: "${PHOTOPRISM_SUBSCRIPTION_VALUE}"
+            probes:
+              readiness:
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /api/v1/status
+              liveness:
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /api/v1/status
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 4Gi
+        # pod:
+        #   securityContext:
+        #     runAsUser: 568
+        #     runAsGroup: 568
+        #     fsGroup: 568
+        #     fsGroupChangePolicy: OnRootMismatch
+    
+    service:
+      main:
+        ports:
+          http:
+            port: 2432
+    
     ingress:
       main:
-        primary: true
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
           nginx.ingress.kubernetes.io/proxy-body-size: 4G
-          hajimari.io/icon: "image-album"
+          hajimari.io/icon: arcticons:photoprism
+          #hajimari.io/icon: "image-album"
           hajimari.io/group: "media"
         hosts:
-          - host: "photoprism.${SECRET_DOMAIN}"
+          - host: &host "photoprism.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
-              - "photoprism.${SECRET_DOMAIN}"
+              - *host
+    
     persistence:
       config:
         enabled: true
@@ -58,4 +107,11 @@ spec:
       import:
         enabled: true
         existingClaim: nfs-nebula-photoprism-import-pvc
-        mountPath: /photoprism/import
+        mountPath: /photoprism/import     # try this instead of using manual pvcs
+    #   media:
+    #     type: nfs
+    #     server: expanse.turbo.ac
+    #     path: /eros/Media
+    #     globalMounts:
+    #       - path: /media
+    #         readOnly: true
