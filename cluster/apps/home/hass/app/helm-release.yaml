@@ -29,9 +29,10 @@ spec:
     controllers:
       main:
         strategy: Recreate
-        # pod:
-        #   #hostNetwork: true
-        #   dnsPolicy: ClusterFirstWithHostNet
+        pod:
+          # needed for homekit integration? more research requried.
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
         containers:
           main:
             image:
