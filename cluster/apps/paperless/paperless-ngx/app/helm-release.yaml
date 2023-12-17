@@ -31,13 +31,13 @@ spec:
               repository: ghcr.io/paperless-ngx/paperless-ngx
               tag: 1.17.4
               pullPolicy: IfNotPresent
-        env:
-          USERMAP_UID: 2316
-          USERMAP_GID: 2316
-          PAPERLESS_CONSUMER_POLLING: 30
-          PAPERLESS_REDIS: "redis://paperless-redis:6379"
-          PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
-          PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
+            env:
+              USERMAP_UID: 2316
+              USERMAP_GID: 2316
+              PAPERLESS_CONSUMER_POLLING: 30
+              PAPERLESS_REDIS: "redis://paperless-redis:6379"
+              PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
+              PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
     
     service:
       main:
