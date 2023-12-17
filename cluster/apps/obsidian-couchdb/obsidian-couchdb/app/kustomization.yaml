@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: obsidian-couchdb-configmap
     files:
-      - ../config/config.ini
+      - ./config/config.ini
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
