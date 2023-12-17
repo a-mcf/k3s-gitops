@@ -32,6 +32,7 @@ spec:
               tag: 1.17.4
               pullPolicy: IfNotPresent
             env:
+              COMPOSE_PROJECT_NAME: paperless
               USERMAP_UID: 2316
               USERMAP_GID: 2316
               PAPERLESS_CONSUMER_POLLING: 30
@@ -39,7 +40,8 @@ spec:
               PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
               PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
               PAPERLESS_URL: "paperless.${SECRET_DOMAIN}"
-              PAPERLESS_PORT: "8000"
+              PAPERLESS_PORT: 8000
+              PAPERLESS_OCR_LANGUAGE: eng
     
     service:
       main:
