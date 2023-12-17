@@ -38,6 +38,8 @@ spec:
               PAPERLESS_REDIS: "redis://paperless-redis:6379"
               PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
               PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
+              PAPERLESS_URL: "paperless.${SECRET_DOMAIN}"
+              PAPERLESS_PORT: "8000"
     
     service:
       main:
