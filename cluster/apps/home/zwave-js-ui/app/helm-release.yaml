@@ -39,6 +39,8 @@ spec:
               tag: 9.5.1
             env:
               TZ: America/New_York
+            securityContext:
+              privileged: true
             probes:
               liveness: &probes
                 enabled: true
@@ -54,8 +56,6 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-              securityContext:
-                privileged: true
               resources:
                 requests:
                   cpu: 10m
@@ -100,5 +100,5 @@ spec:
         type: hostPath
         hostPath: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
         hostPathType: CharDevice
-        # globalMounts:
-        #   - path: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
+        globalMounts:
+          - path: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
