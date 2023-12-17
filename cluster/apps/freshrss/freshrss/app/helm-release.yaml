@@ -44,6 +44,9 @@ spec:
         ports:
           http:
             port: 80
+          # websocket:
+          #   enabled: true
+          #   port: 3000
     ingress:
       main:
         enabled: true
