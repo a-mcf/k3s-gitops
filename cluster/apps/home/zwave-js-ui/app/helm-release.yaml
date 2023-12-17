@@ -27,38 +27,39 @@ spec:
     keepHistory: false
   values:
     controllers:
-      pod:
-        nodeSelector:
-        zwave: "true"
-      containers:
-        main:
-          image:
-            repository: ghcr.io/zwave-js/zwave-js-ui
-            tag: 9.5.1
-          env:
-            TZ: America/New_York
-          probes:
-            liveness: &probes
-              enabled: true
-              custom: true
-              spec:
-                httpGet:
-                  path: /health
-                  port: 8091
-                initialDelaySeconds: 0
-                periodSeconds: 10
-                timeoutSeconds: 1
-                failureThreshold: 3
-            readiness: *probes
-            startup:
-              enabled: false
-            securityContext:
-              privileged: true
-            resources:
-              requests:
-                cpu: 10m
-                memory: 100Mi
-              limits:
+      main:
+        pod:
+          nodeSelector:
+          zwave: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/zwave-js/zwave-js-ui
+              tag: 9.5.1
+            env:
+              TZ: America/New_York
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8091
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+              securityContext:
+                privileged: true
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 100Mi
+                limits:
                 memory: 500Mi
     service:
       main:
