@@ -27,8 +27,8 @@ spec:
     keepHistory: false
   values:
     controllers:
-      type: statefulset
       main:
+        type: statefulset
         pod:
           nodeSelector:
           zwave: "true"
