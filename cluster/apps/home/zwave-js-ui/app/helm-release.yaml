@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,13 +27,39 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
-        type: statefulset
-      image:
-        repository: ghcr.io/zwave-js/zwave-js-ui
-        tag: 9.5.1
-      env:
-        TZ: America/New_York
+      pod:
+        nodeSelector:
+        zwave: "true"
+      containers:
+        main:
+          image:
+            repository: ghcr.io/zwave-js/zwave-js-ui
+            tag: 9.5.1
+          env:
+            TZ: America/New_York
+          probes:
+            liveness: &probes
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /health
+                  port: *port
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 1
+                failureThreshold: 3
+            readiness: *probes
+            startup:
+              enabled: false
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
     service:
       main:
         ports:
@@ -42,28 +68,11 @@ spec:
           websocket:
             enabled: true
             port: 3000
-    # serviceMonitor:
-    #   main:
-    #     enabled: true
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        className: nginx
         annotations:
           hajimari.io/icon: mdi:z-wave
           hajimari.io/group: "home automation"
@@ -71,29 +80,23 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
+                service:
+                  name: main
                 pathType: Prefix
         tls:
           - hosts:
               - *host
-    securityContext:
-      privileged: true
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /usr/src/app/store
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
+
     persistence:
+      config:
+        enabled: true
+        existingClaim: longhorn-zwave-js-ui-config
+        globalMounts:
+          - path: /usr/src/app/store
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
         hostPathType: CharDevice
-    nodeSelector:
-      zwave: "true"
-    resources:
-      requests:
-        cpu: 10m
-        memory: 100Mi
-      limits:
-        memory: 500Mi
+        globalMounts:
+          - path: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
