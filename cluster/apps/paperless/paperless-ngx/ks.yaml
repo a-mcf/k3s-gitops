@@ -26,6 +26,7 @@ spec:
     - name: cluster-apps-ingress-nginx
     - name: cluster-apps-authentik
     - name: cluster-apps-longhorn
+    - name: cluster-apps-paperless-ngx-redis
   prune: true
   sourceRef:
     kind: GitRepository
