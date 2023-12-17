@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
+      type: statefulset
       main:
         pod:
           nodeSelector:
