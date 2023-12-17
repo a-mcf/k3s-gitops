@@ -6,9 +6,6 @@ metadata:
   name: cluster-apps-paperless-ngx-redis
   namespace: flux-system
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./cluster/apps/paperless/paperless-ngx//redis"
   prune: true
