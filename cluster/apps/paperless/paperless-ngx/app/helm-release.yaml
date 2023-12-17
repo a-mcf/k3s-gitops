@@ -5,28 +5,45 @@ metadata:
   name: paperless
   namespace: paperless
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: paperless
-      version: 9.1.3
+      chart: app-template
+      version: 2.4.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
   values:
-    image:
-      repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 1.17.4
-      pullPolicy: IfNotPresent
-    env:
-      USERMAP_UID: 2316
-      USERMAP_GID: 2316
-      PAPERLESS_CONSUMER_POLLING: 30
-      PAPERLESS_REDIS: "redis://default:${SECRET_PAPERLESS_REDIS_PASSWORD}@paperless-redis-master:6379"
-      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
+    values:
+    controllers:
+      main:
+        # annotations:
+        #   reloader.stakater.com/auto: "true"
+        pods:
+          supplementalGroups:
+            - 2316
+        containers:
+          main:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 1.17.4
+              pullPolicy: IfNotPresent
+        env:
+          USERMAP_UID: 2316
+          USERMAP_GID: 2316
+          PAPERLESS_CONSUMER_POLLING: 30
+          PAPERLESS_REDIS: "redis://paperless-redis:6379"
+          PAPERLESS_ENABLE_HTTP_REMOTE_USER: "TRUE"
+          PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "HTTP_X_AUTHENTIK_USERNAME"
+    
+    service:
+      main:
+        ports:
+          http:
+            port: 8000
+    
     ingress:
       main:
         enabled: true
@@ -50,6 +67,8 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main         
         tls:
           - hosts:
               - "paperless.${SECRET_DOMAIN}"
@@ -57,27 +76,20 @@ spec:
       data:
         enabled: true
         existingClaim: nfs-nebula-paperless-data-pvc
-        mountPath: /usr/src/paperless/data
+        globalMounts:
+          - path: /usr/src/paperless/data
       media:
         enabled: true
         existingClaim: nfs-nebula-paperless-media-pvc
-        mountPath: /usr/src/paperless/media
+        globalMounts:
+          - path: /usr/src/paperless/media
       consume:
         enabled: true
         existingClaim: nfs-nebula-paperless-consume-pvc
-        mountPath: /usr/src/paperless/consume
+        globalMounts:
+          - path: /usr/src/paperless/consume
       export:
         enabled: true
         existingClaim: nfs-nebula-paperless-export-pvc
-        mountPath: /usr/src/paperless/export
-    redis:
-      enabled: true
-      architecture: standalone
-      auth:
-        enabled: true
-        password: "${SECRET_PAPERLESS_REDIS_PASSWORD}"
-        usePasswordFiles: false
-      master:
-        persistence:
-          enabled: true
-          existingClaim: paperless-redis-master-pvc
+        globalMounts:
+          - path: /usr/src/paperless/export
