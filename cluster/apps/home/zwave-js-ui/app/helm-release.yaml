@@ -31,7 +31,7 @@ spec:
         type: statefulset
         pod:
           nodeSelector:
-          zwave: "true"
+            zwave: "true"
         containers:
           main:
             image:
