@@ -31,16 +31,17 @@ spec:
     controllers:
       main:
         containers:
-          image:
-            repository: freshrss/freshrss
-            tag: 1.22.1
-            pullPolicy: IfNotPresent
-          strategy:
-            type: Recreate
-          env:
-            TZ: ${TIMEZONE}
-            CRON_MIN: "18,48"
-            DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
+          main:
+            image:
+              repository: freshrss/freshrss
+              tag: 1.22.1
+              pullPolicy: IfNotPresent
+            strategy:
+              type: Recreate
+            env:
+              TZ: ${TIMEZONE}
+              CRON_MIN: "18,48"
+              DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
     service:
       main:
         ports:
