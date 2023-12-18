@@ -125,9 +125,11 @@ spec:
         readOnly: true
       video:
         enabled: true
-        existingClaim: nfs-nebula-video-pvc
-        mountPath: /video
-        readOnly: false
+        type: nfs
+        server: "${NFS_SERVER_NEBULA}"
+        path: /tank/video
+        globalMounts:
+          -path: /video
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-plex-audiobooks-pvc
