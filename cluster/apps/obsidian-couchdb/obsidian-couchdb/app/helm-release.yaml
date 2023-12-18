@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: obsidian-couchdb
@@ -27,7 +27,7 @@ spec:
           main:
             image:
               repository: public.ecr.aws/docker/library/couchdb
-              tag: 3.3.2
+              tag: 3.3.3
             env:
               COUCHDB_USER:
                 valueFrom:
