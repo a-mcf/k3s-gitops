@@ -117,23 +117,25 @@ spec:
       transcode:
         enabled: true
         existingClaim: nfs-nebula-video-transcode-pvc
-        mountpath: /transcode
+        globalMounts: 
+          - path: /transcode
       music:
         enabled: true
         existingClaim: nfs-nebula-music-pvc
-        mountPath: /music
+        globalMounts: 
+          - path: /music
         readOnly: true
       video:
         enabled: true
-        type: nfs
-        server: "${NFS_SERVER_NEBULA}"
-        path: /tank/video
+        existingClaim: nfs-nebula-video-pvc
         globalMounts:
           - path: /video
+        readOnly: false
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-plex-audiobooks-pvc
-        mountPath: /audiobooks
+        globalMounts: 
+          - path: /audiobooks
         readOnly: true
      # try this instead of using manual pvcs
          #   media:
