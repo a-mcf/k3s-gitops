@@ -129,7 +129,7 @@ spec:
         server: "${NFS_SERVER_NEBULA}"
         path: /tank/video
         globalMounts:
-          -path: /video
+          - path: /video
       audiobooks:
         enabled: true
         existingClaim: nfs-nebula-plex-audiobooks-pvc
