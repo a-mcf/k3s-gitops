@@ -77,8 +77,8 @@ spec:
             #             operator: In
             #             values: ["frigate"]
             #       topologyKey: kubernetes.io/hostname
-          # nodeSelector:
-          #   intel.feature.node.kubernetes.io/gpu: "true"
+          nodeSelector:
+            gpu: "true"
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
