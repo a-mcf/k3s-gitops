@@ -17,4 +17,4 @@ resources:
   - hajimari.yaml
   - cloudnative-pg.yaml
   - nvidia-charts.yaml
-  - nvidia-device-plugin-charts
+  - nvidia-device-plugin-charts.yaml
