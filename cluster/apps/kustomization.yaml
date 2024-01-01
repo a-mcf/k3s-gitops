@@ -9,6 +9,7 @@ resources:
   - home
   - longhorn-system
   - monitoring
+  - nvidia-device-plugin
   - paperless
   - photoprism
   - freshrss
