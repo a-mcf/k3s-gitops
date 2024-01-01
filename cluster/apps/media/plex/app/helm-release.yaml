@@ -33,7 +33,6 @@ spec:
   #   - name: volsync
   #     namespace: volsync
   values:
-    runtimeClassName: nvidia
     controllers:
       main:
         # annotations:
@@ -69,6 +68,7 @@ spec:
                 memory: 12Gi
                 nvidia.com/gpu: 1
         pod:
+          runtimeClassName: nvidia
           nodeSelector:
             gpu: "true"
           securityContext:
