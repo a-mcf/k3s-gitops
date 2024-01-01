@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: nvidia-gpu-plugin
+  name: nvidia-device-plugin
   namespace: nvidia-device-plugin
 spec:
   interval: 15m
