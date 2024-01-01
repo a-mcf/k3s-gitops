@@ -33,6 +33,7 @@ spec:
   #   - name: volsync
   #     namespace: volsync
   values:
+    runtimeClassName: nvidia
     controllers:
       main:
         # annotations:
@@ -61,30 +62,18 @@ spec:
                 enabled: false
             resources:
               requests:
-                #gpu.intel.com/i915: 1
                 cpu: 200m
                 memory: 2Gi
+                nvidia.com/gpu: 1
               limits:
-                #gpu.intel.com/i915: 1
                 memory: 12Gi
+                nvidia.com/gpu: 1
         pod:
-          affinity:
-            # podAntiAffinity:
-            #   requiredDuringSchedulingIgnoredDuringExecution:
-            #     - labelSelector:
-            #         matchExpressions:
-            #           - key: app.kubernetes.io/name
-            #             operator: In
-            #             values: ["frigate"]
-            #       topologyKey: kubernetes.io/hostname
           nodeSelector:
             gpu: "true"
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
-            # fsGroup: 
-            # fsGroupChangePolicy: OnRootMismatch
-            # supplementalGroups: [44, 105, 10000]
     service:
       main:
         type: LoadBalancer
@@ -137,11 +126,3 @@ spec:
         globalMounts: 
           - path: /audiobooks
         readOnly: true
-     # try this instead of using manual pvcs
-         #   media:
-    #     type: nfs
-    #     server: expanse.turbo.ac
-    #     path: /eros/Media
-    #     globalMounts:
-    #       - path: /media
-    #         readOnly: true
