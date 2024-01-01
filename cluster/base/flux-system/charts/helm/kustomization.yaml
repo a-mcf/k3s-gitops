@@ -16,3 +16,4 @@ resources:
   - external-secrets.yaml
   - hajimari.yaml
   - cloudnative-pg.yaml
+  - nvidia-charts.yaml
