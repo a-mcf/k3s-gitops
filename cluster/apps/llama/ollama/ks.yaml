@@ -23,7 +23,7 @@ metadata:
   name: cluster-apps-ollama-ui
   namespace: flux-system
 spec:
-  path: "./cluster/apps/llama/ollama-ui/app"
+  path: "./cluster/apps/llama/ollama/ollama-ui"
   dependsOn:
     - name: cluster-apps-ollama
   prune: true
