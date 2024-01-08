@@ -63,10 +63,10 @@ spec:
               requests:
                 cpu: 200m
                 memory: 2Gi
-                nvidia.com/gpu: 1
+                #nvidia.com/gpu: 1
               limits:
                 memory: 12Gi
-                nvidia.com/gpu: 1
+                #nvidia.com/gpu: 1
         pod:
           runtimeClassName: nvidia
           nodeSelector:
