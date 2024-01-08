@@ -8,6 +8,7 @@ resources:
   - media
   - home
   - longhorn-system
+  - llama
   - monitoring
   - nvidia-device-plugin
   - paperless
