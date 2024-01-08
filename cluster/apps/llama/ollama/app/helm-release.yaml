@@ -1,0 +1,82 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app ollama
+  namespace: llama
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      runtimeClassName: nvidia
+    controllers:
+      main:
+        type: deployment
+        updateStrategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: docker.io/ollama/ollama
+              tag: 0.1.18
+            env:
+              TZ: America/New_York
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: all
+              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_ORIGINS: "*"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 8Gi
+                nvidia.com/gpu: 1
+              limits:
+                memory: 12Gi
+                nvidia.com/gpu: 1
+              startup:
+                enabled: false
+        pod:
+          nodeSelector:
+            gpu: "true"
+    service:
+      main:
+        ports:
+          http:
+            port: &port 11434
+    ingress:
+      main:
+        strategy: Recreate
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          hajimari.io/icon: "plex"
+          hajimari.io/group: "Gen-AI"
+        hosts:
+          - host: &host "ollama.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: 11434
+        tls:
+          - hosts:
+              - *host
