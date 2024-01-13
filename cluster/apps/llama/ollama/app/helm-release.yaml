@@ -80,3 +80,10 @@ spec:
         tls:
           - hosts:
               - *host
+              
+    persistence:
+      data:
+        enabled: true
+        existingClaim: nfs-nebula-ollama-data-pvc
+        globalMounts: 
+          - path: /root/.ollama

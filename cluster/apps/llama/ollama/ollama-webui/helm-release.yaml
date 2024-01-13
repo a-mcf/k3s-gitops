@@ -70,7 +70,8 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /app/backend/data
+        globalMounts:
+          - path: /app/backend/data
         storageClassName: longhorn
         size: 10Gi
 
