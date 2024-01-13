@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app ollama-ui
+  name: &app ollama-webui
   namespace: llama
 spec:
   interval: 30m
@@ -44,6 +44,10 @@ spec:
                 memory: 2Gi
               startup:
                 enabled: false
+        pod:
+          securityContext:
+            runAsUser: 2316
+            runAsGroup: 2316
     service:
       main:
         ports:
@@ -67,4 +71,8 @@ spec:
         tls:
           - hosts:
               - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: nfs-ollama-webui-pvc
 
