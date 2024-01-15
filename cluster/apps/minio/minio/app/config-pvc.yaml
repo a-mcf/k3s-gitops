@@ -13,7 +13,7 @@ spec:
     - nfsvers=4
     - port=2049
   nfs:
-    path: /tank/minio
+    path: /tank/appdata/minio
     server: "${NFS_SERVER_NEBULA}"
   persistentVolumeReclaimPolicy: Retain
 ---
