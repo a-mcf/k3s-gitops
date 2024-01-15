@@ -6,6 +6,7 @@ resources:
   - external-secrets
   - default
   - media
+  - minio
   - home
   - longhorn-system
   - llama
