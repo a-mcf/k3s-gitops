@@ -58,13 +58,3 @@ spec:
   #     password:
   #       name: authentik-postgresql
   #       key: postgresql-password
----
-apiVersion: postgresql.cnpg.io/v1
-kind: ScheduledBackup
-metadata:
-  name: authentik-backup
-spec:
-  schedule: "0 21 * * *"
-  backupOwnerReference: self
-  cluster:
-    name: pg-backup

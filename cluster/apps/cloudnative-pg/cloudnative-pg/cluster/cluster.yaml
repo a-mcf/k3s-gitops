@@ -33,7 +33,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup/
       endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: postgres-v3
+      serverName: postgres
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
