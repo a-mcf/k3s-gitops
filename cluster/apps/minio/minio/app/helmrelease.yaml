@@ -65,9 +65,9 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              runAsUser: 2316
-              runAsGroup: 2316
-              fsGroup: 2316
+              runAsUser: 568
+              runAsGroup: 568
+              fsGroup: 568
               fsGroupChangePolicy: OnRootMismatch
               supplementalGroups: [100]
     service:
