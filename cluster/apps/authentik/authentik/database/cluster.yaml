@@ -31,6 +31,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup/authentik
       endpointURL: https://s3.${SECRET_DOMAIN}
+      serverName: authentik
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
