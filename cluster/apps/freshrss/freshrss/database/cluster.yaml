@@ -21,3 +21,19 @@ spec:
       shared_buffers: 512MB
   monitoring:
     enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cloudnative-pg-backup
+      endpointURL: https://s3.${SECRET_DOMAIN}
+      serverName: freshrss
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: minio-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: minio-secret-access-key

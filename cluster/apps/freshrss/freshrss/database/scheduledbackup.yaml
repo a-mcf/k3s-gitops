@@ -2,9 +2,9 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: authentik-backup
+  name: freshrss-backup
 spec:
-  schedule: "0 0 21 * *"
+  schedule: "0 0 22 * *"
   backupOwnerReference: self
   cluster:
-    name: authentikdb
+    name: freshrssdb
