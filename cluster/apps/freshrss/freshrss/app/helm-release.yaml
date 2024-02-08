@@ -69,7 +69,8 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /var/www/FreshRSS/data
+        globalMounts:
+          - path: /var/www/FreshRSS/data
         storageClassName: longhorn
         size: 10Gi
 
