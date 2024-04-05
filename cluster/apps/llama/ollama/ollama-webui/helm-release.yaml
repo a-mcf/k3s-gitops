@@ -33,8 +33,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/ollama-webui/ollama-webui
-              tag: main@sha256:d5a5c1126b5decbfbfcac4f2c3d0595e0bbf7957e3fcabc9ee802d3bc66db6d2
+              repository: ghcr.io/open-webui/open-webui
+              tag: latest@sha256:f4b17695d4a3be96970ad8a061fbbcb5805b90636c501ebdba3553ba779f245c
             env:
               OLLAMA_API_BASE_URL: http://ollama.llama.svc:11434/api
             resources:
