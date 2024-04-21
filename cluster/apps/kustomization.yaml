@@ -9,7 +9,7 @@ resources:
   - minio
   - home
   - longhorn-system
-  - llama
+  #- llama
   - monitoring
   - nvidia-device-plugin
   - paperless
