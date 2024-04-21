@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.4.0
+      version: 2.6.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -69,7 +69,8 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /var/www/FreshRSS/data
+        globalMounts:
+          - path: /var/www/FreshRSS/data
         storageClassName: longhorn
         size: 10Gi
 
