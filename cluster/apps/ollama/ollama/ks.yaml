@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-ollama
   namespace: flux-system
 spec:
-  path: "./cluster/apps/llama/ollama/app"
+  path: "./cluster/apps/ollama/ollama/app"
   dependsOn:
     - name: cluster-apps-nvidia-device-plugin
   prune: true
@@ -20,10 +20,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ollama-webui
+  name: cluster-apps-ollama-open-webui
   namespace: flux-system
 spec:
-  path: "./cluster/apps/llama/ollama/ollama-webui"
+  path: "./cluster/apps/ollama/ollama/webui"
   dependsOn:
     - name: cluster-apps-ollama
   prune: true

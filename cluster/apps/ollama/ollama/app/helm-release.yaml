@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app open-webui
-  namespace: llama
+  name: &app ollama
+  namespace: ollama
 spec:
   interval: 30m
   chart:
@@ -25,32 +25,43 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      runtimeClassName: nvidia
     controllers:
       main:
         type: deployment
+        updateStrategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
-              # repository: ghcr.io/ollama-webui/ollama-webui
-              # tag: main@sha256:d5a5c1126b5decbfbfcac4f2c3d0595e0bbf7957e3fcabc9ee802d3bc66db6d2
-              repository: ghcr.io/open-webui/open-webui
-              tag: main@sha256:38438ea7bb94ce1da37749d92d5261ae85dfb3c88507f2554faad600d046ae95
+              repository: docker.io/ollama/ollama
+              tag: 0.1.32
             env:
-              OLLAMA_API_BASE_URL: http://ollama.llama.svc:11434/api
+              TZ: America/New_York
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: all
+              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_ORIGINS: "*"
             resources:
               requests:
                 cpu: 200m
+                memory: 8Gi
+                #nvidia.com/gpu: 1
               limits:
-                memory: 2Gi
+                memory: 12Gi
+                #nvidia.com/gpu: 1
               startup:
                 enabled: false
+        pod:
+          nodeSelector:
+            gpu: "true"
     service:
       main:
         ports:
           http:
-            port: &port 8080
+            port: &port 11434
     ingress:
       main:
         strategy: Recreate
@@ -60,20 +71,19 @@ spec:
           hajimari.io/icon: "fluent-emoji-high-contrast:llama"
           hajimari.io/group: "Gen-AI"
         hosts:
-          - host: &host "ollama-ui.${SECRET_DOMAIN}"
+          - host: &host "ollama.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   name: main
-                  port: 8080
+                  port: 11434
         tls:
           - hosts:
               - *host
+              
     persistence:
-      config:
+      data:
         enabled: true
-        globalMounts:
-          - path: /app/backend/data
-        storageClassName: longhorn
-        size: 10Gi
-
+        existingClaim: nfs-nebula-ollama-data-pvc
+        globalMounts: 
+          - path: /root/.ollama

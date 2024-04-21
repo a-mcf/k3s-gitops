@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-nebula-ollama-data-pv
-  namespace: llama
+  namespace: ollama
 spec:
   capacity:
     storage: 100Gi
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-nebula-ollama-data-pvc
-  namespace: llama
+  namespace: ollama
 spec:
   storageClassName: ""
   accessModes:
