@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: louislam/uptime-kuma
-              tag: 1.23.11
+              tag: 1.23.12
             env:
               TZ: "America/New_York"
               UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: 0
