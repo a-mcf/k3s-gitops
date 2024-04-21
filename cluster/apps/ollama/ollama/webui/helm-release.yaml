@@ -38,7 +38,7 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: main@sha256:38438ea7bb94ce1da37749d92d5261ae85dfb3c88507f2554faad600d046ae95
             env:
-              OLLAMA_API_BASE_URL: http://ollama.llama.svc:11434/api
+              OLLAMA_BASE_URL: http://ollama.llama.svc:11434
             resources:
               requests:
                 cpu: 200m
@@ -60,7 +60,7 @@ spec:
           hajimari.io/icon: "fluent-emoji-high-contrast:llama"
           hajimari.io/group: "Gen-AI"
         hosts:
-          - host: &host "chatllm.${SECRET_DOMAIN}"
+          - host: &host "chatgpt.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
