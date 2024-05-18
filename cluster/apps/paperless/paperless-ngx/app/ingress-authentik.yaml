@@ -6,7 +6,7 @@ metadata:
   namespace: paperless
 spec:
   type: ExternalName
-  externalName: authentik.authentik.svc.cluster.local
+  externalName: authentik-server.authentik.svc.cluster.local
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
