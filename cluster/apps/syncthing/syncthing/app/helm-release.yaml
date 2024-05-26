@@ -58,7 +58,7 @@ spec:
         enabled: true
         type: LoadBalancer
         controller: syncthing
-        loadBalancerIP: "${HOME_ASSISTANT_SVC_IP}"
+        loadBalancerIP: "${SYNCTHING_IP}"
         ports:
           discovery:
             enabled: true
