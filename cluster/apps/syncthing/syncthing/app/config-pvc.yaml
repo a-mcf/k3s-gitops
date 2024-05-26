@@ -30,3 +30,35 @@ spec:
     requests:
       storage: 500Gi
   volumeName: nfs-nebula-syncthing-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-nebula-syncthing-backup-pv
+  namespace: syncthing
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/backups/syncthing
+    server: "${NFS_SERVER_NEBULA}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-nebula-syncthing-backup-pvc
+  namespace: syncthing
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-nebula-syncthing-backup-pv
