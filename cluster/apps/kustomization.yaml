@@ -19,3 +19,4 @@ resources:
   - cert-manager
   - metallb-system
   - obsidian-couchdb
+  - syncthing
