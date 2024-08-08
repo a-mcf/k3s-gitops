@@ -3,7 +3,7 @@
 # https://github.com/prometheus-community/helm-charts/issues/108
 # retries can be forced by changing maxRetries below. 0 is infinite.
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
