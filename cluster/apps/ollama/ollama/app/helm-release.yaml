@@ -84,6 +84,6 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-nebula-ollama-data-pvc
+        existingClaim: nfs-ollama-data-pvc
         globalMounts: 
           - path: /root/.ollama
