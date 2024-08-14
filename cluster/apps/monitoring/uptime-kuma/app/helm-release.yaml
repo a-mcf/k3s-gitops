@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: uptime-kuma
@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: louislam/uptime-kuma
-              tag: 1.23.12
+              tag: 1.23.13
             env:
               TZ: "America/New_York"
               UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: 0

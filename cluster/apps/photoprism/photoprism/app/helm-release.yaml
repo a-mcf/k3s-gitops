@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: photoprism
@@ -32,7 +32,7 @@ spec:
           main:
             image:
               repository: photoprism/photoprism
-              tag: latest@sha256:f4091c7da6cfacae789eab2dc9049f6ed1c3d5b0af3c491771795f06bf4d577c
+              tag: latest@sha256:b8dc65e14808021dff7fdb60723fe7e7cd224db1fd356c4e3f1892fa4912e4e4
               pullPolicy: IfNotPresent
             env:
               # https://github.com/photoprism/photoprism/discussions/2799

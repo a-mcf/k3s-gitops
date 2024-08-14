@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://github.com/fluxcd-community/flux2-schemas/raw/main/helmrelease-helm-v2beta2.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: syncthing
@@ -40,7 +40,7 @@ spec:
           syncthing:
             image:
               repository: syncthing/syncthing
-              tag: 1.27.7
+              tag: 1.27.10
             resources:
               requests:
                 cpu: 15m
