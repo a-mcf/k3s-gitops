@@ -41,9 +41,9 @@ spec:
     storage: 100Gi
   accessModes:
     - ReadWriteOnce
-  mountOptions:
-    - nfsvers=4
-    - port=2049
+  # mountOptions:
+  #   - nfsvers=4
+  #   - port=2049
   nfs:
     path: /dumpster/appscratch/ollama
     server: "${NFS_SERVER}"
