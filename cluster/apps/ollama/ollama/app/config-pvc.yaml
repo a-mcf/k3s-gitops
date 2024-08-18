@@ -30,36 +30,36 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-nebula-ollama-data-pv
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: nfs-ollama-data-pv
-#   namespace: ollama
-# spec:
-#   capacity:
-#     storage: 100Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   # mountOptions:
-#   #   - nfsvers=4
-#   #   - port=2049
-#   nfs:
-#     path: /dumpster/appscratch/ollama
-#     server: "${NFS_SERVER}"
-#   persistentVolumeReclaimPolicy: Retain
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: nfs-ollama-data-pvc
-#   namespace: ollama
-# spec:
-#   storageClassName: ""
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 100Gi
-#   volumeName: nfs-ollama-data-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-ollama-data-pv
+  namespace: ollama
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  # mountOptions:
+  #   - nfsvers=4
+  #   - port=2049
+  nfs:
+    path: /dumpster/appscratch/ollama
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-ollama-data-pvc
+  namespace: ollama
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeName: nfs-ollama-data-pv
 
