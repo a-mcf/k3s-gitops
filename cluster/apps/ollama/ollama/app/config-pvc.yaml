@@ -42,7 +42,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   mountOptions:
-    - nfsvers=4
+    - nfsvers=3
   #   - port=2049
   nfs:
     path: /dumpster/appscratch/ollama
