@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-loki-pv
+  name: nfs-loki-pv
   namespace: monitoring
 spec:
   storageClassName: "hack"
@@ -30,4 +30,4 @@ spec:
   resources:
     requests:
       storage: 30Gi
-  volumeName: nfs-nebbula-loki-pv
+  volumeName: nfs-loki-pv
