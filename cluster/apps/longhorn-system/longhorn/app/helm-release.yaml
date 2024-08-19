@@ -18,7 +18,7 @@ spec:
     persistence:
       defaultClass: false
     defaultSettings:
-      backupTarget: "nfs://${NFS_SERVER_NEBULA}:/dumpster/backups/apps/longhorn"
+      backupTarget: "nfs://${NFS_SERVER}:/dumpster/backups/apps/longhorn"
       defaultDataPath: /var/lib/longhorn_data
       defaultReplicaCount: 2
       storageMinimalAvailablePercentage: 10

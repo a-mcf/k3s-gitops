@@ -114,6 +114,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-nebula-minio-pvc
+        existingClaim: nfs-minio-pvc
         globalMounts:
           - path: /data

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-home-assistant-config-pv
+  name: nfs-home-assistant-config-pv
   namespace: home
 spec:
   capacity:
@@ -14,13 +14,13 @@ spec:
     - port=2049
   nfs:
     path: /tank/appdata/home-assistant-config
-    server: "${NFS_SERVER_NEBULA}"
+    server: "${nfs-_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-home-assistant-config-pvc
+  name: nfs-home-assistant-config-pvc
   namespace: home
 spec:
   storageClassName: ""
@@ -29,4 +29,4 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: nfs-nebula-home-assistant-config-pv
+  volumeName: nfs-home-assistant-config-pv

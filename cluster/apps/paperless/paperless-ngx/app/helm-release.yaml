@@ -80,21 +80,21 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-nebula-paperless-data-pvc
+        existingClaim: nfs-paperless-data-pvc
         globalMounts:
           - path: /usr/src/paperless/data
       media:
         enabled: true
-        existingClaim: nfs-nebula-paperless-media-pvc
+        existingClaim: nfs-paperless-media-pvc
         globalMounts:
           - path: /usr/src/paperless/media
       consume:
         enabled: true
-        existingClaim: nfs-nebula-paperless-consume-pvc
+        existingClaim: nfs-paperless-consume-pvc
         globalMounts:
           - path: /usr/src/paperless/consume
       export:
         enabled: true
-        existingClaim: nfs-nebula-paperless-export-pvc
+        existingClaim: nfs-paperless-export-pvc
         globalMounts:
           - path: /usr/src/paperless/export

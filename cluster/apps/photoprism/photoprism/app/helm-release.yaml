@@ -89,17 +89,17 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nfs-nebula-photoprism-storage-pvc
+        existingClaim: nfs-photoprism-storage-pvc
         globalMounts:
           - path:  /photoprism/storage
       originals:
         enabled: true
-        existingClaim: nfs-nebula-photoprism-originals-pvc
+        existingClaim: nfs-photoprism-originals-pvc
         globalMounts:
           - path:  /photoprism/originals
       import:
         enabled: true
-        existingClaim: nfs-nebula-photoprism-import-pvc
+        existingClaim: nfs-photoprism-import-pvc
         globalMounts: 
          - path: /photoprism/import     
     # try this instead of using manual pvcs
