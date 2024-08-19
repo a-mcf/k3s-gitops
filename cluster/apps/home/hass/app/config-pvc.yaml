@@ -12,7 +12,7 @@ spec:
   mountOptions:
     - nfsvers=4
     - port=2049
-  nfs-:
+  nfs:
     path: /tank/appdata/home-assistant-config
     server: "${nfs-_SERVER}"
   persistentVolumeReclaimPolicy: Retain
