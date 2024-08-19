@@ -93,11 +93,11 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-nebula-syncthing-pvc
+        existingClaim: nfs-syncthing-pvc
         globalMounts:
           - path: /var/syncthing
       backups:
         enabled: true
-        existingClaim: nfs-nebula-syncthing-backup-pvc
+        existingClaim: nfs-syncthing-backup-pvc
         globalMounts:
           - path: /backups

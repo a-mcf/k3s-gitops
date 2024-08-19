@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-music-pv
+  name: nfs-music-pv
   namespace: media
 spec:
   capacity:
@@ -48,13 +48,13 @@ spec:
     - port=2049
   nfs:
     path: /tank/user_files/shared/music
-    server: "${NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-music-pvc
+  name: nfs-music-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -63,12 +63,12 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  volumeName: nfs-nebula-music-pv
+  volumeName: nfs-music-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-video-pv
+  name: nfs-video-pv
   namespace: media
 spec:
   capacity:
@@ -80,13 +80,13 @@ spec:
     - port=2049
   nfs:
     path: /tank/video
-    server: "${NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-video-pvc
+  name: nfs-video-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -95,12 +95,12 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  volumeName: nfs-nebula-video-pv
+  volumeName: nfs-video-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-plex-audiobooks-pv
+  name: nfs-plex-audiobooks-pv
   namespace: media
 spec:
   capacity:
@@ -112,13 +112,13 @@ spec:
     - port=2049
   nfs:
     path: /tank/user_files/shared/audiobooks
-    server: "${NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-plex-audiobooks-pvc
+  name: nfs-plex-audiobooks-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -127,12 +127,12 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-nebula-plex-audiobooks-pv
+  volumeName: nfs-plex-audiobooks-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-nebula-video-transcode-pv
+  name: nfs-video-transcode-pv
   namespace: media
 spec:
   capacity:
@@ -144,13 +144,13 @@ spec:
     - port=2049
   nfs:
     path: /dumpster/video/transcode
-    server: "${NFS_SERVER_NEBULA}"
+    server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-nebula-video-transcode-pvc
+  name: nfs-video-transcode-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -159,4 +159,4 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  volumeName: nfs-nebula-video-transcode-pv
+  volumeName: nfs-video-transcode-pv

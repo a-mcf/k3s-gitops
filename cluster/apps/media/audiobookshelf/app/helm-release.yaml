@@ -71,11 +71,11 @@ spec:
         existingClaim: longhorn-audiobookshelf-metadata-pvc
       audiobooks:
         enabled: true
-        existingClaim: nfs-nebula-audiobooks-pvc
+        existingClaim: nfs-audiobooks-pvc
         readOnly: true
       backups:
         enabled: true
-        existingClaim: nfs-nebula-audiobookshelf-backups-pvc
+        existingClaim: nfs-audiobookshelf-backups-pvc
         globalMounts:
           - path: /metadata/backups
         readOnly: false    
