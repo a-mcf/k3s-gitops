@@ -55,4 +55,4 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-whisper-pvc
+        existingClaim: nfs-piper-pvc
