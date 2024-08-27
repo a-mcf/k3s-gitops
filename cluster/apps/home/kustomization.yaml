@@ -6,3 +6,4 @@ resources:
   - ./zwave-js-ui/ks.yaml
   - ./hass/ks.yaml
   - ./wyoming-piper/ks.yaml
+  - ./wyoming-whisper/ks.yaml
