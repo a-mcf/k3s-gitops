@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nf-piper-pv
+  name: nfs-piper-pv
   namespace: home
 spec:
   capacity:
