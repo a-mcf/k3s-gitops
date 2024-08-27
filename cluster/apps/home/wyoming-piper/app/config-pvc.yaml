@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nf-piper-pvc
+  name: nfs-piper-pvc
   namespace: home
 spec:
   storageClassName: ""
