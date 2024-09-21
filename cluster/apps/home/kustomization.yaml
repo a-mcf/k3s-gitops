@@ -5,6 +5,6 @@ resources:
   - ./namespace.yaml
   - ./zwave-js-ui/ks.yaml
   - ./hass/ks.yaml
-  - ./esphome/ks.yaml
+  #- ./esphome/ks.yaml
   - ./wyoming-piper/ks.yaml
   - ./wyoming-whisper/ks.yaml
