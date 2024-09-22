@@ -8,4 +8,4 @@ resources:
   - ./esphome/ks.yaml
   - ./wyoming-piper/ks.yaml
   - ./wyoming-whisper/ks.yaml
-  #- ./openwakeword/ks.yaml
+  - ./openwakeword/ks.yaml
