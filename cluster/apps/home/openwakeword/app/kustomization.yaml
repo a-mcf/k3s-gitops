@@ -6,7 +6,7 @@ resources:
 
 configMapGenerator:
   - name: openwakeword
-    namespace: default
+    namespace: home
     files:
       - resources/hey_glados.tflite
 
