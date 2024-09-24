@@ -45,7 +45,7 @@ spec:
       # remote access
       extraContainers:
         - name: nebula
-          image: ghcr.io/a-mcf/nebula-container:1.9.3
+          image: ghcr.io/a-mcf/nebula-container:1.9.4
           securityContext:
             capabilities:
               add:
