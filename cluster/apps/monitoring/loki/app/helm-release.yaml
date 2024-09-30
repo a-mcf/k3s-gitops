@@ -18,6 +18,7 @@ spec:
       interval: 5m
   values:
     loki:
+      deploymentMode: SimpleScalable
       podSecurityContext:
         fsGroup: 2316
         runAsGroup: 2316
