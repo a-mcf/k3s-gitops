@@ -27,6 +27,15 @@ spec:
         replication_factor: 1
       storage:
         type: 'filesystem'
+      schemaConfig:
+        configs:
+          - from: 2024-04-01
+            object_store: filesystem
+            store: tsdb
+            schema: v13
+            index:
+              prefix: index_
+              period: 24h
       structuredConfig:
         auth_enabled: false
         server:
@@ -44,14 +53,14 @@ spec:
         #   split_queries_by_interval: 15m
         #   ingestion_rate_mb: 8
         #   ingestion_burst_size_mb: 16
-        schema_config:
-          configs:
-            - from: 2024-01-01
-              store: tsdb
-              index:
-                prefix: loki_index_
-                period: 24h
-              object_store: filesystem 
+        # schema_config:
+        #   configs:
+        #     - from: 2024-01-01
+        #       store: tsdb
+        #       index:
+        #         prefix: loki_index_
+        #         period: 24h
+        #       object_store: filesystem 
         # common:
         #   path_prefix: /var/loki
         #   replication_factor: 1
@@ -133,16 +142,16 @@ spec:
       replicas: 0
     write:
       replicas: 0
-    monitoring:
-      serviceMonitor:
-        enabled: false
-        metricsInstance:
-          enabled: false
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-        lokiCanary:
-          enabled: false
-    test:
-      enabled: false
+    # monitoring:
+    #   serviceMonitor:
+    #     enabled: false
+    #     metricsInstance:
+    #       enabled: false
+    #   selfMonitoring:
+    #     enabled: false
+    #     grafanaAgent:
+    #       installOperator: false
+    #     lokiCanary:
+    #       enabled: false
+    # test:
+    #   enabled: false
