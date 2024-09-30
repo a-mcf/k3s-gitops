@@ -46,13 +46,12 @@ spec:
           ingestion_burst_size_mb: 16
         schema_config:
           configs:
-            - from: "2022-01-11"
-              store: boltdb-shipper
-              object_store: filesystem
-              schema: v12
+            - from: 2024-01-01
+              store: tsdb
               index:
                 prefix: loki_index_
                 period: 24h
+              object_store: filesystem 
         common:
           path_prefix: /var/loki
           replication_factor: 1
@@ -128,6 +127,12 @@ spec:
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
+      read:
+        replicas: 0
+      backend:
+        replicas: 0
+      write:
+        replicas: 0
     monitoring:
       serviceMonitor:
         enabled: false
