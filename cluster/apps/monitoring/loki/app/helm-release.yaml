@@ -130,12 +130,12 @@ spec:
       persistence:
         size: 30Gi
         storageClass: hack
-      extraVolumes:
-        - name: rules
-          emptyDir: {}
-      extraVolumeMounts:
-        - name: rules
-          mountPath: /rules
+      # extraVolumes:
+      #   - name: rules
+      #     emptyDir: {}
+      # extraVolumeMounts:
+      #   - name: rules
+      #     mountPath: /rules
     read:
       replicas: 0
     backend:
