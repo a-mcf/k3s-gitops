@@ -52,7 +52,7 @@ spec:
   capacity:
     storage: 2000Gi
   accessModes:
-    - ReadOnly
+    - ReadOnlyMany
   mountOptions:
     - nfsvers=4
     - port=2049
