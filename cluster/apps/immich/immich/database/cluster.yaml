@@ -1,53 +1,39 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
-apiVersion: postgresql.cnpg.io/v1
+apiVersion: postgresql.cnpg.io/v1                                                                                                                                                                                                                                                       
 kind: Cluster
 metadata:
-  name: immichdb
+  name: immich-pg
   namespace: immich
 spec:
   instances: 1
-  #imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
-  # https://github.com/tensorchord/cloudnative-pgvecto.rs
-  # to add vector support
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:14.13
-  inheritedMetadata:
-    labels:
-      kube-image-keeper.enix.io/image-caching-policy: ignore
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.3-v0.2.1
+  superuserSecret:
+    name: immich-pg-superuser
+  enableSuperuserAccess: true
+  startDelay: 30
+  stopDelay: 100
   primaryUpdateStrategy: unsupervised
-  storage:
-    size: 10Gi
-    storageClass: longhorn
-  # superuserSecret:
-  #   name: cloudnative-pg-secret
+  primaryUpdateMethod: restart ##@@ Cannot use switchover with 1 instance
   postgresql:
-    parameters:
-      max_connections: "600"
-      shared_buffers: 512MB
-    # https://github.com/tensorchord/cloudnative-pgvecto.rs
     shared_preload_libraries:
       - "vectors.so"
+    enableAlterSystem: true
+  storage:
+    size: 8Gi
   monitoring:
-    enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cloudnative-pg-backup
-      endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: immich
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: minio-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: minio-secret-access-key
-
+    enablePodMonitor: false
   bootstrap:
     initdb:
-      postInitSQL:
+      database: immich
+      owner: immich
+      secret:
+        name: immich-pg-user
+      dataChecksums: true
+      postInitApplicationSQL:
         - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+        - SET search_path TO "$user", public, vectors;
         - CREATE EXTENSION IF NOT EXISTS "vectors";
+        - CREATE EXTENSION IF NOT EXISTS "cube";
+        - CREATE EXTENSION IF NOT EXISTS "earthdistance";
+        - ALTER SCHEMA vectors OWNER TO "immich";
+        - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "immich";
+        - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "immich";
