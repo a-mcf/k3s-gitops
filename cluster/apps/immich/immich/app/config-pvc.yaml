@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-machine-learning-cache
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-library-pv
+  namespace: immich
+spec:
+  capacity:
+    storage: 1T
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/photos/immich
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-library-pvc
+  namespace: immich
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1T
+  volumeName: nfs-immich-library-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-photprism-originals-pv
+  namespace: immich
+spec:
+  capacity:
+    storage: 2000Gi
+  accessModes:
+    - ReadOnly
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/photos/originals
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-photprism-originals-pvc
+  namespace: immich
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2000Gi
+  volumeName: nfs-immich-photprism-originals-pv
+---
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs-immich-storage-pv
+#   namespace: immich
+# spec:
+#   capacity:
+#     storage: 500Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   mountOptions:
+#     - nfsvers=4
+#     - port=2049
+#   nfs:
+#     path: /tank/appdata/immich-storage
+#     server: "${NFS_SERVER}"
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs-immich-storage-pvc
+#   namespace: immich
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 500Gi
+#   volumeName: nfs-immich-storage-pv

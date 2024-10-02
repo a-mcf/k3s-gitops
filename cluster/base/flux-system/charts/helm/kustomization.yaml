@@ -18,3 +18,4 @@ resources:
   - cloudnative-pg.yaml
   - nvidia-charts.yaml
   - nvidia-device-plugin-charts.yaml
+  - immich-charts.yaml
