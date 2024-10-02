@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1                                                                                                                                                                                                                                                       
 kind: Cluster
 metadata:
@@ -5,22 +7,40 @@ metadata:
   namespace: immich
 spec:
   instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.3-v0.2.1
-  superuserSecret:
-    name: immich-pg-superuser
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0 
   enableSuperuserAccess: true
   startDelay: 30
   stopDelay: 100
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: restart ##@@ Cannot use switchover with 1 instance
   postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
     shared_preload_libraries:
       - "vectors.so"
-    enableAlterSystem: true
   storage:
-    size: 8Gi
+    size: 10Gi
+    storageClass: longhorn
   monitoring:
-    enablePodMonitor: false
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cloudnative-pg-backup
+      endpointURL: https://s3.${SECRET_DOMAIN}
+      serverName: authentik
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: minio-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: minio-secret-access-key
+  
   bootstrap:
     initdb:
       dataChecksums: true
