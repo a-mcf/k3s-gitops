@@ -7,7 +7,10 @@ metadata:
   namespace: immich
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
+  #imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
+  # https://github.com/tensorchord/cloudnative-pgvecto.rs
+  # to add vector support
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:14.13
   inheritedMetadata:
     labels:
       kube-image-keeper.enix.io/image-caching-policy: ignore
@@ -21,6 +24,9 @@ spec:
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
+    # https://github.com/tensorchord/cloudnative-pgvecto.rs
+    shared_preload_libraries:
+      - "vectors.so"
   monitoring:
     enablePodMonitor: true
   backup:
@@ -40,22 +46,8 @@ spec:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
 
-  # bootstrap:
-  #   initdb:
-  #     import:
-  #       type: microservice
-  #       databases:
-  #         - immich
-  #       source:
-  #         externalCluster: immich-postgresql
-
-  # externalClusters:
-  #   - name: immich-postgresql
-  #     connectionParameters:
-  #       # Use the correct IP or host name for the source database
-  #       host: immich-postgresql.networking.svc.cluster.local
-  #       user: immich
-  #       dbname: postgres
-  #     password:
-  #       name: immich-postgresql
-  #       key: postgresql-password
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+        - CREATE EXTENSION IF NOT EXISTS "vectors";
