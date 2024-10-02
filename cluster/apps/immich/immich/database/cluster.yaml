@@ -23,8 +23,6 @@ spec:
     enablePodMonitor: false
   bootstrap:
     initdb:
-      database: app
-      owner: app
       dataChecksums: true
       postInitApplicationSQL:
         - ALTER SYSTEM SET search_path TO "$user", public, vectors;
