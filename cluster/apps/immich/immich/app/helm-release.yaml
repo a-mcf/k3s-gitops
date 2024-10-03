@@ -30,9 +30,6 @@ spec:
       persistence:
         library:
           existingClaim: nfs-immich-library-pvc
-        external:
-          enabled: true
-          existingClaim: nfs-immich-photprism-originals-pvc
 
     env:
       MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
@@ -59,6 +56,11 @@ spec:
         requests:
           cpu: 1500m
           memory: 2048M
+      persistence:
+        external:
+          enabled: true
+          existingClaim: nfs-immich-photprism-originals-pvc
+          readOnly: true
       ingress:
         main:
           enabled: true
@@ -77,6 +79,13 @@ spec:
             - hosts:
                 - immich.${SECRET_DOMAIN}
 
+    microservices:
+      persistence:
+        external:
+          enabled: true
+          existingClaim: nfs-immich-photprism-originals-pvc
+          readOnly: true
+    
     machine-learning:
       resources:
         requests:
