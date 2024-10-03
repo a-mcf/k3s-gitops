@@ -28,7 +28,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 30Gi
+      storage: 10Gi
   storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-f80345f9-f622-42eb-9948-37d674b616c0
