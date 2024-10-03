@@ -22,7 +22,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: longhorn-openwebui-pvc-static
-  namespace: media
+  namespace: ollama
 spec:
   accessModes:
     - ReadWriteOnce
