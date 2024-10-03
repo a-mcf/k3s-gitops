@@ -35,6 +35,7 @@ spec:
             image:
               repository: public.ecr.aws/docker/library/couchdb
               tag: 3.3.3
+            
             env:
               COUCHDB_USER:
                 valueFrom:
@@ -46,12 +47,14 @@ spec:
                   secretKeyRef:
                     name: obsidian-couchdb-secret
                     key: couchdb-password
+            
             resources:
               requests:
                 cpu: 48m
                 memory: 146M
               limits:
                 memory: 2000M
+            
             probes:
               liveness:
                 enabled: true
@@ -62,6 +65,7 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
+
         initContainers:
           init-config:
             image:
