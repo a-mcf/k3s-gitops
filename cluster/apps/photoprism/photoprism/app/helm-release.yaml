@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,9 +27,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      photoprism:
         containers:
-          main:
+          photoprism:
             image:
               repository: photoprism/photoprism
               tag: latest@sha256:1f14335e2cd9dfaadc555ac8d40aa8a3966a5b5e5ef88fa78973ef7e8673fa2b
@@ -62,7 +62,8 @@ spec:
                 memory: 4Gi
     
     service:
-      main:
+      photprism:
+        controller: photoprism
         ports:
           http:
             port: 2342
@@ -81,7 +82,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: photoprism
         tls:
           - hosts:
               - *host
