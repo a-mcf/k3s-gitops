@@ -54,11 +54,7 @@ spec:
               - "sh"
               - "-c"
               - "cp /config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
-            volumeMounts:
-              - name: config
-                mountPath: /config
-              - name: config-storage
-                mountPath: /opt/couchdb/etc/default.d
+ 
     defaultPodOptions:
       SecurityContext:
         runAsUser: 568
@@ -95,6 +91,10 @@ spec:
         enabled: true
         type: configMap
         name: obsidian-couchdb-configmap
+        advancedMounts:
+          obsidian-couchdb:
+            init-config:
+              - path: /config
 
       config-storage:
         enabled: true
