@@ -13,7 +13,7 @@ spec:
   csi:
     driver: driver.longhorn.io
     fsType: ext4
-    #volumeHandle: pvc-f80345f9-f622-42eb-9948-37d674b616c0
+    volumeHandle: pvc-f80345f9-f622-42eb-9948-37d674b616c0
   persistentVolumeReclaimPolicy: Retain
   storageClassName: longhorn
   volumeMode: Filesystem
@@ -31,4 +31,4 @@ spec:
       storage: 10Gi
   storageClassName: longhorn
   volumeMode: Filesystem
-  #volumeName: pvc-f80345f9-f622-42eb-9948-37d674b616c0
+  volumeName: pvc-f80345f9-f622-42eb-9948-37d674b616c0
