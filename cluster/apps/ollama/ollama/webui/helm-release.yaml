@@ -65,16 +65,9 @@ spec:
                 service:
                   identifier: open-web-ui
                   port: 8080
-          - host: &hostold "chatgpt.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: open-web-ui
-                  port: 8080
         tls:
           - hosts:
               - *host
-              - *hostold
     persistence:
       config:
         enabled: true
