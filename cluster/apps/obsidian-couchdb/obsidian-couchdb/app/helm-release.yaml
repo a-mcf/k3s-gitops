@@ -22,6 +22,13 @@ spec:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
+      
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
           couchdb:
@@ -45,6 +52,16 @@ spec:
                 memory: 146M
               limits:
                 memory: 2000M
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
         initContainers:
           init-config:
             image:
@@ -54,13 +71,6 @@ spec:
               - "sh"
               - "-c"
               - "cp /config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
- 
-    defaultPodOptions:
-      SecurityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
 
     service:
       couchdb:
