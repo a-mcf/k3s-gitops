@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -24,20 +25,14 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # dependsOn:
-  #   - name: intel-device-plugin-gpu
-  #     namespace: kube-system
-  #   - name: rook-ceph-cluster
-  #     namespace: rook-ceph
-  #   - name: volsync
-  #     namespace: volsync
+
   values:
     controllers:
-      main:
+      plex:
         # annotations:
         #   reloader.stakater.com/auto: "true"
         containers:
-          main:
+          plex:
             image:
               repository: ghcr.io/onedr0p/plex
               tag: 1.41.0.8994-f2c27da23@sha256:8e1a094b0cd9c980e2b2e22daf2c2b212893bdb8e1e9e6452aefba9448466ff1
@@ -74,7 +69,8 @@ spec:
             runAsUser: 2316
             runAsGroup: 2316
     service:
-      main:
+      plex:
+        controller: plex
         type: LoadBalancer
         loadBalancerIP: "${PLEX_SVC_IP}"
         ports:
@@ -93,7 +89,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: plex
                   port: http
         tls:
           - hosts:
