@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -10,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -29,9 +30,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      freshrss:
         containers:
-          main:
+          freshrss:
             image:
               repository: freshrss/freshrss
               tag: 1.24.3
@@ -40,7 +41,7 @@ spec:
               CRON_MIN: "18,48"
               DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
     service:
-      main:
+      freshrss:
         ports:
           http:
             port: 80
@@ -60,7 +61,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: freshrss
                   port: http
         tls:
           - hosts:

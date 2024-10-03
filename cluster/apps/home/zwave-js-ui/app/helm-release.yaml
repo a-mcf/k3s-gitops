@@ -57,12 +57,12 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-              resources:
-                requests:
-                  cpu: 10m
-                  memory: 100Mi
-                limits:
-                memory: 500Mi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+              memory: 500Mi
     service:
       zwave-js-ui:
         ports:
