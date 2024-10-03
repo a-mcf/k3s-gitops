@@ -31,7 +31,6 @@ spec:
     controllers:
       ollama:
         type: deployment
-        updateStrategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -45,17 +44,16 @@ spec:
               NVIDIA_DRIVER_CAPABILITIES: all
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-            resources:
-              requests:
-                cpu: 200m
-                memory: 8Gi
-                #nvidia.com/gpu: 1
-              limits:
-                memory: 12Gi
-                #nvidia.com/gpu: 1
-              startup:
-                enabled: false
         pod:
+          updateStrategy: Recreate
+          resources:
+          requests:
+            cpu: 200m
+            memory: 8Gi
+            #nvidia.com/gpu: 1
+          limits:
+            memory: 12Gi
+            #nvidia.com/gpu: 1
           nodeSelector:
             gpu: "true"
     service:
