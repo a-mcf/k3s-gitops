@@ -61,7 +61,13 @@ spec:
           hajimari.io/icon: "fluent-emoji-high-contrast:llama"
           hajimari.io/group: "Gen-AI"
         hosts:
-          - host: &host "chatgpt.${SECRET_DOMAIN}"
+          - host: &host "blunderbot.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: open-web-ui
+                  port: 8080
+          - host: &hostold "chatgpt.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -70,6 +76,7 @@ spec:
         tls:
           - hosts:
               - *host
+              - *hostold
     persistence:
       config:
         enabled: true
