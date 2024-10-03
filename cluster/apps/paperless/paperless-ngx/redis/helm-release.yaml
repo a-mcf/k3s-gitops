@@ -37,6 +37,7 @@ spec:
         ports:
           http:
             enabled: false
+            port: 80
           redis:
             enabled: true
             port: 6379
