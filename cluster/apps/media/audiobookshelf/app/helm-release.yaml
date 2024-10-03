@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,9 +27,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      audiobookshelf:
         containers:
-          main:
+          audiobookshelf:
             image:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: 2.13.4
@@ -39,7 +39,8 @@ spec:
               AUDIOBOOKSHELF_GID: 2316
 
     service:
-      main:
+      audiobookshelf:
+        controller: audiobookshelf
         ports:
           http:
             port: 80
@@ -57,7 +58,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: audiobookshelf
         tls:
           - hosts:
               - *host
