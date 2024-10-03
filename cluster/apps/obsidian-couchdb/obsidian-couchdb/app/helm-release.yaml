@@ -18,7 +18,7 @@ spec:
 
   values:
     controllers:
-      obsidinan-couchdb:
+      obsidian-couchdb:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
