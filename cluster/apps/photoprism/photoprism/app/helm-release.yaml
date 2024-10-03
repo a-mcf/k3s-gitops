@@ -62,7 +62,7 @@ spec:
                 memory: 4Gi
     
     service:
-      photprism:
+      photoprism:
         controller: photoprism
         ports:
           http:
