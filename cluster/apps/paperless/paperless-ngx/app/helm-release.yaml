@@ -22,9 +22,9 @@ spec:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
-        pod:
-          supplementalGroups:
-            - 2316
+        # pod:
+        #   supplementalGroups:
+        #     - 2316
         containers:
           paperless:
             image:
