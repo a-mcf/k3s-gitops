@@ -47,15 +47,15 @@ spec:
         pod:
           updateStrategy: Recreate
           resources:
-          requests:
-            cpu: 200m
-            memory: 8Gi
-            #nvidia.com/gpu: 1
-          limits:
-            memory: 12Gi
-            #nvidia.com/gpu: 1
-          nodeSelector:
-            gpu: "true"
+            requests:
+              cpu: 200m
+              memory: 8Gi
+              #nvidia.com/gpu: 1
+            limits:
+              memory: 12Gi
+              #nvidia.com/gpu: 1
+            nodeSelector:
+              gpu: "true"
     service:
       ollama:
         controller: ollama
@@ -64,7 +64,6 @@ spec:
             port: &port 11434
     ingress:
       main:
-        strategy: Recreate
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
