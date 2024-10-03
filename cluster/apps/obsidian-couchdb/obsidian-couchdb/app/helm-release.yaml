@@ -77,8 +77,6 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 5
 
-
-
     service:
       obsidian-couchdb:
         controller: obsidian-couchdb
