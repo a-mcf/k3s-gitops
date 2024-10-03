@@ -44,14 +44,14 @@ spec:
               NVIDIA_DRIVER_CAPABILITIES: all
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-          resources:
-            requests:
-              cpu: 200m
-              memory: 8Gi
-              nvidia.com/gpu: 0
-            limits:
-              memory: 12Gi
-              nvidia.com/gpu: 0
+            resources:
+              requests:
+                cpu: 200m
+                memory: 8Gi
+                nvidia.com/gpu: 0
+              limits:
+                memory: 12Gi
+                nvidia.com/gpu: 0
         pod:
           nodeSelector:
             gpu: "true"
