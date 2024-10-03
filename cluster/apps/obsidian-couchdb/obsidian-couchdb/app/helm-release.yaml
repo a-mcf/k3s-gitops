@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -18,13 +18,13 @@ spec:
 
   values:
     controllers:
-      main:
+      couchdb:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          couchdb:
             image:
               repository: public.ecr.aws/docker/library/couchdb
               tag: 3.3.3
@@ -39,12 +39,12 @@ spec:
                   secretKeyRef:
                     name: obsidian-couchdb-secret
                     key: couchdb-password
-                resources:
-                  requests:
-                    cpu: 48m
-                    memory: 146M
-                  limits:
-                    memory: 2000M
+            resources:
+              requests:
+                cpu: 48m
+                memory: 146M
+              limits:
+                memory: 2000M
         initContainers:
           init-config:
             image:
@@ -67,7 +67,8 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
 
     service:
-      main:
+      couchdb:
+        controller: couchdb
         ports:
           http:
             port: 5984
@@ -83,7 +84,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: couchdb
                   port: http
         tls:
           - hosts:

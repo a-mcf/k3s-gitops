@@ -68,6 +68,7 @@ spec:
           kubernetes.io/ingress.class: "nginx"
           hajimari.io/icon: "fluent-emoji-high-contrast:llama"
           hajimari.io/group: "Gen-AI"
+          hajimari.io/enable: "false"
         hosts:
           - host: &host "ollama.${SECRET_DOMAIN}"
             paths:
