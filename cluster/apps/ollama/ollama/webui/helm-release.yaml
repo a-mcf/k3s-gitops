@@ -80,7 +80,5 @@ spec:
         enabled: true
         globalMounts:
           - path: /app/backend/data
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 10Gi
+        existingClaim: pvc-f80345f9-f622-42eb-9948-37d674b616c0
 
