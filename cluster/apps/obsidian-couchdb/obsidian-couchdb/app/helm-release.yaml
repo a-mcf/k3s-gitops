@@ -18,7 +18,7 @@ spec:
 
   values:
     controllers:
-      couchdb:
+      obsidinan-couchdb:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
@@ -31,7 +31,7 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
-          couchdb:
+          obsidina-couchdb:
             image:
               repository: public.ecr.aws/docker/library/couchdb
               tag: 3.3.3
@@ -77,8 +77,8 @@ spec:
               - "cp /config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
 
     service:
-      couchdb:
-        controller: couchdb
+      obsidian-couchdb:
+        controller: obsidian-couchdb
         ports:
           http:
             port: 5984
@@ -94,7 +94,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: couchdb
+                  identifier: obsidian-couchdb
                   port: http
         tls:
           - hosts:
