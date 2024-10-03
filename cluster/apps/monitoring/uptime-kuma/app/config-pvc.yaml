@@ -11,3 +11,46 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: longhorn
+  volumeName: pvc-ae5d7942-807d-4b02-8e5e-fdc5beb06f29
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   annotations:
+#     longhorn.io/volume-scheduling-error: ""
+#     pv.kubernetes.io/provisioned-by: driver.longhorn.io
+#   creationTimestamp: "2023-07-15T16:43:11Z"
+#   finalizers:
+#   - kubernetes.io/pv-protection
+#   - external-attacher/driver-longhorn-io
+#   name: pvc-ae5d7942-807d-4b02-8e5e-fdc5beb06f29
+#   resourceVersion: "373234315"
+#   uid: ae6a957e-103c-4a27-9c5b-5d1d3c7962dc
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   capacity:
+#     storage: 10Gi
+#   claimRef:
+#     apiVersion: v1
+#     kind: PersistentVolumeClaim
+#     name: uptime-kuma-config-longhorn-pvc
+#     namespace: monitoring
+#     resourceVersion: "233650673"
+#     uid: ae5d7942-807d-4b02-8e5e-fdc5beb06f29
+#   csi:
+#     driver: driver.longhorn.io
+#     fsType: ext4
+#     volumeAttributes:
+#       dataLocality: disabled
+#       fsType: ext4
+#       numberOfReplicas: "3"
+#       staleReplicaTimeout: "30"
+#       storage.kubernetes.io/csiProvisionerIdentity: 1689345175624-8081-driver.longhorn.io
+#     volumeHandle: pvc-ae5d7942-807d-4b02-8e5e-fdc5beb06f29
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: longhorn
+#   volumeMode: Filesystem
+# status:
+#   phase: Bound
+
