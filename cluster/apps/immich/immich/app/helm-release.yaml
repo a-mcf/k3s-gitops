@@ -30,6 +30,9 @@ spec:
       persistence:
         library:
           existingClaim: nfs-immich-library-pvc
+        external:
+          enabled: true
+          existingClaim: nfs-immich-photprism-originals-pvc
 
     env:
       MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"

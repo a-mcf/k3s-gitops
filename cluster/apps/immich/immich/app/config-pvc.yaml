@@ -74,35 +74,35 @@ spec:
     requests:
       storage: 1T
   volumeName: nfs-immich-library-pv
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: nfs-immich-photprism-originals-pv
-#   namespace: immich
-# spec:
-#   capacity:
-#     storage: 2000Gi
-#   accessModes:
-#     - ReadOnlyMany
-#   mountOptions:
-#     - nfsvers=4
-#     - port=2049
-#   nfs:
-#     path: /tank/user_files/shared/photos/originals
-#     server: "${NFS_SERVER}"
-#   persistentVolumeReclaimPolicy: Retain
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: nfs-immich-photprism-originals-pvc
-#   namespace: immich
-# spec:
-#   storageClassName: ""
-#   accessModes:
-#     - ReadOnlyMany
-#   resources:
-#     requests:
-#       storage: 2000Gi
-#   volumeName: nfs-immich-photprism-originals-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-immich-photprism-originals-pv
+  namespace: immich
+spec:
+  capacity:
+    storage: 2000Gi
+  accessModes:
+    - ReadOnlyMany
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/photos/originals
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-immich-photprism-originals-pvc
+  namespace: immich
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 2000Gi
+  volumeName: nfs-immich-photprism-originals-pv
