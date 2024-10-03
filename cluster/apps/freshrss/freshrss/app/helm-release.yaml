@@ -42,6 +42,7 @@ spec:
               DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
     service:
       freshrss:
+        controller: freshrss
         ports:
           http:
             port: 80
