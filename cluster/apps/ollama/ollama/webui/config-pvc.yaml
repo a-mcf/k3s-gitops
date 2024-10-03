@@ -17,3 +17,18 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: longhorn
   volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-openwebui-pvc-static
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+  volumeName: pvc-f80345f9-f622-42eb-9948-37d674b616c0
