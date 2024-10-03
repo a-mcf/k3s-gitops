@@ -55,7 +55,6 @@ spec:
             port: &port 8080
     ingress:
       main:
-        strategy: Recreate
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
