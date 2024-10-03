@@ -22,7 +22,7 @@ spec:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
-        pods:
+        pod:
           supplementalGroups:
             - 2316
         containers:
