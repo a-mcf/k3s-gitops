@@ -26,11 +26,12 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [100]
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [100]
+
     controllers:
       minio:
         annotations:
@@ -80,7 +81,8 @@ spec:
           s3:
             port: 9000
     serviceMonitor:
-      main:
+      minio:
+        serviceName: minio
         enabled: true
         endpoints:
           - port: s3
@@ -107,7 +109,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: minio
                   port: s3
         tls:
           - hosts:
