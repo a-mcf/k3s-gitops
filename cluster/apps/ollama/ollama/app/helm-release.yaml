@@ -44,18 +44,17 @@ spec:
               NVIDIA_DRIVER_CAPABILITIES: all
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-        pod:
-          updateStrategy: Recreate
           resources:
             requests:
               cpu: 200m
               memory: 8Gi
-              #nvidia.com/gpu: 1
+              nvidia.com/gpu: 0
             limits:
               memory: 12Gi
-              #nvidia.com/gpu: 1
-            nodeSelector:
-              gpu: "true"
+              nvidia.com/gpu: 0
+        pod:
+          nodeSelector:
+            gpu: "true"
     service:
       ollama:
         controller: ollama
