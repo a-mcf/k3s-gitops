@@ -57,6 +57,7 @@ spec:
                 memory: 4Gi
     service:
       home-assistant:
+        controller: home-assistant
         type: LoadBalancer
         loadBalancerIP: "${HOME_ASSISTANT_SVC_IP}"
         ports:
