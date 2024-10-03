@@ -73,7 +73,8 @@ spec:
         enabled: true
         globalMounts:
           - path: /var/www/FreshRSS/data
-        storageClassName: longhorn
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
         size: 10Gi
 
     # podAnnotations:
