@@ -45,8 +45,6 @@ spec:
                 cpu: 200m
               limits:
                 memory: 2Gi
-              startup:
-                enabled: false
     service:
       open-web-ui:
         controller: open-web-ui
