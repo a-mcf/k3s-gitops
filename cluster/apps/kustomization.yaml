@@ -6,7 +6,7 @@ resources:
   - cert-manager
   - cloudnative-pg
   - default
-  - external-secrets
+  #- external-secrets
   - freshrss
   - home
   - immich

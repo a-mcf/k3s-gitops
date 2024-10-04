@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ocis
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      ocis:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65542 # gladius:external-services
+
+        initContainers:
+          init-config:
+            image:
+              repository: docker.io/owncloud/ocis
+              tag: 5.0.8
+            command:
+              - /bin/sh
+              - -c
+            args:
+              - |
+                if [ ! -f /etc/ocis/ocis.yaml ]; then ocis init; else exit 0; fi
+            env:
+              OCIS_INSECURE: true
+
+        containers:
+          ocis:
+            image:
+              repository: docker.io/owncloud/ocis
+              tag: 5.0.8
+            env:
+              DEMO_USERS: false
+              OCIS_LOG_COLOR: true
+              OCIS_LOG_LEVEL: info
+              OCIS_LOG_PRETTY: true
+              OCIS_URL: https://files.bjw-s.dev
+              PROXY_TLS: false
+              STORAGE_USERS_OCIS_ROOT: /data
+            envFrom:
+              - secretRef:
+                  name: ocis-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      app:
+        controller: ocis
+        ports:
+          http:
+            port: 9200
+
+    ingress:
+      app:
+        className: "nginx"
+        hosts:
+          - host: "ocis.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      config:
+        type: configMap
+        name: ocis-configmap
+        globalMounts:
+          - path: /etc/ocis/web.yaml
+            subPath: web.yaml
+            readOnly: true
+      storage-users:
+        type: nfs
+        server: &nfsServer ${NFS_SERVER}
+        path: /tank/user_files/shared/ocis
+        globalMounts:
+          - path: /data
+            subPath: storage-users
+      data:
+        type: nfs
+        server: *nfsServer
+        path: /tank/appdata/ocis
+        globalMounts:
+          - path: /etc/ocis
+            subPath: config
+          - path: /var/lib/ocis
+            subPath: data
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
