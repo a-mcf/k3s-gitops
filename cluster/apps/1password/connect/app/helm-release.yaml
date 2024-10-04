@@ -30,7 +30,7 @@ spec:
       create: true
       credentialsName: "op-credentials"
       credentialsKey: "1password-credentials.json"
-      serviceType: NodePort
+      serviceType: ClusterIP
     operator:
       create: false
     
