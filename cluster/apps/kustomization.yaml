@@ -3,22 +3,22 @@ kind: Kustomization
 resources:
   - 1password
   - authentik
-  - ingress
-  - external-secrets
+  - cert-manager
+  - cloudnative-pg
   - default
-  - media
-  - minio
+  - external-secrets
+  - freshrss
   - home
+  - immich
+  - ingress
   - longhorn-system
-  - ollama
+  - media
+  - metallb-system
+  - minio
   - monitoring
   - nvidia-device-plugin
+  - obsidian-couchdb
+  - ollama
   - paperless
   - photoprism
-  - freshrss
-  - cloudnative-pg
-  - cert-manager
-  - metallb-system
-  - obsidian-couchdb
   - syncthing
-  - immich
