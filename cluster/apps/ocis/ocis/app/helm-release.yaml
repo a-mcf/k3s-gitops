@@ -24,13 +24,11 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 2316
+            runAsGroup: 2316
             runAsNonRoot: true
-            fsGroup: 1000
+            fsGroup: 2316
             fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 65542 # gladius:external-services
 
         initContainers:
           init-config:
@@ -56,7 +54,7 @@ spec:
               OCIS_LOG_COLOR: true
               OCIS_LOG_LEVEL: info
               OCIS_LOG_PRETTY: true
-              OCIS_URL: https://files.bjw-s.dev
+              OCIS_URL: "https://ocis.${SECRET_DOMAIN}"
               PROXY_TLS: false
               STORAGE_USERS_OCIS_ROOT: /data
             envFrom:
