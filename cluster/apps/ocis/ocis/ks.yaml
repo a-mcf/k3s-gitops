@@ -9,6 +9,7 @@ spec:
   path: ./cluster/apps/ocis/ocis/app
   dependsOn:
     - name: cluster-apps-external-secrets-store-onepassword
+    - name: cluster-apps-authentik
   prune: true
   sourceRef:
     kind: GitRepository
