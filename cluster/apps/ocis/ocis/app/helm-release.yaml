@@ -121,9 +121,9 @@ spec:
         path: /tank/appdata/ocis
         globalMounts:
           - path: /etc/ocis
-          #  subPath: config
-          # - path: /var/lib/ocis
-          #   subPath: data
+            subPath: config
+          - path: /var/lib/ocis
+            subPath: data
       tmpfs:
         type: emptyDir
         globalMounts:
