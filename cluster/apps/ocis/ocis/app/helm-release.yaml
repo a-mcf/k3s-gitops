@@ -57,6 +57,19 @@ spec:
               OCIS_URL: "https://ocis.${SECRET_DOMAIN}"
               PROXY_TLS: false
               STORAGE_USERS_OCIS_ROOT: /data
+              # Authentik OIDC
+              # Auto role assignment:
+              # docs: https://doc.owncloud.com/ocis/next/deployment/services/s-list/proxy.html#automatic-role-assignments
+              OCIS_OIDC_ISSUER: "https://authentik.${SECRET_DOMAIN}/application/o/ocis/"
+              PROXY_AUTOPROVISION_ACCOUNTS: true
+              PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
+              PROXY_OIDC_REWRITE_WELLKNOWN: true
+              PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
+              PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: groups
+              PROXY_USER_OIDC_CLAIM: preferred_username
+              WEB_OIDC_CLIENT_ID: ocis
+              WEB_OIDC_METADATA_URL: "https://authentik.${SECRET_DOMAIN}/application/o/ocis/.well-known/openid-configuration"
+              WEB_OIDC_SCOPE: "openid profile email groups"
             envFrom:
               - secretRef:
                   name: ocis-secret
@@ -107,6 +120,9 @@ spec:
         globalMounts:
           - path: /etc/ocis/web.yaml
             subPath: web.yaml
+            readOnly: true
+          - path: /etc/ocis/proxy.yaml
+            subPath: proxy.yaml
             readOnly: true
       storage-users:
         type: nfs
