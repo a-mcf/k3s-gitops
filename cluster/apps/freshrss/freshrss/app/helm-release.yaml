@@ -73,7 +73,7 @@ spec:
         enabled: true
         globalMounts:
           - path: /var/www/FreshRSS/data
-        existingClaim: freshrss-config
+        existingClaim: nfs-freshrss-config-pvc
 
     # podAnnotations:
     #   secret.reloader.stakater.com/reload: freshrss-secret
