@@ -20,7 +20,7 @@ spec:
     shared_preload_libraries:
       - "vectors.so"
   storage:
-    size: 15Gi
+    size: 25Gi
     storageClass: longhorn
   monitoring:
     enablePodMonitor: true
