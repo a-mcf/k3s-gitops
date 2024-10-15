@@ -23,3 +23,4 @@ resources:
   - photoprism
   - syncthing
   - ocis
+  - searxng

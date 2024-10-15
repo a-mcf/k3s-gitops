@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: searxng
+  namespace: searxng
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: searxng
+      version: 1.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: searxng
+        namespace: flux-system
+      interval: 5m
+  values:
+
+    image:
+      repository: searxng/searxng
+      tag: latest
+
+    env:
+      INSTANCE_NAME: "${SECRET_DOMAIN}"
+      BASE_URL: "http://localhost:8080/"
+      AUTOCOMPLETE: "duckduckgo"
+
+    searxng:
+      config:
+        use_default_settings: true
+      # Uncomment when using the builtin rate limiter
+      # See https://docs.searxng.org/src/searx.plugins.limiter.html#limiter-plugin
+      # server.limiter: true
+      # redis.url: redis://@searxng-redis:6379/0
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: cloud-search-outline
+          hajimari.io/info: Internet Search
+          hajimari.io/group: tools
+        hosts:
+        - host: &host "search.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - *host
+
+  valuesFrom:
+  - kind: Secret
+    name: "searxng-helm-values"
+    valuesKey: searxng.yaml
+    optional: false
