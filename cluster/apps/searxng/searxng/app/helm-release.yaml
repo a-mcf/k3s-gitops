@@ -28,6 +28,20 @@ spec:
     searxng:
       config:
         use_default_settings: true
+        server:
+          base_url: https://search.${SECRET_DOMAIN}/
+          limiter: false
+          image_proxy: true
+          http_protocol_version: "1.1"
+        search:
+          safe_search: 0
+          autocomplete: ""
+          autocomplete_min: 2
+          default_lang: all
+          max_page: 0
+          formats:
+            - html
+            - json
       # Uncomment when using the builtin rate limiter
       # See https://docs.searxng.org/src/searx.plugins.limiter.html#limiter-plugin
       # server.limiter: true
@@ -51,8 +65,8 @@ spec:
         - hosts:
           - *host
 
-  valuesFrom:
-  - kind: Secret
-    name: "searxng-helm-values"
-    valuesKey: searxng.yaml
-    optional: false
+  # valuesFrom:
+  # - kind: Secret
+  #   name: "searxng-helm-values"
+  #   valuesKey: searxng.yaml
+  #   optional: false
