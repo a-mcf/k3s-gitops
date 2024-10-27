@@ -64,38 +64,38 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-music-pv
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-video-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadWriteOnce
-  mountOptions:
-    - nfsvers=4
-    - port=2049
-  nfs:
-    path: /tank/video
-    server: "${NFS_SERVER}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-video-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
-  volumeName: nfs-video-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs-video-pv
+#   namespace: media
+# spec:
+#   capacity:
+#     storage: 100Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   mountOptions:
+#     - nfsvers=4
+#     - port=2049
+#   nfs:
+#     path: /dumpster/video
+#     server: "${NFS_SERVER}"
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs-video-pvc
+#   namespace: media
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi
+#   volumeName: nfs-video-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
