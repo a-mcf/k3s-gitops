@@ -110,7 +110,7 @@ spec:
             readOnly: true
       video:
         enabled: true
-        existingClaim: nfs-video-pvc
+        existingClaim: nfs-plex-video-pvc
         globalMounts:
           - path: /video
             readOnly: false
@@ -119,4 +119,10 @@ spec:
         existingClaim: nfs-plex-audiobooks-pvc
         globalMounts: 
           - path: /audiobooks
+            readOnly: true
+      audio:
+        enabled: true
+        existingClaim: nfs-plex-audio-pvc
+        globalMounts: 
+          - path: /audio
             readOnly: true

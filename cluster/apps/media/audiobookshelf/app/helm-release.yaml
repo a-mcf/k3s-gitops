@@ -76,6 +76,12 @@ spec:
         globalMounts:
           - path: /audiobooks
             readOnly: true
+      audio:
+        enabled: true
+        existingClaim: nfs-abs-audio-pvc
+        globalMounts:
+          - path: /audio
+            readOnly: true
       backups:
         enabled: true
         existingClaim: nfs-audiobookshelf-backups-pvc

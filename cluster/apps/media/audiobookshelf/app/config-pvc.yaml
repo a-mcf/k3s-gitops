@@ -60,7 +60,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-audio-pv
+  name: nfs-abs-audio-pv
   namespace: media
 spec:
   capacity:
@@ -78,7 +78,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-audio-pvc
+  name: nfs-abs-audio-pvc
   namespace: media
 spec:
   storageClassName: ""
@@ -87,7 +87,7 @@ spec:
   resources:
     requests:
       storage: 1000Gi
-  volumeName: nfs-audio-pv
+  volumeName: nfs-abs-audio-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
