@@ -102,24 +102,24 @@ spec:
         existingClaim: nfs-video-transcode-pvc
         globalMounts: 
           - path: /transcode
-      music:
-        enabled: true
-        existingClaim: nfs-music-pvc
-        globalMounts: 
-          - path: /music
-            readOnly: true
+      # music:
+      #   enabled: true
+      #   existingClaim: nfs-music-pvc
+      #   globalMounts: 
+      #     - path: /music
+      #       readOnly: true
       video:
         enabled: true
         existingClaim: nfs-plex-video-pvc
         globalMounts:
           - path: /video
             readOnly: false
-      audiobooks:
-        enabled: true
-        existingClaim: nfs-plex-audiobooks-pvc
-        globalMounts: 
-          - path: /audiobooks
-            readOnly: true
+      # audiobooks:
+      #   enabled: true
+      #   existingClaim: nfs-plex-audiobooks-pvc
+      #   globalMounts: 
+      #     - path: /audiobooks
+      #       readOnly: true
       audio:
         enabled: true
         existingClaim: nfs-plex-audio-pvc

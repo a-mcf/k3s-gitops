@@ -24,38 +24,38 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: longhorn
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-audiobooks-pv
-  namespace: media
-spec:
-  capacity:
-    storage: 1000Gi
-  accessModes:
-    - ReadWriteOnce
-  mountOptions:
-    - nfsvers=4
-    - port=2049
-  nfs:
-    path: /tank/user_files/shared/audiobooks
-    server: "${NFS_SERVER}"
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-audiobooks-pvc
-  namespace: media
-spec:
-  storageClassName: ""
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1000Gi
-  volumeName: nfs-audiobooks-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs-audiobooks-pv
+#   namespace: media
+# spec:
+#   capacity:
+#     storage: 1000Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   mountOptions:
+#     - nfsvers=4
+#     - port=2049
+#   nfs:
+#     path: /tank/user_files/shared/audiobooks
+#     server: "${NFS_SERVER}"
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs-audiobooks-pvc
+#   namespace: media
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1000Gi
+#   volumeName: nfs-audiobooks-pv
 ---
 apiVersion: v1
 kind: PersistentVolume

@@ -70,12 +70,12 @@ spec:
       metadata:
         enabled: true
         existingClaim: longhorn-audiobookshelf-metadata-pvc
-      audiobooks:
-        enabled: true
-        existingClaim: nfs-audiobooks-pvc
-        globalMounts:
-          - path: /audiobooks
-            readOnly: true
+      # audiobooks:
+      #   enabled: true
+      #   existingClaim: nfs-audiobooks-pvc
+      #   globalMounts:
+      #     - path: /audiobooks
+      #       readOnly: true
       audio:
         enabled: true
         existingClaim: nfs-abs-audio-pvc
