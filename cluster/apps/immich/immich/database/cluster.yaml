@@ -53,3 +53,20 @@ spec:
         - ALTER SCHEMA vectors OWNER TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
+
+    recovery:
+      source: minio-backup
+      recoveryTarget:
+        targetTime: "2024-01-23T08:00:39"
+  externalClusters:
+    - name: minio-backup
+      barmanObjectStore:
+        destinationPath: s3://cloudnative-pg-backup
+        endpointURL: https://s3.${SECRET_DOMAIN}
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: minio-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: minio-secret-access-key
