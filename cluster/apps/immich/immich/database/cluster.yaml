@@ -55,8 +55,8 @@ spec:
     #     - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
     recovery:
       source: minio-backup
-      recoveryTarget:
-        targetTime: "2024-01-23T08:00:39"
+      # recoveryTarget:
+      #   targetTime: "2024-01-23T08:00:39"
   externalClusters:
     - name: minio-backup
       barmanObjectStore:
