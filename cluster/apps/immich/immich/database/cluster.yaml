@@ -32,7 +32,8 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup
       endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: immich
+      #serverName: immich
+      serverName: immich-restore
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -54,11 +55,11 @@ spec:
     #     - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
     #     - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
     recovery:
-      source: minio-backup
+      source: immich
       # recoveryTarget:
       #   targetTime: "2024-01-23T08:00:39"
   externalClusters:
-    - name: minio-backup
+    - name: immich
       barmanObjectStore:
         destinationPath: s3://cloudnative-pg-backup
         endpointURL: https://s3.${SECRET_DOMAIN}
