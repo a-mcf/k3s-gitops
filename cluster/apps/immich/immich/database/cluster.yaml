@@ -55,8 +55,8 @@ spec:
         - ALTER SCHEMA vectors OWNER TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
-    recovery:
-      source: immich
+    # recovery:
+    #   source: immich
       # recoveryTarget:
       #   targetTime: "2024-01-23T08:00:39"
   
