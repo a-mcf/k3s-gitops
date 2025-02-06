@@ -37,7 +37,7 @@ spec:
               # repository: ghcr.io/ollama-webui/ollama-webui
               # tag: main@sha256:d5a5c1126b5decbfbfcac4f2c3d0595e0bbf7957e3fcabc9ee802d3bc66db6d2
               repository: ghcr.io/open-webui/open-webui
-              tag: main@sha256:9e8ea9959aad4d5156d7ada8f735eb0723271d48a6d6f4815c4848e308d86543
+              tag: main@sha256:fbe4e8219e0598d05a6c67340b573a9bbb7d6de493baecc5d8d1f2d75b43f206
             env:
               OLLAMA_BASE_URL: http://ollama.ollama.svc:11434
             resources:
