@@ -37,7 +37,7 @@ spec:
           home-assistant:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2025.5.2
+              tag: 2025.8.2
             env:
               TZ: America/New_York
               # POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
