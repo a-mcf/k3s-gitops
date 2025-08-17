@@ -34,8 +34,8 @@ spec:
         containers:
           plex:
             image:
-              repository: ghcr.io/onedr0p/plex
-              tag: 1.41.5.9522@sha256:6d393c4eee152100bd6762a94bdd891b8c80c1c8a914a7f906b4097ab69fd557
+              repository: ghcr.io/home-operations/plex
+              tag: 1.42.1.10060@sha256:04563be281364ba2462285aacb2ca13d7ef7e1d0b19e1203f4c19b4a56840c5c
             env:
               TZ: America/New_York
             probes:
