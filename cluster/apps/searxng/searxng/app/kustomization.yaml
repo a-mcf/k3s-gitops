@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: searxng
 resources:
   - ./helm-release.yaml
+  - ./externalsecret.yaml
 configMapGenerator:
   - name: searxng-configmap
     files:
