@@ -25,6 +25,9 @@ spec:
               SEARXNG_BASE_URL: https://search.${SECRET_DOMAIN}
               SEARXNG_URL: https://search.${SECRET_DOMAIN}
               SEARXNG_PORT: &port 8080
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}"
             probes:
               liveness: &probes
                 enabled: true
