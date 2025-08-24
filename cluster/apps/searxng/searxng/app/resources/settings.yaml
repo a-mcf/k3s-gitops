@@ -13,8 +13,8 @@ general:
   enable_metrics: false
 search:
   safe_search: 0
-  autocomplete: ""
-  favicon_resolver: duckduckgo
+  autocomplete: "duckduckgo"
+  favicon_resolver: 
   autocomplete_min: 2
   languages:
     - all
