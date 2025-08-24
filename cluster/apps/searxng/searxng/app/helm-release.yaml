@@ -7,46 +7,59 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: searxng
-      version: 1.0.1
+      chart: app-template
+      version: 4.2.0
       sourceRef:
         kind: HelmRepository
-        name: searxng
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
   values:
-
-    image:
-      repository: searxng/searxng
-      tag: latest
-
-    env:
-      INSTANCE_NAME: "${SECRET_DOMAIN}"
-      BASE_URL: "http://localhost:8080/"
-      AUTOCOMPLETE: "duckduckgo"
-
-    searxng:
-      config:
-        use_default_settings: true
-        server:
-          base_url: https://search.${SECRET_DOMAIN}/
-          limiter: false
-          image_proxy: true
-          http_protocol_version: "1.1"
-        search:
-          safe_search: 0
-          autocomplete: ""
-          autocomplete_min: 2
-          default_lang: all
-          max_page: 0
-          formats:
-            - html
-            - json
-      # Uncomment when using the builtin rate limiter
-      # See https://docs.searxng.org/src/searx.plugins.limiter.html#limiter-plugin
-      # server.limiter: true
-      # redis.url: redis://@searxng-redis:6379/0
-
+    controllers:
+      searxng:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/searxng/searxng
+              tag: 2025.8.24-a0ff173@sha256:9d16e65d76273806d4373f0b97df3a0c4b554d917018990bab4cdc62a88a4279
+            env:
+              INSTANCE_NAME: "${SECRET_DOMAIN}"
+              BASE_URL: "http://localhost:8080/"
+              AUTOCOMPLETE: "duckduckgo"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: *port
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 2000Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 977
+        runAsGroup: 977
+        fsGroup: 977
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
@@ -64,9 +77,18 @@ spec:
         tls:
         - hosts:
           - *host
-
-  # valuesFrom:
-  # - kind: Secret
-  #   name: "searxng-helm-values"
-  #   valuesKey: searxng.yaml
-  #   optional: false
+    persistence:
+      config:
+        type: configMap
+        name: searxng-configmap
+        globalMounts:
+          - path: /etc/searxng/settings.yml
+            subPath: settings.yml
+            readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          searxng:
+            app:
+              - path: /tmp
+                subPath: tmp
