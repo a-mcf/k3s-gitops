@@ -107,5 +107,5 @@ spec:
         advancedMounts:
           scrypted:
             app:
-              - path: /server/volume
+              - path: /recs
                 subPath: scrypted
