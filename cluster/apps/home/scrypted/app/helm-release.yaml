@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: scrypted
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  dependsOn: []
+  values:
+    controllers:
+      scrypted:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 2316
+            runAsGroup: 2316
+            fsGroup: 2316
+            fsGroupChangePolicy: "OnRootMismatch"
+            # supplementalGroups:
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bjw-s-labs/scrypted
+              tag: 0.141.0@sha256:5a18d0dc431ff8ec0388e4177e53b4abc58c07fea1111a9deb5dcbe2947bb66a
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 136m
+                memory: 1024Mi
+              # limits:
+              #   gpu.intel.com/i915: 1
+              #   memory: 8192Mi
+    service:
+      app:
+        controller: scrypted
+        ports:
+          http:
+            port: &port 11080
+            primary: true
+          rebroadcast1:
+            port: 34135
+          rebroadcast2:
+            port: 34136
+
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: video-box
+          hajimari.io/info: Video Management
+          hajimari.io/group: home
+        hosts:
+          - host: &host "scrypted.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: ${NFS_SERVER}
+        path: /tank/appdata/scrypted
+        advancedMounts:
+          scrypted:
+            app:
+              - path: /server/volume
+      
+      tmpfs:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          scrypted:
+            app:
+              - path: /.cache
+                subPath: cache
+              - path: /.npm
+                subPath: npm-cache
+      
+      recordings:
+        enabled: true
+        type: nfs
+        server: your-nas-server.local  # Replace with your NFS server  
+        path: /dumpster/video
+        globalMounts:
+          - path: /recs
