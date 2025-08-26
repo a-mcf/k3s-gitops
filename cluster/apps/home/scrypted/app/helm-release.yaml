@@ -103,7 +103,7 @@ spec:
       
       recordings:
         enabled: true
-        existingClaim: nfs-scrypted-recs-pvc
+        existingClaim: nfs-scrypted-video-pvc
         advancedMounts:
           scrypted:
             app:

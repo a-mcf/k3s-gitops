@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-scrypted-recs-pv
+  name: nfs-scrypted-video-pv
   namespace: home
 spec:
   capacity:
@@ -52,7 +52,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-scrypted-recs-pvc
+  name: nfs-scrypted-video-pvc
   namespace: home
 spec:
   storageClassName: ""
@@ -61,4 +61,4 @@ spec:
   resources:
     requests:
       storage: 500Gi
-  volumeName: nfs-scrypted-recs-pv
+  volumeName: nfs-scrypted-video-pv
