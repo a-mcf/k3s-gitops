@@ -53,7 +53,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-scrypted-recs-pvc
-  namespace: scrypted
+  namespace: home
 spec:
   storageClassName: ""
   accessModes:
