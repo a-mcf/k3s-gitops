@@ -84,9 +84,7 @@ spec:
     persistence:
       config:
         enabled: true
-        type: nfs
-        server: ${NFS_SERVER}
-        path: /tank/appdata/scrypted
+        existingClaim: nfs-scrypted-config-pvc
         advancedMounts:
           scrypted:
             app:
@@ -105,8 +103,6 @@ spec:
       
       recordings:
         enabled: true
-        type: nfs
-        server: your-nas-server.local  # Replace with your NFS server  
-        path: /dumpster/video
+        existingClaim: nfs-scrypted-recs-pvc
         globalMounts:
           - path: /recs

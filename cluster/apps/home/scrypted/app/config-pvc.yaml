@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-scrypted-config-pv
+  namespace: home
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/appdata/scrypted
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-scrypted-config-pvc
+  namespace: home
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: nfs-scrypted-config-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-scrypted-recs-pv
+  namespace: home
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/backups/scrypted
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-scrypted-recs-pvc
+  namespace: scrypted
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-scrypted-recs-pv
