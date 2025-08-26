@@ -45,7 +45,7 @@ spec:
     - nfsvers=4
     - port=2049
   nfs:
-    path: /dumpster/backups/scrypted
+    path: /dumpster/video
     server: "${NFS_SERVER}"
   persistentVolumeReclaimPolicy: Retain
 ---

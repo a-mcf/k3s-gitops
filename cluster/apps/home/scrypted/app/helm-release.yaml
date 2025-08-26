@@ -104,5 +104,8 @@ spec:
       recordings:
         enabled: true
         existingClaim: nfs-scrypted-recs-pvc
-        globalMounts:
-          - path: /recs
+        advancedMounts:
+          scrypted:
+            app:
+              - path: /server/volume
+                subPath: scrypted
