@@ -54,10 +54,13 @@ spec:
           http:
             port: &port 11080
             primary: true
+          https:
+            port: 10443
           rebroadcast1:
             port: 34135
           rebroadcast2:
             port: 34136
+        
 
     ingress:
       app:
