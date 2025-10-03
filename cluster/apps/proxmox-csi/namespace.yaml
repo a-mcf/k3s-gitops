@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: promox-csi
+  name: proxmox-csi
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
