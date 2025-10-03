@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-proxmox-csi
   namespace: flux-system
 spec:
-  path: ./cluster/apps/promox-csi/promox-csi/app
+  path: ./cluster/apps/proxmox-csi/proxmox-csi/app
   prune: true
   sourceRef:
     kind: GitRepository
