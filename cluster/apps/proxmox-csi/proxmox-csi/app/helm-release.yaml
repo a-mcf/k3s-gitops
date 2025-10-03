@@ -1,0 +1,44 @@
+kind: HelmRelease
+metadata:
+  name: proxmox-csi-plugin
+spec:
+  interval: 60h
+
+  maxHistory: 2
+  driftDetection:
+    mode: enabled
+
+  chart:
+    spec:
+      chart: proxmox-csi-plugin
+      version: 0.3.14
+      sourceRef:
+        kind: HelmRepository
+        name: sergelogvinov
+        namespace: flux-system
+
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  valuesFrom:
+    - kind: Secret
+      name: proxmox-csi-cluster-config
+      valuesKey: config
+
+
+  # https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/charts/proxmox-csi-plugin/values.yaml
+  values:
+    replicaCount: 1
+    metrics:
+      enabled: true
+    storageClass:
+      name: proxmox-csi
+      reclaimPolicy: Retain
+      fstype: ext4
+      storage: vmdata
+    ssd: true
