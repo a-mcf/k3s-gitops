@@ -24,3 +24,4 @@ resources:
   - syncthing
   - ocis
   - searxng
+  - proxmox-csi
