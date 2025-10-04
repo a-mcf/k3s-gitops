@@ -192,3 +192,29 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-video-transcode-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: proxmox-csi-test-zfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: proxmox-csi-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
