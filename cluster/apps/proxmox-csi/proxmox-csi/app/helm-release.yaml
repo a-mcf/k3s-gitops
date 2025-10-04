@@ -43,6 +43,11 @@ spec:
         fstype: ext4
         storage: vmdata
         ssd: true
+      - name: proxmox-csi-ext4-ssd-zfs
+        reclaimPolicy: Retain
+        fstype: ext4
+        storage: local-zfs
+        ssd: true
     existingConfigSecret: "proxmox-csi-cluster-config"
     existingConfigSecretKey: "config"
 
