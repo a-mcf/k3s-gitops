@@ -95,10 +95,10 @@ spec:
           - hosts:
               - *host
     persistence:
-      config:
+      old-config:
         enabled: true
         existingClaim: longhorn-plex-pvc-static
-      new-config:
+      config:
         enabled: true
         existingClaim: config-proxmox-csi-ssd
       proxmox-csi-test:
