@@ -38,8 +38,8 @@ spec:
     metrics:
       enabled: true
     storageClass:
-      name: proxmox-csi
-      reclaimPolicy: Retain
-      fstype: ext4
-      storage: vmdata
+      - name: proxmox-csi
+        reclaimPolicy: Retain
+        fstype: ext4
+        storage: vmdata
     ssd: true
