@@ -44,5 +44,5 @@ spec:
         storage: vmdata
         ssd: true
     # chart bug? has ~ as default value, but controller is trying to add this.
-    existingConfigSecret: ""
+    existingConfigSecret: ~
 
