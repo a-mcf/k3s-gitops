@@ -97,6 +97,9 @@ spec:
       config:
         enabled: true
         existingClaim: longhorn-plex-pvc-static
+      new-config:
+        enabled: true
+        existingClaim: config-proxmox-csi-ssd
       proxmox-csi-test:
         enabled: true
         existingClaim: proxmox-csi-test
