@@ -1,13 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
+kind: HelmRepository
 metadata:
-  name: proxmox-csi-plugin
+  name: sergelogvinov
   namespace: flux-system
 spec:
-  interval: 30m
-  timeout: 3m
-  ref:
-    tag: "0.3.14"
-  url: oci://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
+  interval: 48h
+  type: oci
+  url: oci://ghcr.io/sergelogvinov/charts
