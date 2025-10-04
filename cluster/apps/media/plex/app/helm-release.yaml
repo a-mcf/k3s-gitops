@@ -95,18 +95,18 @@ spec:
           - hosts:
               - *host
     persistence:
-      old-config:
-        enabled: true
-        existingClaim: longhorn-plex-pvc-static
+      # old-config:
+      #   enabled: true
+      #   existingClaim: longhorn-plex-pvc-static
       config:
         enabled: true
         existingClaim: config-proxmox-csi-ssd
-      proxmox-csi-test:
-        enabled: true
-        existingClaim: proxmox-csi-test
-      proxmox-csi-test-zfs:
-        enabled: true
-        existingClaim: proxmox-csi-test-zfs
+      # proxmox-csi-test:
+      #   enabled: true
+      #   existingClaim: proxmox-csi-test
+      # proxmox-csi-test-zfs:
+      #   enabled: true
+      #   existingClaim: proxmox-csi-test-zfs
       transcode:
         enabled: true
         existingClaim: nfs-video-transcode-pvc

@@ -207,29 +207,29 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-video-transcode-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: proxmox-csi-test
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: proxmox-csi-ext4-ssd
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: proxmox-csi-test-zfs
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: proxmox-csi-ext4-ssd-zfs
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: proxmox-csi-test
+#   namespace: media
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   storageClassName: proxmox-csi-ext4-ssd
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: proxmox-csi-test-zfs
+#   namespace: media
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   storageClassName: proxmox-csi-ext4-ssd-zfs
