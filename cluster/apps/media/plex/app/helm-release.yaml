@@ -97,6 +97,12 @@ spec:
       config:
         enabled: true
         existingClaim: longhorn-plex-pvc-static
+      proxmox-csi-test:
+        enabled: true
+        existingClaim: proxmox-csi-test-zfs
+      proxmox-csi-test-zfs:
+        enabled: true
+        existingClaim: proxmox-csi-test-zfs
       transcode:
         enabled: true
         existingClaim: nfs-video-transcode-pvc
