@@ -53,7 +53,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
-    storageClass: proxmox-csi-ext4-ssd
+    storageClass: proxmox-csi-ext4-ssd-zfs
   postgresql:
     parameters:
       max_connections: "600"
