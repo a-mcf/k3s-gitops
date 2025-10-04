@@ -199,6 +199,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: proxmox-csi-test
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
@@ -211,6 +212,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: proxmox-csi-test-zfs
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
