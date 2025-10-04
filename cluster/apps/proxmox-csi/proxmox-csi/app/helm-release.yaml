@@ -32,7 +32,6 @@ spec:
       name: proxmox-csi-cluster-config
       valuesKey: config
 
-
   # https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/charts/proxmox-csi-plugin/values.yaml
   values:
     replicaCount: 1
