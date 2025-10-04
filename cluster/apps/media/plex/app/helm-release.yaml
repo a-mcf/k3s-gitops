@@ -68,6 +68,7 @@ spec:
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
+            fsGroup: 2316
     service:
       plex:
         controller: plex
