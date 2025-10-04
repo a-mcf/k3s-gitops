@@ -99,7 +99,7 @@ spec:
         existingClaim: longhorn-plex-pvc-static
       proxmox-csi-test:
         enabled: true
-        existingClaim: proxmox-csi-test-zfs
+        existingClaim: proxmox-csi-test
       proxmox-csi-test-zfs:
         enabled: true
         existingClaim: proxmox-csi-test-zfs
