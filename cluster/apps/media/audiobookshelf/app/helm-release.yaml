@@ -64,16 +64,16 @@ spec:
               - *host
     
     persistence:
-      config:
+      old-config:
         enabled: true
         existingClaim: longhorn-audiobookshelf-config-pvc
-      metadata:
+      old-metadata:
         enabled: true
         existingClaim: longhorn-audiobookshelf-metadata-pvc
-      config-new:
+      config:
         enabled: true
         existingClaim: proxmox-csi-audiobookshelf-config-pvc
-      metadata-new:
+      metadata:
         enabled: true
         existingClaim: proxmox-csi-audiobookshelf-metadata-pvc
       # audiobooks:
