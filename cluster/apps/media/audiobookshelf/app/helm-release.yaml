@@ -70,6 +70,12 @@ spec:
       metadata:
         enabled: true
         existingClaim: longhorn-audiobookshelf-metadata-pvc
+      config-new:
+        enabled: true
+        existingClaim: proxmox-csi-audiobookshelf-config-pvc
+      metadata-new:
+        enabled: true
+        existingClaim: proxmox-csi-audiobookshelf-metadata-pvc
       # audiobooks:
       #   enabled: true
       #   existingClaim: nfs-audiobooks-pvc

@@ -24,6 +24,32 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: proxmox-csi-audiobookshelf-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-csi-ext4-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: promox-csi-audiobookshelf-metadata-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-csi-ext4-ssd
 # ---
 # apiVersion: v1
 # kind: PersistentVolume
