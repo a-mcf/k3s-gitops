@@ -25,3 +25,4 @@ resources:
   - ocis
   - searxng
   - proxmox-csi
+  - mealie

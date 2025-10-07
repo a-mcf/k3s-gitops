@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mealie
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.3.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: uninstall
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      mealie:
+        pod:
+          securityContext:
+            runAsUser: 2316
+            runAsGroup: 2316
+            fsGroup: 2316
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17
+            env:
+              INIT_POSTGRES_DBNAME: mealie
+              INIT_POSTGRES_HOST: mealiedb-rw
+              INIT_POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: mealieddb-app
+                    key: username
+              INIT_POSTGRES_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: mealieddb-app
+                    key: password
+              INIT_POSTGRES_SUPER_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: mealieddb-superuser
+                    key: password
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mealie-recipes/mealie
+              tag: v3.3.1
+            env:
+              BASE_URL: https://mealie.${SECRET_DOMAIN}
+              ALLOW_SIGNUP: true
+              API_DOCS: false
+              TZ: ${TZ}
+              # Default Values
+              WORKERS_PER_CORE: 1
+              MAX_WORKERS: 1
+              WEB_CONCURRENCY: 1
+
+              DB_ENGINE: postgres
+
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: mealieddb-app
+                    key: username
+              POSTGRES_PASSWORD:
+                valuesFrom: 
+                  secretKeyRef:
+                    name: mealieddb-app
+                    key: password
+              POSTGRES_SERVER: mealiedb-rw
+              POSTGRES_DB: app
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512M
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 9000
+
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "arcticons:mealient"
+          hajimari.io/group: "lifestyle"
+        hosts:
+          - host: &host "mealie.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: mealie
+        globalMounts:
+          - path: /app/data
