@@ -46,12 +46,12 @@ spec:
               INIT_POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: mealieddb-app
+                    name: mealiedb-app
                     key: username
               INIT_POSTGRES_PASS:
                 valueFrom:
                   secretKeyRef:
-                    name: mealieddb-app
+                    name: mealiedb-app
                     key: password
               INIT_POSTGRES_SUPER_PASS:
                 valueFrom:
@@ -79,12 +79,12 @@ spec:
               POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: mealieddb-app
+                    name: mealiedb-app
                     key: username
               POSTGRES_PASSWORD:
                 valueFrom: 
                   secretKeyRef:
-                    name: mealieddb-app
+                    name: mealiedb-app
                     key: password
               POSTGRES_SERVER: mealiedb-rw
               POSTGRES_DB: app
