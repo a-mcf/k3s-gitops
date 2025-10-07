@@ -122,6 +122,6 @@ spec:
 
     persistence:
       config:
-        existingClaim: mealie
+        existingClaim: nfs-mealie-config-pvc
         globalMounts:
           - path: /app/data
