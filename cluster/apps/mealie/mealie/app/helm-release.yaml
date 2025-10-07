@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app mealie
-  namespace: default
+  namespace: mealie
 spec:
   interval: 15m
   chart:
@@ -82,7 +82,7 @@ spec:
                     name: mealieddb-app
                     key: username
               POSTGRES_PASSWORD:
-                valuesFrom: 
+                valueFrom: 
                   secretKeyRef:
                     name: mealieddb-app
                     key: password
