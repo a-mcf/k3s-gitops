@@ -6,6 +6,7 @@ metadata:
   name: mealiedb
   namespace: mealie
 spec:
+  enableSuperuserAccess: true
   superuserSecret:
     name: mealiedb-superuser
   instances: 1
