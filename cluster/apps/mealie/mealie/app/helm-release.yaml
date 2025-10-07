@@ -56,7 +56,7 @@ spec:
               INIT_POSTGRES_SUPER_PASS:
                 valueFrom:
                   secretKeyRef:
-                    name: mealieddb-superuser
+                    name: mealiedb-superuser
                     key: password
 
         containers:
