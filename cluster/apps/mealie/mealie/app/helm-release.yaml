@@ -104,7 +104,7 @@ spec:
 
     ingress:
       app:
-        className: internal
+        className: nginx
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "arcticons:mealient"
