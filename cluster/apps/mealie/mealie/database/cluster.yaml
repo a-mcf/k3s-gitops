@@ -6,6 +6,8 @@ metadata:
   name: mealiedb
   namespace: mealie
 spec:
+  superuserSecret:
+    name: mealiedb-superuser
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
   inheritedMetadata:
