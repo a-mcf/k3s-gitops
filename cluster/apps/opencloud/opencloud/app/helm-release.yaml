@@ -127,16 +127,12 @@ spec:
             subPath: proxy.yaml
             readOnly: true
       storage-users:
-        type: nfs
-        server: &nfsServer ${NFS_SERVER}
-        path: /tank/user_files/shared/opencloud
+        existingClaim: nfs-opencloud-storage-users-pvc
         globalMounts:
           - path: /data
             subPath: storage-users
       data:
-        type: nfs
-        server: *nfsServer
-        path: /tank/appdata/opencloud
+        existingClaim: nfs-opencloud-data-pvc
         globalMounts:
           - path: /etc/opencloud
             subPath: config
