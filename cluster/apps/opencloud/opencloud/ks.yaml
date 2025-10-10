@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-opencloud
   namespace: flux-system
 spec:
-  path: ./cluster/apps/ocis/opencloud/app
+  path: ./cluster/apps/opencloud/opencloud/app
   dependsOn:
     - name: cluster-apps-external-secrets-store-onepassword
   prune: true
