@@ -23,6 +23,7 @@ resources:
   - photoprism
   - syncthing
   - ocis
+  - opencloud
   - searxng
   - proxmox-csi
   - mealie
