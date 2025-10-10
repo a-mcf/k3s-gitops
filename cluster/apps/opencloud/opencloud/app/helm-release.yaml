@@ -116,28 +116,16 @@ spec:
                   port: http
 
     persistence:
-      config:
-        type: configMap
-        name: opencloud-configmap
-        globalMounts:
-          - path: /etc/opencloud/web.yaml
-            subPath: web.yaml
-            readOnly: true
-          - path: /etc/opencloud/proxy.yaml
-            subPath: proxy.yaml
-            readOnly: true
       storage-users:
         existingClaim: nfs-opencloud-storage-users-pvc
         globalMounts:
-          - path: /data
-            subPath: storage-users
+          - path: /var/lib/opencloud
+            subPath: data
       data:
         existingClaim: nfs-opencloud-data-pvc
         globalMounts:
           - path: /etc/opencloud
             subPath: config
-          - path: /var/lib/opencloud
-            subPath: data
       tmpfs:
         type: emptyDir
         globalMounts:
