@@ -38,7 +38,7 @@ metadata:
   namespace: opencloud
 spec:
   capacity:
-    storage: 10Gi
+    storage: 2000Gi
   accessModes:
     - ReadWriteOnce
   mountOptions:
@@ -60,5 +60,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 2000Gi
   volumeName: nfs-opencloud-data-pv

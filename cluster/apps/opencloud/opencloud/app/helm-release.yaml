@@ -32,12 +32,10 @@ spec:
         containers:
           opencloud:
             image:
-              repository: docker.io/opencloudeu/opencloud-rolling
+              repository: opencloudeu/opencloud-rolling
               tag: 3.5.0
             command:
-              - "/bin/sh"
-              - "-c"
-              - "opencloud init || true; opencloud server"
+              ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
               ## -- old OCIS values
               # DEMO_USERS: false
