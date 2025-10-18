@@ -16,15 +16,14 @@ resources:
   - media
   - metallb-system
   - minio
+  - mealie
   - monitoring
   - nvidia-device-plugin
   - obsidian-couchdb
   - ollama
+  - opencloud
   - paperless
   - photoprism
-  - syncthing
-  - ocis
-  - opencloud
-  - searxng
   - proxmox-csi
-  - mealie
+  - searxng
+  - syncthing
