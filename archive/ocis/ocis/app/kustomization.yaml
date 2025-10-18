@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: ocis-configmap
+    files:
+      - web.yaml=./config/web.yaml
+      - proxy.yaml=./config/proxy.yaml
+    namespace: ocis
+generatorOptions:
+  disableNameSuffixHash: true
