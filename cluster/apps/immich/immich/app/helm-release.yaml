@@ -85,7 +85,7 @@ spec:
           enabled: true
           existingClaim: nfs-immich-photprism-originals-pvc
           readOnly: true
-    
+
     machine-learning:
       resources:
         requests:

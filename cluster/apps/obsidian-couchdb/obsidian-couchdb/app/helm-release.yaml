@@ -23,7 +23,7 @@ spec:
         type: statefulset
         # annotations:
         #   reloader.stakater.com/auto: "true"
-      
+
         pod:
           securityContext:
             runAsUser: 568
@@ -47,7 +47,7 @@ spec:
             image:
               repository: public.ecr.aws/docker/library/couchdb
               tag: 3.5.0
-            
+
             env:
               COUCHDB_USER:
                 valueFrom:
@@ -59,14 +59,14 @@ spec:
                   secretKeyRef:
                     name: obsidian-couchdb-secret
                     key: couchdb-password
-            
+
             resources:
               requests:
                 cpu: 48m
                 memory: 146M
               limits:
                 memory: 2000M
-            
+
             probes:
               liveness:
                 enabled: true

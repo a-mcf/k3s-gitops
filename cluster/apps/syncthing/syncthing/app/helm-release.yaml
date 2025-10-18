@@ -81,7 +81,7 @@ spec:
           hajimari.io/group: "Storage"
           hajimari.io/icon: "cloud"
         hosts:
-          - host:  &host "syncthing.${SECRET_DOMAIN}"
+          - host: &host "syncthing.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

@@ -44,7 +44,7 @@ spec:
         ports:
           http:
             port: 80
-    
+
     ingress:
       main:
         enabled: true
@@ -62,7 +62,7 @@ spec:
         tls:
           - hosts:
               - *host
-    
+
     persistence:
       # old-config:
       #   enabled: true
@@ -93,4 +93,4 @@ spec:
         existingClaim: nfs-audiobookshelf-backups-pvc
         globalMounts:
           - path: /metadata/backups
-            readOnly: false    
+            readOnly: false

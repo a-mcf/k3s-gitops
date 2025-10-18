@@ -25,7 +25,7 @@ spec:
       commonConfig:
         replication_factor: 1
       storage:
-        type: 'filesystem'
+        type: "filesystem"
       schemaConfig:
         configs:
           - from: "2024-04-01"
@@ -44,7 +44,7 @@ spec:
 
         analytics:
           reporting_enabled: false
-          
+
     ingress:
       enabled: true
       annotations:
@@ -69,7 +69,7 @@ spec:
       tls:
         - hosts:
             - *host
-    
+
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
@@ -82,4 +82,3 @@ spec:
       replicas: 0
     write:
       replicas: 0
-
