@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   values:
     controllers:
       paperless:
@@ -43,14 +43,14 @@ spec:
               PAPERLESS_URL: "https://paperless.${SECRET_DOMAIN}"
               PAPERLESS_PORT: 8000
               PAPERLESS_OCR_LANGUAGE: eng
-    
+
     service:
       paperless:
         controller: paperless
         ports:
           http:
             port: 8000
-    
+
     ingress:
       paperless:
         enabled: true
@@ -58,14 +58,14 @@ spec:
           kubernetes.io/ingress.class: "nginx"
           # https://goauthentik.io/docs/providers/proxy/forward_auth
           nginx.ingress.kubernetes.io/auth-url: |-
-              http://authentik-server.authentik.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+            http://authentik-server.authentik.svc.cluster.local/outpost.goauthentik.io/auth/nginx
           # If you're using domain-level auth, use the authentication URL instead of the application URL
           nginx.ingress.kubernetes.io/auth-signin: |-
-              https://paperless.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+            https://paperless.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: |-
-              Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+            Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
           nginx.ingress.kubernetes.io/auth-snippet: |
-              proxy_set_header X-Forwarded-Host $http_host;
+            proxy_set_header X-Forwarded-Host $http_host;
           hajimari.io/icon: "leaf"
           hajimari.io/enable: "true"
           hajimari.io/group: "file storage"
@@ -75,7 +75,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: paperless        
+                  identifier: paperless
         tls:
           - hosts:
               - "paperless.${SECRET_DOMAIN}"

@@ -60,14 +60,14 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 4Gi
-    
+
     service:
       photoprism:
         controller: photoprism
         ports:
           http:
             port: 2342
-    
+
     ingress:
       main:
         enabled: true
@@ -86,23 +86,23 @@ spec:
         tls:
           - hosts:
               - *host
-    
+
     persistence:
       config:
         enabled: true
         existingClaim: nfs-photoprism-storage-pvc
         globalMounts:
-          - path:  /photoprism/storage
+          - path: /photoprism/storage
       originals:
         enabled: true
         existingClaim: nfs-photoprism-originals-pvc
         globalMounts:
-          - path:  /photoprism/originals
+          - path: /photoprism/originals
       import:
         enabled: true
         existingClaim: nfs-photoprism-import-pvc
-        globalMounts: 
-         - path: /photoprism/import     
+        globalMounts:
+          - path: /photoprism/import
     # try this instead of using manual pvcs
     #   media:
     #     type: nfs

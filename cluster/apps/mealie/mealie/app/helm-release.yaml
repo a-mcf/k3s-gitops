@@ -82,7 +82,7 @@ spec:
                     name: mealiedb-app
                     key: username
               POSTGRES_PASSWORD:
-                valueFrom: 
+                valueFrom:
                   secretKeyRef:
                     name: mealiedb-app
                     key: password

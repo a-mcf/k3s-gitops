@@ -60,7 +60,6 @@ spec:
             port: 34135
           rebroadcast2:
             port: 34136
-        
 
     ingress:
       app:
@@ -92,7 +91,7 @@ spec:
           scrypted:
             app:
               - path: /server/volume
-      
+
       tmpfs:
         enabled: true
         type: emptyDir
@@ -103,7 +102,7 @@ spec:
                 subPath: cache
               - path: /.npm
                 subPath: npm-cache
-      
+
       recordings:
         enabled: true
         existingClaim: nfs-scrypted-video-pvc

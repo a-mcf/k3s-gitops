@@ -74,4 +74,3 @@ spec:
         globalMounts:
           - path: /app/backend/data
         existingClaim: longhorn-openwebui-pvc-static
-

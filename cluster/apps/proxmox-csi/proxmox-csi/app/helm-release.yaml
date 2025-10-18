@@ -50,4 +50,3 @@ spec:
         ssd: true
     existingConfigSecret: "proxmox-csi-cluster-config"
     existingConfigSecretKey: "config"
-

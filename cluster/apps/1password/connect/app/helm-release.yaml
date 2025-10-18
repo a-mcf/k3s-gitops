@@ -33,4 +33,3 @@ spec:
       serviceType: ClusterIP
     operator:
       create: false
-    

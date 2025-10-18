@@ -1,13 +1,13 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
-apiVersion: postgresql.cnpg.io/v1                                                                                                                                                                                                                                                       
+apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: immichdb
   namespace: immich
 spec:
   instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0 
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0
   enableSuperuserAccess: true
   startDelay: 30
   stopDelay: 100
@@ -42,7 +42,7 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
-  
+
   bootstrap:
     initdb:
       dataChecksums: true
@@ -57,9 +57,9 @@ spec:
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
     # recovery:
     #   source: immich
-      # recoveryTarget:
-      #   targetTime: "2024-01-23T08:00:39"
-  
+    # recoveryTarget:
+    #   targetTime: "2024-01-23T08:00:39"
+
   # # restore from backup
   # externalClusters:
   #   - name: immich
