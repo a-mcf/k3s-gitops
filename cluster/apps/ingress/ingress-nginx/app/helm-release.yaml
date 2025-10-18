@@ -8,7 +8,6 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://kubernetes.github.io/ingress-nginx
       chart: ingress-nginx
       version: 4.13.2
       sourceRef:
@@ -46,7 +45,7 @@ spec:
       # remote access
       extraContainers:
         - name: nebula
-          image: ghcr.io/a-mcf/nebula-container:1.9.4
+          image: nebulaoss/nebula:1.9.7
           securityContext:
             capabilities:
               add:
