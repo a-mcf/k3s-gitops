@@ -38,8 +38,8 @@ spec:
             image:
               # repository: rhasspy/wyoming-piper
               # tag: 1.6.3
-              repository: ghcr.io/slackr31337/wyoming-piper-gpu
-              tag: v2025.08.0
+              # repository: ghcr.io/slackr31337/wyoming-piper-gpu
+              # tag: v2025.08.0
             args:
               - --voice
               - glados
@@ -52,9 +52,9 @@ spec:
                 nvidia.com/gpu: 0
               limits:
                 nvidia.com/gpu: 0
-        pod:
-          nodeSelector:
-            gpu: "true"
+        # pod:
+        #   nodeSelector:
+        #     gpu: "true"
     service:
       app:
         controller: *app
