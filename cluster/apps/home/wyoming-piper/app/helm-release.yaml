@@ -41,6 +41,8 @@ spec:
             args:
               - --voice
               - glados
+              - --voice
+              - jarvis
             env:
               TZ: America/New_York
     service:
