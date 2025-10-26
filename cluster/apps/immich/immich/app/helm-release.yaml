@@ -66,7 +66,7 @@ spec:
         external:
           enabled: true
           existingClaim: nfs-immich-photprism-originals-pvc
-              readOnly: true
+          readOnly: true
       ingress:
         main:
           enabled: true
