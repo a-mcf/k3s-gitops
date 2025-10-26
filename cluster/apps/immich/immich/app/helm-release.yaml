@@ -34,7 +34,7 @@ spec:
           main:
             env:
               MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
-              UPLOAD_LOCATION: /data
+              # UPLOAD_LOCATION: /data
               DB_HOSTNAME: immichdb-rw
               DB_USERNAME:
                 valueFrom:
@@ -51,7 +51,7 @@ spec:
   
             image:
               # renovate: datasource=github-releases depName=immich-app/immich
-              tag: v1.132.3  #"v2.1.0"
+              tag: v2.1.0
 
     server:
       controllers:
