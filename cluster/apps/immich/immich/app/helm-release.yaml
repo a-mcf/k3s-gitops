@@ -93,7 +93,6 @@ spec:
           memory: 4096M
       persistence:
         cache:
-          type: pvc
           existingClaim: nfs-immich-ml-cache-pvc
       probes:
         liveness:
