@@ -34,6 +34,7 @@ spec:
           main:
             env:
               MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
+              UPLOAD_LOCATION: /data
               DB_HOSTNAME: immichdb-rw
               DB_USERNAME:
                 valueFrom:
