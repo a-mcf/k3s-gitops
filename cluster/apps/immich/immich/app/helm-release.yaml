@@ -21,7 +21,7 @@ spec:
     postgres:
       enabled: false
 
-    redis:
+    valkey:
       enabled: true
 
     immich:
@@ -31,36 +31,42 @@ spec:
         library:
           existingClaim: nfs-immich-library-pvc
 
-    env:
-      MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
-      DB_HOSTNAME: immichdb-rw
-      DB_USERNAME:
-        valueFrom:
-          secretKeyRef:
-            name: immichdb-app
-            key: username
-      DB_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: immichdb-app
-            key: password
-      DB_DATABASE_NAME: app
-      TZ: America/New_York
-
-    image:
-      # renovate: datasource=github-releases depName=immich-app/immich
-      # tag: "v1.118.2"
+    controllers:
+      main:
+        containers:
+          main:
+            env:
+              MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
+              DB_HOSTNAME: immichdb-rw
+              DB_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: immichdb-app
+                    key: username
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immichdb-app
+                    key: password
+              DB_DATABASE_NAME: app
+              TZ: America/New_York
+  
+              image:
+                # renovate: datasource=github-releases depName=immich-app/immich
+                tag: "v2.1.0"
 
     server:
-      resources:
-        requests:
-          cpu: 1500m
-          memory: 2048M
+      controllers:
+        main:
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 2048M
       persistence:
         external:
           enabled: true
           existingClaim: nfs-immich-photprism-originals-pvc
-          readOnly: true
+              readOnly: true
       ingress:
         main:
           enabled: true
@@ -87,17 +93,12 @@ spec:
           readOnly: true
 
     machine-learning:
-      resources:
-        requests:
-          cpu: 500m
-          memory: 4096M
+      controllers:
+        main:
+          resources:
+            requests:
+              cpu: 500m
+              memory: 4096M
       persistence:
         cache:
           existingClaim: nfs-immich-ml-cache-pvc
-      probes:
-        liveness:
-          spec:
-            initialDelaySeconds: 120
-        readiness:
-          spec:
-            initialDelaySeconds: 120
