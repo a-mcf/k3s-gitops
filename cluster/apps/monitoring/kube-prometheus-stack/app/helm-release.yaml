@@ -93,7 +93,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: proxmox-csi-ext4-ssd
               resources:
                 requests:
                   storage: 10Gi
