@@ -47,11 +47,11 @@ spec:
             #   - jarvis
             env:
               TZ: America/New_York
-            resources:
-              requests:
-                nvidia.com/gpu: 0
-              limits:
-                nvidia.com/gpu: 0
+            # resources:
+            #   requests:
+            #     nvidia.com/gpu: 0
+            #   limits:
+            #     nvidia.com/gpu: 0
         # pod:
         #   nodeSelector:
         #     gpu: "true"

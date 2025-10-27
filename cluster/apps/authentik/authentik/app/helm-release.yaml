@@ -79,7 +79,7 @@ spec:
       master:
         persistence:
           enabled: true
-          existingClaim: authentik-redis-master-pvc
+          existingClaim: authentik-redis-master-pvc-proxmox
   valuesFrom:
     - targetPath: authentik.postgresql.user
       kind: Secret
