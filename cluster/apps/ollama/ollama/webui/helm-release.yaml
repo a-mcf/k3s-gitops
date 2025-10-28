@@ -74,3 +74,8 @@ spec:
         globalMounts:
           - path: /app/backend/data
         existingClaim: longhorn-openwebui-pvc-static
+      confignew:
+        enabled: true
+        globalMounts:
+          - path: /app/backend/datanew
+        existingClaim: proxmox-csi-openwebui-pvc-static
