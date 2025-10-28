@@ -55,8 +55,8 @@ spec:
         #user: authentik
         #password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
         #user: app
-        # name: app
-        # host: authentikdb-rw
+        name: app
+        host: authentik-cnpg-rw
       redis:
         host: authentik-redis-master
         password: ${SECRET_AUTHENTIK_REDIS_PASSWORD}
@@ -89,11 +89,11 @@ spec:
       kind: Secret
       name: authentik-cnpg-app
       valuesKey: password
-    - targetPath: authentik.postgresql.name
-      kind: Secret
-      name: authentik-cnpg-app
-      valuesKey: dbname
-    - targetPath: authentik.postgresql.host
-      kind: Secret
-      name: authentik-cnpg-app
-      valuesKey: host
+    # - targetPath: authentik.postgresql.name
+    #   kind: Secret
+    #   name: authentik-cnpg-app
+    #   valuesKey: dbname
+    # - targetPath: authentik.postgresql.host
+    #   kind: Secret
+    #   name: authentik-cnpg-app
+    #   valuesKey: host
