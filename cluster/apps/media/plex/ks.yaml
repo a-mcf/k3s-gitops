@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/media/plex/app
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
     - name: cluster-apps-nvidia-device-plugin
   prune: true
   sourceRef:

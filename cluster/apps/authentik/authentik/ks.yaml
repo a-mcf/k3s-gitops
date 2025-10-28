@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/authentik/authentik/app
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
     - name: cluster-apps-authentik-database
   prune: true
   sourceRef:
@@ -27,6 +28,7 @@ spec:
   path: ./cluster/apps/authentik/authentik/database
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
     kind: GitRepository

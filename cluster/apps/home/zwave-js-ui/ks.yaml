@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/home/zwave-js-ui/app
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
     kind: GitRepository

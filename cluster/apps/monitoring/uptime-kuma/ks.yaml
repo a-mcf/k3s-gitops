@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/monitoring/uptime-kuma/app
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
     kind: GitRepository

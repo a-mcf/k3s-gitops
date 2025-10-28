@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/media/audiobookshelf/app
   dependsOn:
     - name: cluster-apps-longhorn
+    - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
     kind: GitRepository
