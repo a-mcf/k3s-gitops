@@ -7,7 +7,6 @@ metadata:
 spec:
   path: ./cluster/apps/obsidian-couchdb/obsidian-couchdb/app
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:

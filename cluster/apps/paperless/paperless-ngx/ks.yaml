@@ -25,7 +25,6 @@ spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx
     - name: cluster-apps-authentik
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
     - name: cluster-apps-paperless-ngx-redis
   prune: true

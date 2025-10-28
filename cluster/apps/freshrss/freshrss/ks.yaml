@@ -7,7 +7,6 @@ metadata:
 spec:
   path: ./cluster/apps/freshrss/freshrss/database
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
@@ -26,7 +25,6 @@ metadata:
 spec:
   path: ./cluster/apps/freshrss/freshrss/app
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
     - name: cluster-apps-freshrss-database
   prune: true

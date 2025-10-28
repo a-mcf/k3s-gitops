@@ -7,7 +7,6 @@ metadata:
 spec:
   path: ./cluster/apps/immich/immich/app
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
     - name: cluster-apps-immich-database
   prune: true
@@ -27,7 +26,6 @@ metadata:
 spec:
   path: ./cluster/apps/immich/immich/database
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:

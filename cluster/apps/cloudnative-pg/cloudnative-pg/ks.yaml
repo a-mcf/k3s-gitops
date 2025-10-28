@@ -7,7 +7,6 @@ metadata:
 spec:
   path: ./cluster/apps/cloudnative-pg/cloudnative-pg/app
   dependsOn:
-    - name: cluster-apps-longhorn
     - name: cluster-apps-proxmox-csi
     - name: cluster-apps-minio
   prune: true
