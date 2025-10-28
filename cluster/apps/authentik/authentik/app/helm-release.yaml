@@ -89,3 +89,11 @@ spec:
       kind: Secret
       name: authentik-cnpg-app
       valuesKey: password
+    - targetPath: authentik.postgresql.name
+      kind: Secret
+      name: authentik-cnpg-app
+      valuesKey: dbname
+    - targetPath: authentik.postgresql.host
+      kind: Secret
+      name: authentik-cnpg-app
+      valuesKey: host
