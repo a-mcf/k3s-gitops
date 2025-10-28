@@ -58,84 +58,84 @@ spec:
   #     password:
   #       name: authentik-postgresql
   #       key: postgresql-password
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: authentik-cpng
-  namespace: authentik
-spec:
-  enableSuperuserAccess: true
-  instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
-  inheritedMetadata:
-    labels:
-      kube-image-keeper.enix.io/image-caching-policy: ignore
-  primaryUpdateStrategy: unsupervised
-  storage:
-    size: 1Gi
-    storageClass: proxmox-csi-ext4-ssd
-  postgresql:
-    parameters:
-      max_connections: "600"
-      shared_buffers: 512MB
-  monitoring:
-    enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cloudnative-pg-backup
-      endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: authentik-cpng
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: minio-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: minio-secret-access-key
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Cluster
+# metadata:
+#   name: authentik-cpng
+#   namespace: authentik
+# spec:
+#   enableSuperuserAccess: true
+#   instances: 1
+#   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
+#   inheritedMetadata:
+#     labels:
+#       kube-image-keeper.enix.io/image-caching-policy: ignore
+#   primaryUpdateStrategy: unsupervised
+#   storage:
+#     size: 1Gi
+#     storageClass: proxmox-csi-ext4-ssd
+#   postgresql:
+#     parameters:
+#       max_connections: "600"
+#       shared_buffers: 512MB
+#   monitoring:
+#     enablePodMonitor: true
+#   backup:
+#     retentionPolicy: 30d
+#     barmanObjectStore:
+#       wal:
+#         compression: bzip2
+#         maxParallel: 8
+#       destinationPath: s3://cloudnative-pg-backup
+#       endpointURL: https://s3.${SECRET_DOMAIN}
+#       serverName: authentik-cpng
+#       s3Credentials:
+#         accessKeyId:
+#           name: cloudnative-pg-secret
+#           key: minio-access-key-id
+#         secretAccessKey:
+#           name: cloudnative-pg-secret
+#           key: minio-secret-access-key
 
-  bootstrap:
-    initdb:
-      import:
-        type: microservice
-        databases:
-          - authentikdb
-        source:
-          externalCluster: authentikdb
+#   bootstrap:
+#     initdb:
+#       import:
+#         type: microservice
+#         databases:
+#           - app
+#         source:
+#           externalCluster: authentikdb
 
-  externalClusters:
-    - name: authentikdb
-      connectionParameters:
-        # Use the correct IP or host name for the source database
-        host: authentikdb-rw
-        user: postgres
-        dbname: app
-      password:
-        name: authentikdb-superuser
-        key: password
+#   externalClusters:
+#     - name: authentikdb
+#       connectionParameters:
+#         # Use the correct IP or host name for the source database
+#         host: authentikdb-rw
+#         user: postgres
+#         dbname: app
+#       password:
+#         name: authentikdb-superuser
+#         key: password
 
-  # bootstrap:
-  #   recovery:
-  #     source: clusterBackup
+#   # bootstrap:
+#   #   recovery:
+#   #     source: clusterBackup
 
-  # externalClusters:
-  #   - name: clusterBackup
-  #     barmanObjectStore:
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: s3://cloudnative-pg-backup
-  #       endpointURL: https://s3.${SECRET_DOMAIN}
-  #       serverName: authentik
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: cloudnative-pg-secret
-  #           key: minio-access-key-id
-  #         secretAccessKey:
-  #           name: cloudnative-pg-secret
-  #           key: minio-secret-access-key
+#   # externalClusters:
+#   #   - name: clusterBackup
+#   #     barmanObjectStore:
+#   #       wal:
+#   #         compression: bzip2
+#   #         maxParallel: 8
+#   #       destinationPath: s3://cloudnative-pg-backup
+#   #       endpointURL: https://s3.${SECRET_DOMAIN}
+#   #       serverName: authentik
+#   #       s3Credentials:
+#   #         accessKeyId:
+#   #           name: cloudnative-pg-secret
+#   #           key: minio-access-key-id
+#   #         secretAccessKey:
+#   #           name: cloudnative-pg-secret
+#   #           key: minio-secret-access-key
