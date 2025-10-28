@@ -42,7 +42,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: freshrssdb-cnpg
+  name: freshrss-cpgn
   namespace: freshrss
 spec:
   instances: 1
@@ -72,7 +72,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup
       endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: pg-freshrss
+      serverName: freshrss-cpgn
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -81,14 +81,19 @@ spec:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
 
-  # Bootstrap directly from the old cluster
+# bootstrap options
   bootstrap:
-    pg_basebackup:
-      source: freshrssdb-old
+    initdb:
+      import:
+        type: microservice
+        databases:
+          - app
+        source:
+          externalCluster: freshrssdb
   
   # Reference to the existing cluster
   externalClusters:
-    - name: freshrssdb-old
+    - name: freshrssdb
       connectionParameters:
         host: freshrssdb-rw
         user: postgres
