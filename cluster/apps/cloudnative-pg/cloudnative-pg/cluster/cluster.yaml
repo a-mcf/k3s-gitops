@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
