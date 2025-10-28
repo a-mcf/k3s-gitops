@@ -1,44 +1,5 @@
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/api/v1/cluster.schema.json
-# apiVersion: postgresql.cnpg.io/v1
-# kind: Cluster
-# metadata:
-#   name: freshrssdb
-#   namespace: freshrss
-# spec:
-#   instances: 1
-#   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
-#   inheritedMetadata:
-#     labels:
-#       kube-image-keeper.enix.io/image-caching-policy: ignore
-#   primaryUpdateStrategy: unsupervised
-#   storage:
-#     size: 10Gi
-#     storageClass: longhorn
-#   postgresql:
-#     parameters:
-#       max_connections: "600"
-#       shared_buffers: 512MB
-#   monitoring:
-#     enablePodMonitor: true
-#   backup:
-#     retentionPolicy: 30d
-#     barmanObjectStore:
-#       wal:
-#         compression: bzip2
-#         maxParallel: 8
-#       destinationPath: s3://cloudnative-pg-backup
-#       endpointURL: https://s3.${SECRET_DOMAIN}
-#       serverName: freshrss
-#       s3Credentials:
-#         accessKeyId:
-#           name: cloudnative-pg-secret
-#           key: minio-access-key-id
-#         secretAccessKey:
-#           name: cloudnative-pg-secret
-#           key: minio-secret-access-key
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/api/v1/cluster.schema.json
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:

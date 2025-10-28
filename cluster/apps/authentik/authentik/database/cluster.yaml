@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -59,7 +59,7 @@ spec:
   #       name: authentik-postgresql
   #       key: postgresql-password
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -118,24 +118,3 @@ spec:
       password:
         name: authentikdb-superuser
         key: password
-
-  # bootstrap:
-  #   recovery:
-  #     source: clusterBackup
-
-  # externalClusters:
-  #   - name: clusterBackup
-  #     barmanObjectStore:
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: s3://cloudnative-pg-backup
-  #       endpointURL: https://s3.${SECRET_DOMAIN}
-  #       serverName: authentik
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: cloudnative-pg-secret
-  #           key: minio-access-key-id
-  #         secretAccessKey:
-  #           name: cloudnative-pg-secret
-#   #           key: minio-secret-access-key
