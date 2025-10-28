@@ -84,7 +84,7 @@ spec:
     - targetPath: authentik.postgresql.user
       kind: Secret
       name: authentik-cnpg-app
-      valuesKey: username
+      valuesKey: user
     - targetPath: authentik.postgresql.password
       kind: Secret
       name: authentik-cnpg-app
