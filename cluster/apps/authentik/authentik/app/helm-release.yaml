@@ -83,9 +83,9 @@ spec:
   valuesFrom:
     - targetPath: authentik.postgresql.user
       kind: Secret
-      name: authentik-cpng-app
+      name: authentik-cnpg-app
       valuesKey: username
     - targetPath: authentik.postgresql.password
       kind: Secret
-      name: authentik-cpng-app
+      name: authentik-cnpg-app
       valuesKey: password
