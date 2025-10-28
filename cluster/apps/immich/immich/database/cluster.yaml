@@ -73,112 +73,92 @@ spec:
   #         secretAccessKey:
   #           name: cloudnative-pg-secret
   #           key: minio-secret-access-key
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: immich-cnpg
-  namespace: immich
-spec:
-  instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0
-  enableSuperuserAccess: true
-  startDelay: 30
-  stopDelay: 100
-  primaryUpdateStrategy: unsupervised
-  primaryUpdateMethod: restart ##@@ Cannot use switchover with 1 instance
-  postgresql:
-    parameters:
-      max_connections: "600"
-      shared_buffers: 512MB
-    shared_preload_libraries:
-      - "vectors.so"
-  storage:
-    size: 25Gi
-    storageClass: proxmox-csi-ext4-ssd
-  monitoring:
-    enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cloudnative-pg-backup
-      endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: immich-cnpg
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: minio-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: minio-secret-access-key
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Cluster
+# metadata:
+#   name: immich-cnpg
+#   namespace: immich
+# spec:
+#   instances: 1
+#   imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0
+#   enableSuperuserAccess: true
+#   startDelay: 30
+#   stopDelay: 100
+#   primaryUpdateStrategy: unsupervised
+#   primaryUpdateMethod: restart ##@@ Cannot use switchover with 1 instance
+#   postgresql:
+#     parameters:
+#       max_connections: "600"
+#       shared_buffers: 512MB
+#     shared_preload_libraries:
+#       - "vectors.so"
+#   storage:
+#     size: 25Gi
+#     storageClass: proxmox-csi-ext4-ssd
+#   monitoring:
+#     enablePodMonitor: true
+#   backup:
+#     retentionPolicy: 30d
+#     barmanObjectStore:
+#       wal:
+#         compression: bzip2
+#         maxParallel: 8
+#       destinationPath: s3://cloudnative-pg-backup
+#       endpointURL: https://s3.${SECRET_DOMAIN}
+#       serverName: immich-cnpg
+#       s3Credentials:
+#         accessKeyId:
+#           name: cloudnative-pg-secret
+#           key: minio-access-key-id
+#         secretAccessKey:
+#           name: cloudnative-pg-secret
+#           key: minio-secret-access-key
 
-  bootstrap:
-    initdb:
-      dataChecksums: true
-      postInitApplicationSQL:
-        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - SET search_path TO "$user", public, vectors;
-        - CREATE EXTENSION IF NOT EXISTS "vectors";
-        - CREATE EXTENSION IF NOT EXISTS "cube";
-        - CREATE EXTENSION IF NOT EXISTS "earthdistance";
-        - ALTER SCHEMA vectors OWNER TO "app";
-        - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
-        - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
-      # restore from external cluster
-      import:
-        type: microservice
-        databases:
-          - app
-        source:
-          externalCluster: immichdb
-    
+#   # bootstrap:
+#   #   initdb:
+#   #     dataChecksums: true
+#   #     postInitApplicationSQL:
+#   #       - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+#   #       - SET search_path TO "$user", public, vectors;
+#   #       - CREATE EXTENSION IF NOT EXISTS "vectors";
+#   #       - CREATE EXTENSION IF NOT EXISTS "cube";
+#   #       - CREATE EXTENSION IF NOT EXISTS "earthdistance";
+#   #       - ALTER SCHEMA vectors OWNER TO "app";
+#   #       - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
+#   #       - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
 
-
-
-
-  # bootstrap:
-  #   initdb:
-  #     import:
-  #       type: microservice
-  #       databases:
-  #         - app
-  #       source:
-  #         externalCluster: immichdb
-
-  externalClusters:
-    - name: immichdb
-      connectionParameters:
-        # Use the correct IP or host name for the source database
-        host: immichdb-rw
-        user: postgres
-        dbname: app
-      password:
-        name: immichdb-superuser
-        key: password
+#   # externalClusters:
+#   #   - name: immichdb
+#   #     connectionParameters:
+#   #       # Use the correct IP or host name for the source database
+#   #       host: immichdb-rw
+#   #       user: postgres
+#   #       dbname: app
+#   #     password:
+#   #       name: immichdb-superuser
+#   #       key: password
 
 
 
-  # bootstrap:
-  #   recovery:
-  #     source: clusterBackup
 
-  # externalClusters:
-  #   - name: clusterBackup
-  #     barmanObjectStore:
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: s3://cloudnative-pg-backup
-  #       endpointURL: https://s3.${SECRET_DOMAIN}
-  #       serverName: authentik
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: cloudnative-pg-secret
-  #           key: minio-access-key-id
-  #         secretAccessKey:
-  #           name: cloudnative-pg-secret
-#   #           key: minio-secret-access-key
+#   bootstrap:
+#     initdb:
+#       import:
+#         type: microservice
+#         databases:
+#           - app
+#         source:
+#           externalCluster: immichdb
+
+#   externalClusters:
+#     - name: immichdb
+#       connectionParameters:
+#         # Use the correct IP or host name for the source database
+#         host: immichdb-rw
+#         user: postgres
+#         dbname: app
+#       password:
+#         name: immichdb-superuser
+#         key: password
