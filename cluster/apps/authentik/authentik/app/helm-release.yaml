@@ -63,13 +63,13 @@ spec:
 
     postgresql:
       enabled: false
-      persistence:
-        enabled: true
-        existingClaim: authentik-postgresql-pvc
+      # persistence:
+      #   enabled: true
+      #   existingClaim: authentik-postgresql-pvc
 
-      postgresqlUsername: authentik
-      postgresqlDatabase: authentik
-      postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
+      # postgresqlUsername: authentik
+      # postgresqlDatabase: authentik
+      # postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
 
     redis:
       enabled: true
@@ -83,9 +83,9 @@ spec:
   valuesFrom:
     - targetPath: authentik.postgresql.user
       kind: Secret
-      name: authentikdb-app
+      name: authentik-cpng-app
       valuesKey: username
     - targetPath: authentik.postgresql.password
       kind: Secret
-      name: authentikdb-app
+      name: authentik-cpng-app
       valuesKey: password
