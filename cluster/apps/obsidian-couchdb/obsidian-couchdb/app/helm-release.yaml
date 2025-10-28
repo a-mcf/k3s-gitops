@@ -123,3 +123,9 @@ spec:
         existingClaim: longhorn-obsidian-data
         globalMounts:
           - path: /opt/couchdb/data
+      obsidian-datanew:
+        enabled: true
+        existingClaim: proxmox-csi-obsidian-data
+        globalMounts:
+          - path: /opt/couchdb/datanew
+

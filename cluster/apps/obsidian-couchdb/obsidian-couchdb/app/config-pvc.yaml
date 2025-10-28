@@ -32,3 +32,16 @@ spec:
   storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-6781b4f0-a39b-4a74-be34-cd0ae72fd97a
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: proxmox-csi-obsidian-data
+  namespace: obsidian-couchdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: proxmox-csi-ext4-ssd
