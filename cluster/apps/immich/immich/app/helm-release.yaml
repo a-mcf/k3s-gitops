@@ -35,16 +35,16 @@ spec:
             env:
               MACHINE_LEARNING_PRELOAD__CLIP: "ViT-H-14-378-quickgelu__dfn5b"
               # UPLOAD_LOCATION: /data
-              DB_HOSTNAME: immichdb-rw
+              DB_HOSTNAME: immich-cnpg-rw
               DB_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: immichdb-app
+                    name: immich-cnpg-app
                     key: username
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: immichdb-app
+                    name: immich-cnpg-app
                     key: password
               DB_DATABASE_NAME: app
               TZ: America/New_York
