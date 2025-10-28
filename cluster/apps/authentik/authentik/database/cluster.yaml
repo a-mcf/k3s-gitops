@@ -63,7 +63,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: authentik
+  name: authentik-cpng
   namespace: authentik
 spec:
   enableSuperuserAccess: true
@@ -90,7 +90,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup
       endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: authentik
+      serverName: authentik-cpng
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
