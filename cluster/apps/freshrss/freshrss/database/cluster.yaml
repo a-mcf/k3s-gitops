@@ -42,7 +42,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: freshrss
+  name: freshrss-cpng
   namespace: freshrss
 spec:
   instances: 1
@@ -81,6 +81,7 @@ spec:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
 
+# restore from other cluster
 # # bootstrap options
 #   bootstrap:
 #     initdb:
@@ -101,3 +102,22 @@ spec:
 #       password:
 #         name: freshrssdb-superuser
 #         key: password
+
+
+  # restore from backup
+
+  bootstrap:
+    recovery:
+      source: freshrssdb
+  externalClusters:
+    - name: freshrssdb
+      barmanObjectStore:
+        destinationPath: s3://cloudnative-pg-backup
+        endpointURL: https://s3.${SECRET_DOMAIN}
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: minio-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: minio-secret-access-key
