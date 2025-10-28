@@ -42,7 +42,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: freshrss-cpng
+  name: freshrss-cnpg
   namespace: freshrss
 spec:
   instances: 1
@@ -72,7 +72,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-backup
       endpointURL: https://s3.${SECRET_DOMAIN}
-      serverName: freshrss-cpng
+      serverName: freshrss-cnpg
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
