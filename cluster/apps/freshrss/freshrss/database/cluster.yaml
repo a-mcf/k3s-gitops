@@ -42,7 +42,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-freshrssdb
+  name: freshrssdb-cnpg
   namespace: freshrss
 spec:
   instances: 1
