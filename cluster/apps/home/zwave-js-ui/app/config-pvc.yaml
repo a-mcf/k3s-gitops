@@ -32,3 +32,16 @@ spec:
   storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-0a4b99cb-1bec-4954-acd3-87dd4a9156c7
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: proxmox-csi-zwave-js-ui-config
+  namespace: home
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-csi-ext4-ssd
