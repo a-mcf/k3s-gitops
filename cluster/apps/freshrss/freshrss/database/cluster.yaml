@@ -90,7 +90,7 @@ spec:
   externalClusters:
     - name: freshrssdb-old
       connectionParameters:
-        host: freshrssdb-rw.freshrss.svc.cluster.local
+        host: freshrssdb-rw
         user: postgres
         dbname: app
       password:
