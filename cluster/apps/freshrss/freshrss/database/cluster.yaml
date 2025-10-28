@@ -81,46 +81,24 @@ spec:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
 
-# restore from other cluster
-# # bootstrap options
-#   bootstrap:
-#     initdb:
-#       import:
-#         type: microservice
-#         databases:
-#           - app
-#         source:
-#           externalCluster: freshrssdb
-  
-#   # Reference to the existing cluster
-#   externalClusters:
-#     - name: freshrssdb
-#       connectionParameters:
-#         host: freshrssdb-rw
-#         user: postgres
-#         dbname: app
-#       password:
-#         name: freshrssdb-superuser
-#         key: password
 
+  # # restore from backup of different cluster
 
-  # restore from backup
-
-  bootstrap:
-    recovery:
-      source: freshrssdb-backup
-      recoveryTarget:
-        targetTime: "2025-10-22T00:00:00" #20251025T220000
-  externalClusters:
-    - name: freshrssdb-backup
-      barmanObjectStore:
-        destinationPath: s3://cloudnative-pg-backup
-        endpointURL: https://s3.${SECRET_DOMAIN}
-        serverName: freshrss
-        s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg-secret
-            key: minio-access-key-id
-          secretAccessKey:
-            name: cloudnative-pg-secret
-            key: minio-secret-access-key
+  # bootstrap:
+  #   recovery:
+  #     source: freshrssdb-backup
+  #     recoveryTarget:
+  #       targetTime: "2025-10-22T00:00:00" #20251025T220000
+  # externalClusters:
+  #   - name: freshrssdb-backup
+  #     barmanObjectStore:
+  #       destinationPath: s3://cloudnative-pg-backup
+  #       endpointURL: https://s3.${SECRET_DOMAIN}
+  #       serverName: freshrss # minio bucket/directory name under cloudnative-pg-backup
+  #       s3Credentials:
+  #         accessKeyId:
+  #           name: cloudnative-pg-secret
+  #           key: minio-access-key-id
+  #         secretAccessKey:
+  #           name: cloudnative-pg-secret
+  #           key: minio-secret-access-key
