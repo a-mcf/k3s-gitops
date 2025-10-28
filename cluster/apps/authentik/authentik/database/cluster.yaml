@@ -99,22 +99,43 @@ spec:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
 
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: microservice
+  #       databases:
+  #         - authentikdb
+  #       source:
+  #         externalCluster: authentikdb
+
+  # externalClusters:
+  #   - name: authentikdb
+  #     connectionParameters:
+  #       # Use the correct IP or host name for the source database
+  #       host: authentikdb-rw
+  #       user: postgres
+  #       dbname: app
+  #     password:
+  #       name: authentikdb-superuser
+  #       key: password
+
   bootstrap:
-    initdb:
-      import:
-        type: microservice
-        databases:
-          - authentikdb
-        source:
-          externalCluster: authentikdb
+    recovery:
+      source: clusterBackup
 
   externalClusters:
-    - name: authentikdb
-      connectionParameters:
-        # Use the correct IP or host name for the source database
-        host: authentikdb-rw
-        user: postgres
-        dbname: app
-      password:
-        name: authentikdb-superuser
-        key: password
+    - name: clusterBackup
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: s3://cloudnative-pg-backup
+        endpointURL: https://s3.${SECRET_DOMAIN}
+        serverName: authentik
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: minio-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: minio-secret-access-key
