@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/api/v1/cluster.schema.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -37,3 +37,62 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: minio-secret-access-key
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/api/v1/cluster.schema.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-freshrssdb
+  namespace: freshrss
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
+  inheritedMetadata:
+    labels:
+      kube-image-keeper.enix.io/image-caching-policy: ignore
+  primaryUpdateStrategy: unsupervised
+  
+  storage:
+    size: 10Gi
+    storageClass: proxmox-csi-ext4-ssd
+  
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
+  
+  monitoring:
+    enablePodMonitor: true
+  
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cloudnative-pg-backup
+      endpointURL: https://s3.${SECRET_DOMAIN}
+      serverName: pg-freshrss
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: minio-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: minio-secret-access-key
+
+  # Bootstrap directly from the old cluster
+  bootstrap:
+    pg_basebackup:
+      source: freshrssdb-old
+  
+  # Reference to the existing cluster
+  externalClusters:
+    - name: freshrssdb-old
+      connectionParameters:
+        host: freshrssdb-rw.freshrss.svc.cluster.local
+        user: postgres
+        dbname: postgres
+      password:
+        name: freshrssdb-superuser
+        key: password
