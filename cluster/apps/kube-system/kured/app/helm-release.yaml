@@ -26,7 +26,7 @@ spec:
       rebootCommand: "/bin/systemctl reboot"
       forceReboot: true
       drainTimeout: 300s
-      period: 1h5m0s
+      period: 10m
       notifyUrl: "${SECRET_SLACK_WEBHOOK}"
       messageTemplateDrain: "⏳ Draining node %s"
       messageTemplateReboot: "♻️ Rebooted node %s"
