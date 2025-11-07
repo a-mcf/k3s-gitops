@@ -12,6 +12,7 @@ resources:
   - home
   - immich
   - ingress
+  - kube-system
   - longhorn-system
   - media
   - metallb-system
