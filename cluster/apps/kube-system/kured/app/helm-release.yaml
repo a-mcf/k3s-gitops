@@ -29,7 +29,8 @@ spec:
       drainDelay: 30s
       rebootDelay: 120s
       period: 10m
-      notifyUrl: "${SECRET_SLACK_WEBHOOK}"
+      slackHookUrl: "${SECRET_SLACK_WEBHOOK}"
+      slackChannel: "#kured"
       messageTemplateDrain: "⏳ Draining node %s"
       messageTemplateReboot: "♻️ Rebooted node %s"
 
