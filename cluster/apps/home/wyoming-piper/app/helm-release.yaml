@@ -46,7 +46,7 @@ spec:
             #   - --voice
             #   - jarvis
             env:
-              TZ: America/New_York
+              TZ: ${TZ}
             # resources:
             #   requests:
             #     nvidia.com/gpu: 0

@@ -39,7 +39,7 @@ spec:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2025.10.1
             env:
-              TZ: America/New_York
+              TZ: ${TZ}
               # POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
               # POSTGRES_DB: home_assistant
             probes:

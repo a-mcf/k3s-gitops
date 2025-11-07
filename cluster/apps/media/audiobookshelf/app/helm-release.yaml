@@ -34,7 +34,7 @@ spec:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: 2.29.0
             env:
-              TZ: "America/New_York"
+              TZ: "${TZ}"
               AUDIOBOOKSHELF_UID: 2316
               AUDIOBOOKSHELF_GID: 2316
 

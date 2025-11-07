@@ -37,7 +37,7 @@ spec:
               - --language
               - en
             env:
-              TZ: America/New_York
+              TZ: ${TZ}
     service:
       app:
         controller: *app

@@ -47,7 +47,7 @@ spec:
                     name: immich-cnpg-app
                     key: password
               DB_DATABASE_NAME: app
-              TZ: America/New_York
+              TZ: ${TZ}
   
             image:
               repository: ghcr.io/immich-app/immich-server
