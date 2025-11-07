@@ -36,6 +36,8 @@ spec:
               - base
               - --language
               - en
+              - --data-dir
+              - /data
             env:
               TZ: ${TZ}
     service:
@@ -51,3 +53,5 @@ spec:
       data:
         enabled: true
         existingClaim: nfs-whisper-pvc
+        globalMounts:
+          - path: /data
