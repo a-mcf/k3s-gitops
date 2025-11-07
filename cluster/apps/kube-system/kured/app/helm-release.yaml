@@ -19,8 +19,8 @@ spec:
   values:
     updateStrategy: RollingUpdate
     configuration:
-      startTime: "4:00"
-      endTime: "6:00"
+      startTime: "9:00"
+      endTime: "18:00"
       timeZone: "${TZ}"
       logFormat: json
       rebootCommand: "/bin/systemctl reboot"
