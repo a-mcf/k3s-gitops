@@ -8,6 +8,7 @@ metadata:
 spec:
   enableSuperuserAccess: true
   instances: 1
+  enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-6
   inheritedMetadata:
     labels:

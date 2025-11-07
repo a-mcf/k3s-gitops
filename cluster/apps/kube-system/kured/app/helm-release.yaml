@@ -24,8 +24,10 @@ spec:
       timeZone: "${TZ}"
       logFormat: json
       rebootCommand: "/bin/systemctl reboot"
-      forceReboot: true
-      drainTimeout: 300s
+      forceReboot: false
+      drainTimeout: 0
+      drainDelay: 30s
+      rebootDelay: 120s
       period: 10m
       notifyUrl: "${SECRET_SLACK_WEBHOOK}"
       messageTemplateDrain: "⏳ Draining node %s"
