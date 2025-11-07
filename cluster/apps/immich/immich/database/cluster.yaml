@@ -87,3 +87,16 @@ spec:
   #     password:
   #       name: immichdb-superuser
   #       key: password
+
+# POST-RESTORE CHECKLIST:
+# If restoring from backup, the postInitApplicationSQL commands will NOT run automatically.
+# Manually execute these commands after restore:
+#   kubectl exec -it -n immich <pod-name> -- psql -U postgres -d app
+#   ALTER DATABASE app SET search_path TO "$user", public, vectors;
+#   CREATE EXTENSION IF NOT EXISTS "vectors";
+#   CREATE EXTENSION IF NOT EXISTS "cube";
+#   CREATE EXTENSION IF NOT EXISTS "earthdistance";
+#   ALTER SCHEMA vectors OWNER TO "app";
+#   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
+#   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
+# Then restart the database pod and Immich deployment.

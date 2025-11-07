@@ -50,11 +50,7 @@ spec:
       log_level: debug
 
       postgresql:
-        #host: authentik-postgresql
-        #name: authentik
-        #user: authentik
-        #password: ${SECRET_AUTHENTIK_POSTGRES_PASSWORD}
-        #user: app
+        # valuesFrom not working for these. Weird.
         name: app
         host: authentik-cnpg-rw
       redis:
@@ -89,6 +85,7 @@ spec:
       kind: Secret
       name: authentik-cnpg-app
       valuesKey: password
+    # this doesn't work. why?
     # - targetPath: authentik.postgresql.name
     #   kind: Secret
     #   name: authentik-cnpg-app
