@@ -13,7 +13,7 @@ resources:
   - immich
   - ingress
   - kube-system
-  - longhorn-system
+  # - longhorn-system
   - media
   - metallb-system
   - minio

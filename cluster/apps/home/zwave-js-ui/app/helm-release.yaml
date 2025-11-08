@@ -92,11 +92,6 @@ spec:
               - *host
 
     persistence:
-      # config:
-      #   enabled: true
-      #   existingClaim: longhorn-zwave-js-ui-config
-      #   globalMounts:
-      #     - path: /usr/src/app/store
       config:
         enabled: true
         existingClaim: proxmox-csi-zwave-js-ui-config
