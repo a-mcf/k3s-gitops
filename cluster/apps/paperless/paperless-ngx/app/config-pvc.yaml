@@ -127,16 +127,16 @@ spec:
     requests:
       storage: 128Mi
   volumeName: nfs-paperless-export-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-redis-master-pvc
-  namespace: paperless
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 8Gi
-  storageClassName: longhorn
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: paperless-redis-master-pvc
+#   namespace: paperless
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 8Gi
+#   storageClassName: longhorn

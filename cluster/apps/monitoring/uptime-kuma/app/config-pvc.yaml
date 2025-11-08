@@ -1,17 +1,17 @@
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: uptime-kuma-config-longhorn-pvc
-  namespace: monitoring
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: longhorn
-  volumeName: pvc-ae5d7942-807d-4b02-8e5e-fdc5beb06f29
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: uptime-kuma-config-longhorn-pvc
+#   namespace: monitoring
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 10Gi
+#   storageClassName: longhorn
+#   volumeName: pvc-ae5d7942-807d-4b02-8e5e-fdc5beb06f29
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
