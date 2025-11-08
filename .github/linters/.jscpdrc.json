@@ -1,0 +1,10 @@
+{
+  "threshold": 5,
+  "minTokens": 50,
+  "minLines": 5,
+  "ignore": [
+    "**/helm-release.yaml",
+    "**/*.sops.*",
+    "**/node_modules/**"
+  ]
+}
