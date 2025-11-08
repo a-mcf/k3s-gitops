@@ -118,11 +118,6 @@ spec:
         globalMounts:
           - path: /opt/couchdb/etc/default.d
 
-      # obsidian-data:
-      #   enabled: true
-      #   existingClaim: longhorn-obsidian-data
-      #   globalMounts:
-      #     - path: /opt/couchdb/data
       obsidian-data:
         enabled: true
         existingClaim: proxmox-csi-obsidian-data

@@ -53,11 +53,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      # config:
-      #   enabled: true
-      #   existingClaim: uptime-kuma-config-longhorn-pvc
-      #   globalMounts:
-      #     - path: /app/data
       config:
         enabled: true
         existingClaim: uptime-kuma-config-proxmox-csi-pvc

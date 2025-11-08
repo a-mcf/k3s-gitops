@@ -95,9 +95,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      # old-config:
-      #   enabled: true
-      #   existingClaim: longhorn-plex-pvc-static
       config:
         enabled: true
         existingClaim: config-proxmox-csi-ssd

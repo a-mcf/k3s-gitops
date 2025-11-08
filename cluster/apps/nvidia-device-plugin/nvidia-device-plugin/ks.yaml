@@ -6,8 +6,6 @@ metadata:
   namespace: flux-system
 spec:
   path: ./cluster/apps/nvidia-device-plugin/nvidia-device-plugin/app
-  # dependsOn:
-  #   - name: cluster-apps-longhorn
   prune: true
   sourceRef:
     kind: GitRepository

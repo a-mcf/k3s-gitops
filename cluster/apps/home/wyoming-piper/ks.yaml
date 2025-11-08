@@ -6,8 +6,6 @@ metadata:
   namespace: flux-system
 spec:
   path: ./cluster/apps/home/wyoming-piper/app
-  # dependsOn:
-  #   - name: cluster-apps-longhorn
   prune: true
   sourceRef:
     kind: GitRepository

@@ -26,6 +26,7 @@ spec:
   path: "./cluster/apps/ollama/ollama/webui"
   dependsOn:
     - name: cluster-apps-ollama
+    - name: cluster-apps-proxmox-csi
   prune: true
   sourceRef:
     kind: GitRepository
