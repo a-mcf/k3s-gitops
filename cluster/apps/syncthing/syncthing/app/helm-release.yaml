@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.2.0
+      version: 4.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -40,7 +40,7 @@ spec:
           syncthing:
             image:
               repository: syncthing/syncthing
-              tag: 2.0.9
+              tag: 2.0.11
             resources:
               requests:
                 cpu: 15m
