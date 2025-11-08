@@ -73,10 +73,11 @@ spec:
               WORKERS_PER_CORE: 1
               MAX_WORKERS: 1
               WEB_CONCURRENCY: 1
-              OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434
+              OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
               OPENAI_API_KEY: NOT_REQUIED_WITH_OLLAMA
               OPENAI_MODEL: PetrosStav/gemma3-tools:12b
               OPENAI_SEND_DATABASE_DATA: true
+
               DB_ENGINE: postgres
 
               POSTGRES_USER:
