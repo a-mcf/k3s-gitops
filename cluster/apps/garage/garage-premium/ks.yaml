@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: garage
-  path: ./cluster/apps/garage/garage/app
+  path: ./cluster/apps/garage/garage-premium/app
   prune: true
   sourceRef:
     kind: GitRepository
