@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      garage:
+      garage-premium:
         containers:
           app:
             image:
