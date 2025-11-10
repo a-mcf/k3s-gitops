@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-garage
+  name: cluster-apps-garage-premium
   namespace: flux-system
 spec:
   targetNamespace: garage
@@ -12,6 +12,31 @@ spec:
       app.kubernetes.io/name: garage-premium
   path: ./cluster/apps/garage/garage-premium/app
   prune: true
+  dependsOn:
+    - name: cluster-apps-proxmox-csi
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-garage-premium-webui
+  namespace: flux-system
+spec:
+  targetNamespace: garage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: garage-premium
+  path: ./cluster/apps/garage/garage-premium/app
+  prune: true
+  dependsOn:
+    - name: cluster-apps-garage-premium
   sourceRef:
     kind: GitRepository
     name: flux-system
