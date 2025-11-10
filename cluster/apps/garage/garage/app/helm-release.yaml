@@ -115,11 +115,13 @@ spec:
           - path: /etc/garage.toml
             subPath: configuration.toml
       data:
+        enabled: true
         type: existingClaim
         name: nfs-garage-premium-pvc
         globalMounts:
           - path: /data
       meta:
+        enabled: true
         type: existingClaim
         name: garage-premium-metadata.pvc
         globalMounts:
