@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: garage-premium
+  name: garage-premium-webui
   namespace: garage
 spec:
   interval: 30m
