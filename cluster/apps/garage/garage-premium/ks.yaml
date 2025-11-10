@@ -33,7 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: garage-premium
-  path: ./cluster/apps/garage/garage-premium/app
+  path: ./cluster/apps/garage/garage-premium/webui
   prune: true
   dependsOn:
     - name: cluster-apps-garage-premium
