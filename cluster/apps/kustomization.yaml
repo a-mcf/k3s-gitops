@@ -9,6 +9,7 @@ resources:
   - default
   - external-secrets
   - freshrss
+  - garage
   - home
   - immich
   - ingress

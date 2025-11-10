@@ -1,0 +1,126 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: garage
+  namespace: garage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      garage:
+        containers:
+          app:
+            image:
+              repository: dxflrs/garage
+              tag: v2.1.0@sha256:4c9b34c113e61358466e83fd6e7d66e6d18657ede14b776eb78a93ee8da7cf6a
+            env:
+              TZ: ${TZ}
+            envFrom:
+              - secretRef:
+                  name: garage
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ALL] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2316
+        runAsGroup: 2317
+        fsGroup: 2316
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [2317]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      garage-premium:
+        ports:
+          s3:
+            port: &s3port 3900
+          api:
+            port: &apiport 3903
+    ingress:
+      app:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+          - host: &s3Host "s3-premium.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: garage-premium
+                  port: *s3port
+          - host: &apiHost s3.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: garage-premium
+                  port: *apiport
+        tls:
+          - hosts:
+              - *apiHost
+              - *s3Host
+    configMaps:
+      config:
+        data:
+          configuration.toml: |
+            metadata_dir = "/meta"
+            data_dir = "/data"
+            db_engine = "sqlite"
+            metadata_auto_snapshot_interval = "6h"
+
+            replication_factor = 1
+            compression_level = 2
+
+            rpc_bind_addr = "[::]:3901"
+            rpc_public_addr = "127.0.0.1:3901"
+
+            [s3_api]
+            s3_region = "us-east-1"
+            api_bind_addr = "[::]:3900"
+            root_domain = ".s3.rafaribe.com"
+
+            [admin]
+            api_bind_addr = "[::]:3903"
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: garage
+        globalMounts:
+          - path: /etc/garage.toml
+            subPath: configuration.toml
+      data:
+        type: existingClaim
+        name: nfs-garage-premium-pvc
+        globalMounts:
+          - path: /data
+      meta:
+        type: existingClaim
+        name: garage-premium-metadata.pvc
+        globalMounts:
+          - path: /meta
