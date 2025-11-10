@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: garage-premium
+  name: garage-bulk
   namespace: garage
 spec:
   interval: 30m
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      garage-premium:
+      garage-bulk:
         containers:
           app:
             image:
@@ -56,7 +56,7 @@ spec:
         supplementalGroups: [2317]
         seccompProfile: { type: RuntimeDefault }
     service:
-      garage-premium:
+      garage-bulk:
         ports:
           s3:
             port: &s3port 3900
@@ -68,17 +68,17 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
         hosts:
-          - host: &s3Host "s3-premium.${SECRET_DOMAIN}"
+          - host: &s3Host "s3-bulk.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: garage-premium
+                  identifier: garage-bulk
                   port: *s3port
           - host: &apiHost s3.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  identifier: garage-premium
+                  identifier: garage-bulk
                   port: *apiport
         tls:
           - hosts:
@@ -111,17 +111,17 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: garage-premium
+        name: garage-bulk
         globalMounts:
           - path: /etc/garage.toml
             subPath: configuration.toml
       data:
         enabled: true
-        existingClaim: nfs-garage-premium-pvc
+        existingClaim: nfs-garage-bulk-pvc
         globalMounts:
           - path: /data
       meta:
         enabled: true
-        existingClaim: garage-premium-metadata.pvc
+        existingClaim: garage-bulk-metadata.pvc
         globalMounts:
           - path: /meta

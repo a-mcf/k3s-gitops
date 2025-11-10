@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./garage-premium/ks.yaml
+  - ./garage-bulk/ks.yaml
