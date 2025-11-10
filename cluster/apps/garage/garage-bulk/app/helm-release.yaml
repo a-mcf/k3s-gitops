@@ -36,7 +36,7 @@ spec:
               TZ: ${TZ}
             envFrom:
               - secretRef:
-                  name: garage-premium
+                  name: garage-bulk
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
