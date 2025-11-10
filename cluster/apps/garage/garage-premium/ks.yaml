@@ -9,7 +9,7 @@ spec:
   targetNamespace: garage
   commonMetadata:
     labels:
-      app.kubernetes.io/name: garage
+      app.kubernetes.io/name: garage-premium
   path: ./cluster/apps/garage/garage-premium/app
   prune: true
   sourceRef:
