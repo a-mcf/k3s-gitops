@@ -39,6 +39,11 @@ spec:
                   secretKeyRef:
                     name: garage-premium
                     key: GARAGE_ADMIN_TOKEN
+              AUTH_USER_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-bulk
+                    key: GARAGE_AUTH_USER_PASS
             envFrom:
               - secretRef:
                   name: garage-premium
