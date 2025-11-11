@@ -6,5 +6,5 @@ resources:
   - ./pvc.yaml
   - ./secret.sops.yaml
   - ./external-secret.yaml
-  #- ./cluster.yaml  # TODO: Enable after verifying storage works
+  - ./cluster.yaml
   - ./scheduledbackup.yaml

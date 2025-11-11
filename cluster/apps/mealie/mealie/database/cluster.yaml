@@ -31,7 +31,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg-backups
       endpointURL: https://s3-premium.${SECRET_DOMAIN}
-      serverName: mealie
+      serverName: mealie-cnpg
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret-garage
@@ -39,3 +39,26 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret-garage
           key: garage-secret-access-key
+
+
+  bootstrap:
+    recovery:
+      source: minio
+      # recoveryTarget:
+      #   targetTime: "2025-10-27T10:00:00" #20251025T220000
+  externalClusters:
+    - name: minio
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: s3://cnpg-backups
+        endpointURL: https://s3-premium.${SECRET_DOMAIN}
+        serverName: mealie
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret-garage
+            key: garage-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret-garage
+            key: garage-secret-access-key
