@@ -48,11 +48,11 @@ spec:
 
   bootstrap:
     recovery:
-      source: freshrssdb-backup-3
+      source: freshrssdb-backup-minio
       # recoveryTarget:
       #   targetTime: "2025-11-11T14:00:00" #20251025T220000
   externalClusters:
-    - name: freshrssdb-backup-3
+    - name: freshrssdb-backup-minio
       barmanObjectStore:
         wal:
           compression: bzip2
