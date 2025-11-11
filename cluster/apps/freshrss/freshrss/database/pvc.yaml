@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: freshrss-cnpg-1
+  namespace: freshrss
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-0c1250d3-99bd-48f4-bb4e-9e8a0900b2b9
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: freshrss-cpng-1
+  namespace: freshrss
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-ff820449-4878-4886-bf73-40d7c2ab38a6
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: freshrssdb-cnpg-1
+  namespace: freshrss
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-7c677b6c-308b-42c2-8f86-279f8c2e0b2c
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pg-freshrssdb-1
+  namespace: freshrss
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-b01945df-b3e3-4893-9235-5ea297565c8a

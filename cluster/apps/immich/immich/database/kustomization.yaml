@@ -3,7 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: immich
 resources:
-  - ./cluster.yaml
+  - ./pvc.yaml
+  #- ./cluster.yaml  # TODO: Enable after verifying storage works
   - ./secret.sops.yaml
   - ./external-secret.yaml
   - ./scheduledbackup.yaml

@@ -11,3 +11,5 @@ spec:
     requests:
       storage: 8Gi
   storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-1c73a618-4746-4f35-a1f7-9f5551c330cb

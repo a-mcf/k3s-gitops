@@ -11,6 +11,8 @@ spec:
     requests:
       storage: 15Gi
   storageClassName: proxmox-csi-ext4-ssd
+  volumeMode: Filesystem
+  volumeName: pvc-8ef26d21-92f0-4b44-bf5a-9efb2827fcce
 # ---
 # apiVersion: v1
 # kind: PersistentVolume

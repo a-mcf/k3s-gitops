@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: proxmox-csi-obsidian-data
-  namespace: obsidian-couchdb
+  name: immich-cnpg-1
+  namespace: immich
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 25Gi
   storageClassName: proxmox-csi-ext4-ssd
   volumeMode: Filesystem
-  volumeName: pvc-7c04fe00-e8e8-4e10-885c-61726eb0ed88
+  volumeName: pvc-d37f66b6-2e2d-4d47-a850-f80afd5f1bce
