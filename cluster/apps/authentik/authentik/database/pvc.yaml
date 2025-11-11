@@ -43,18 +43,3 @@ spec:
   storageClassName: proxmox-csi-ext4-ssd
   volumeMode: Filesystem
   volumeName: pvc-3930e774-d422-4795-a2a7-3ec14d70b405
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: authentik-cpng-1
-  namespace: authentik
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: proxmox-csi-ext4-ssd
-  volumeMode: Filesystem
-  volumeName: pvc-2af5b120-08eb-4b7a-a316-b7b9b85f52ee
