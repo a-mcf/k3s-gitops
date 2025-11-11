@@ -31,8 +31,8 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cloudnative-pg-backup
-      endpointURL: https://s3.${SECRET_DOMAIN}
+      destinationPath: s3://cnpg-backups
+      endpointURL: https://s3-premium.${SECRET_DOMAIN}
       serverName: immich-cnpg
       s3Credentials:
         accessKeyId:
