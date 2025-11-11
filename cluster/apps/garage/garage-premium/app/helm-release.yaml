@@ -125,3 +125,8 @@ spec:
         existingClaim: garage-premium-metadata.pvc
         globalMounts:
           - path: /meta
+      test:
+        enabled: true
+        existingClaim: garage-premium-metadata-testonly-pvc
+        globalMounts:
+          - path: /test
