@@ -32,7 +32,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cpng-backups
+      destinationPath: s3://cnpg-backups
       endpointURL: https://s3-premium.${SECRET_DOMAIN}
       serverName: freshrss-cnpg
       s3Credentials:
