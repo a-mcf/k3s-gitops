@@ -48,16 +48,16 @@ spec:
 
   bootstrap:
     recovery:
-      source: freshrssdb-backup-2
+      source: freshrssdb-backup-3
       # recoveryTarget:
       #   targetTime: "2025-11-11T14:00:00" #20251025T220000
   externalClusters:
-    - name: freshrssdb-backup-2
+    - name: freshrssdb-backup-3
       barmanObjectStore:
         wal:
           compression: bzip2
           maxParallel: 8
-        destinationPath: s3://cnpg-backups
+        destinationPath: s3://cloudnative-pg-backup
         endpointURL: https://s3.${SECRET_DOMAIN}
         serverName: freshrss-cnpg
         s3Credentials:
