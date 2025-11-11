@@ -34,7 +34,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg-backups
       endpointURL: https://s3-premium.${SECRET_DOMAIN}
-      serverName: freshrss-cnpg
+      serverName: freshrss-cnpg-backup
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret-garage
@@ -46,21 +46,24 @@ spec:
 
   # # restore from backup of different cluster
 
-  # bootstrap:
-  #   recovery:
-  #     source: freshrssdb-backup
-  #     recoveryTarget:
-  #       targetTime: "2025-10-22T00:00:00" #20251025T220000
-  # externalClusters:
-  #   - name: freshrssdb-backup
-  #     barmanObjectStore:
-  #       destinationPath: s3://cloudnative-pg-backup
-  #       endpointURL: https://s3.${SECRET_DOMAIN}
-  #       serverName: freshrss # minio bucket/directory name under cloudnative-pg-backup
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: cloudnative-pg-secret
-  #           key: minio-access-key-id
-  #         secretAccessKey:
-  #           name: cloudnative-pg-secret
-  #           key: minio-secret-access-key
+  bootstrap:
+    recovery:
+      source: freshrssdb-backup
+      recoveryTarget:
+        targetTime: "2025-11-11T14:00:00" #20251025T220000
+  externalClusters:
+    - name: freshrssdb-backup
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: s3://cnpg-backups
+        endpointURL: https://s3-premium.${SECRET_DOMAIN}
+        serverName: freshrss-cnpg
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret-garage
+            key: garage-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret-garage
+            key: garage-secret-access-key
