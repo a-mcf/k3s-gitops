@@ -122,7 +122,7 @@ spec:
           - path: /data
       meta:
         enabled: true
-        existingClaim: garage-bulk-metadata.pvc
+        existingClaim: garage-bulk-metadata-pvc
         globalMounts:
           - path: /meta
       test:

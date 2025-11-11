@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: garage-bulk-metadata.pvc
+  name: garage-bulk-metadata-pvc
   namespace: garage
 spec:
   accessModes:
@@ -45,7 +45,6 @@ spec:
     requests:
       storage: 100Gi
   volumeName: nfs-garage-bulk-pv
----
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
