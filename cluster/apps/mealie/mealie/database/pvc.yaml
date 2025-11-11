@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mealiedb-1
+  name: old-mealiedb-1
   namespace: mealie
 spec:
   accessModes:

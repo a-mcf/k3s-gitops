@@ -6,5 +6,5 @@ resources:
   - ./pvc.yaml
   - ./secret.sops.yaml
   - ./external-secret.yaml
-  - ./cluster.yaml
+#  - ./cluster.yaml
   - ./scheduledbackup.yaml
