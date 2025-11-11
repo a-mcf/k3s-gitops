@@ -8,6 +8,7 @@ spec:
   path: ./cluster/apps/freshrss/freshrss/database
   dependsOn:
     - name: cluster-apps-proxmox-csi
+    - name: cluster-apps-garage-premium
   prune: true
   sourceRef:
     kind: GitRepository

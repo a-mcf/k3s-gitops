@@ -37,11 +37,11 @@ spec:
       serverName: freshrss-cnpg
       s3Credentials:
         accessKeyId:
-          name: cloudnative-pg-secret
-          key: minio-access-key-id
+          name: cloudnative-pg-secret-garage
+          key: garage-access-key-id
         secretAccessKey:
-          name: cloudnative-pg-secret
-          key: minio-secret-access-key
+          name: cloudnative-pg-secret-garage
+          key: garage-secret-access-key
 
 
   # # restore from backup of different cluster

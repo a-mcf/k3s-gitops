@@ -27,6 +27,7 @@ spec:
   path: ./cluster/apps/authentik/authentik/database
   dependsOn:
     - name: cluster-apps-proxmox-csi
+    - name: cluster-apps-garage-premium
   prune: true
   sourceRef:
     kind: GitRepository

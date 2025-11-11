@@ -5,5 +5,6 @@ namespace: authentik
 resources:
   - ./cluster.yaml
   - ./secret.sops.yaml
+  - ./external-secret.yaml
   - ./scheduledbackup.yaml
   #- ./prometheusrule.yaml

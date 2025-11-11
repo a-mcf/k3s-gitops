@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: freshrss
 resources:
   - ./secret.sops.yaml
+  - ./external-secret.yaml
   - ./cluster.yaml
   - ./scheduledbackup.yaml
