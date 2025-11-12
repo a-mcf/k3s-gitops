@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: authentik
 resources:
   # - ./pvc.yaml
-  #- ./cluster.yaml  # TODO: Enable after verifying storage works
+  - ./cluster.yaml
   - ./secret.sops.yaml
   - ./external-secret.yaml
   - ./scheduledbackup.yaml
