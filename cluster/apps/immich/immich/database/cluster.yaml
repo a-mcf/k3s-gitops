@@ -43,6 +43,8 @@ spec:
           key: garage-secret-access-key
 
   bootstrap:
+    recovery:
+      source: minio
     initdb:
       dataChecksums: true
       postInitApplicationSQL:
@@ -54,6 +56,28 @@ spec:
         - ALTER SCHEMA vectors OWNER TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA vectors TO "app";
         - GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "app";
+
+  # bootstrap:
+  #   recovery:
+  #     source: freshrssdb-backup-minio
+      # recoveryTarget:
+      #   targetTime: "2025-10-27T10:00:00" #20251025T220000
+  externalClusters:
+    - name: minio
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: s3://cloudnative-pg-backup
+        endpointURL: https://s3.${SECRET_DOMAIN}
+        serverName: freshrss
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: minio-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: minio-secret-access-key
 
   # externalClusters:
   #   - name: immichdb

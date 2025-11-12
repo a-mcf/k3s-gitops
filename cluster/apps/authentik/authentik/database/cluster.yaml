@@ -30,7 +30,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg-backups
       endpointURL: https://s3-premium.${SECRET_DOMAIN}
-      serverName: authentik-cnpg
+      serverName: authentik-cnpg-backup
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret-garage
