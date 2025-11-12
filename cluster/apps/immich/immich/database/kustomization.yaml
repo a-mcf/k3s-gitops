@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: immich
 resources:
   # - ./pvc.yaml
-  #- ./cluster.yaml  # TODO: Enable after verifying storage works
+  - ./cluster.yaml  # TODO: Enable after verifying storage works
   - ./secret.sops.yaml
   - ./external-secret.yaml
   - ./scheduledbackup.yaml
