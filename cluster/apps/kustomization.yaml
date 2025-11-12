@@ -6,7 +6,6 @@ resources:
   - authentik
   - cert-manager
   - cloudnative-pg
-  - default
   - external-secrets
   - freshrss
   - garage
