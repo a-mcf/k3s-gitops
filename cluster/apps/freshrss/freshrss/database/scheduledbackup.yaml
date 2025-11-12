@@ -7,4 +7,4 @@ spec:
   schedule: "0 0 22 * *"
   backupOwnerReference: self
   cluster:
-    name: freshrssdb
+    name: immich-cnpg
