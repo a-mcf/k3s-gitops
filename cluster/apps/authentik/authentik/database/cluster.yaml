@@ -14,7 +14,7 @@ spec:
       kube-image-keeper.enix.io/image-caching-policy: ignore
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 1Gi
+    size: 20Gi
     storageClass: proxmox-csi-ext4-ssd
   postgresql:
     parameters:
@@ -42,6 +42,8 @@ spec:
   bootstrap:
     recovery:
       source: minio
+      secret:
+        name: authentik-cnpg-app
       # recoveryTarget:
       #   targetTime: "2025-10-27T10:00:00" #20251025T220000
   externalClusters:
