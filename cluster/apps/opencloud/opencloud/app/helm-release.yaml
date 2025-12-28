@@ -33,7 +33,7 @@ spec:
           opencloud:
             image:
               repository: opencloudeu/opencloud-rolling
-              tag: 3.5.0
+              tag: 4.1.0
             command:
               ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
