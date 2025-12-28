@@ -51,7 +51,7 @@ spec:
   
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.2.3
+              tag: v2.4.1
 
     server:
       controllers:
