@@ -74,7 +74,7 @@ spec:
                 service:
                   identifier: garage-premium
                   port: *s3port
-          - host: &apiHost s3.${SECRET_DOMAIN}
+          - host: &apiHost s3-api-premium.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
