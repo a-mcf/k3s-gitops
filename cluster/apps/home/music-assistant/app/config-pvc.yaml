@@ -30,3 +30,36 @@ spec:
     requests:
       storage: 5Gi
   volumeName: nfs-music-assistant-config-pv
+---
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-music-assistant-audio-pv
+  namespace: home
+spec:
+  capacity:
+    storage: 1000Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/user_files/shared/audio
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-music-assistant-audio-pvc
+  namespace: home
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000Gi
+  volumeName: nfs-music-assistant-audio-pv

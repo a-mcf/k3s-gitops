@@ -80,6 +80,12 @@ spec:
       data:
         enabled: true
         existingClaim: nfs-music-assistant-config-pvc
+      audio:
+        enabled: true
+        existingClaim: nfs-music-assistant-audio-pvc
+        globalMounts:
+          - path: /audio
+            readOnly: true
       tmp:
         type: emptyDir
         globalMounts:
