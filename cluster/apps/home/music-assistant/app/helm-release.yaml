@@ -88,4 +88,6 @@ spec:
               - path: /cache
                 subPath: cache
       tmp:
-        type: EmptyDir
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
