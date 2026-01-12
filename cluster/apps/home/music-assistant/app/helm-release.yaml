@@ -28,6 +28,10 @@ spec:
   values:
     controllers:
       music-assistant:
+        pod:
+          # needed for homekit integration? more research requried.
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
         strategy: Recreate
         containers:
           music-assistant:
