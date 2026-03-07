@@ -1,0 +1,11 @@
+---
+# Skip paths that are upstream/generated files or can't be scanned
+skip-path:
+  - cluster/base/flux-system/gotk-components.yaml # Flux-generated, not owned
+
+# Skip checks that produce false positives in this repo
+skip-check:
+  # SOPS-encrypted files have no readable namespace; checkov defaults to "default"
+  - CKV_K8S_21
+  # Flux variable substitution (${SECRET_DOMAIN/-}) causes kustomize runner crash
+  - CKV_K8S_6
