@@ -2,6 +2,7 @@
 # Skip paths that are upstream/generated files or can't be scanned
 skip-path:
   - cluster/base/flux-system/gotk-components.yaml # Flux-generated, not owned
+  - cluster/base/flux-system # Flux-generated kustomize overlay; skip-path on gotk-components.yaml alone doesn't suppress kustomize scan
 
 # Skip checks that produce false positives in this repo
 skip-check:
