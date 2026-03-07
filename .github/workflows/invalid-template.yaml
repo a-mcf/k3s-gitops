@@ -8,6 +8,9 @@ on:
       - unlabeled
       - reopened
 
+permissions:
+  issues: write
+
 jobs:
   support:
     runs-on: ubuntu-24.04
