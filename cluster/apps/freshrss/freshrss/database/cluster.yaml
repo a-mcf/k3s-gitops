@@ -48,6 +48,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: freshrss-objectstore
+        serverName: freshrss-cnpg-backup
 
 
   # # restore from backup of different cluster
