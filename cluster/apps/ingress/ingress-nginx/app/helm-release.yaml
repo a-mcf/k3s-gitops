@@ -45,7 +45,7 @@ spec:
       # remote access
       extraContainers:
         - name: nebula
-          image: nebulaoss/nebula:1.10.0
+          image: nebulaoss/nebula:1.10.3
           securityContext:
             capabilities:
               add:
