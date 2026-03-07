@@ -1,0 +1,22 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: freshrss-objectstore
+  namespace: freshrss
+spec:
+  retentionPolicy: 30d
+  configuration:
+    destinationPath: s3://cnpg-backups
+    endpointURL: https://s3-premium.${SECRET_DOMAIN}
+    serverName: freshrss-cnpg-backup
+    s3Credentials:
+      accessKeyId:
+        name: cloudnative-pg-secret-garage
+        key: garage-access-key-id
+      secretAccessKey:
+        name: cloudnative-pg-secret-garage
+        key: garage-secret-access-key
+    wal:
+      compression: bzip2
+      maxParallel: 8
