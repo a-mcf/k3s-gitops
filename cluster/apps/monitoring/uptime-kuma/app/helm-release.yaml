@@ -23,7 +23,7 @@ spec:
           uptime:
             image:
               repository: louislam/uptime-kuma
-              tag: 2.0.2
+              tag: 2.2.0
             env:
               TZ: "${TZ}"
               UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: 0
