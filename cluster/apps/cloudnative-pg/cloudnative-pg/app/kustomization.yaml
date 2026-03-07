@@ -5,6 +5,7 @@ namespace: cloudnative-pg
 resources:
   #- ./externalsecret.yaml
   - ./helm-release.yaml
+  - ./plugin-barman-cloud.yaml
 # configMapGenerator:
 #   - name: cloudnative-pg-dashboard
 #     files:
