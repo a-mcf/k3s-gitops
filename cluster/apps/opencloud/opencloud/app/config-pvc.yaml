@@ -12,7 +12,6 @@ spec:
   mountOptions:
     - nfsvers=4
     - port=2049
-    - user_xattr
   nfs:
     path: /tank/user_files/shared/opencloud
     server: "${NFS_SERVER}"
