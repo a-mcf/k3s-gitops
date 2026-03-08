@@ -7,5 +7,6 @@ resources:
   - ./cluster.yaml  # TODO: Enable after verifying storage works
   - ./secret.sops.yaml
   - ./external-secret.yaml
+  - ./objectstore.yaml
   - ./scheduledbackup.yaml
   #- ./prometheusrule.yaml

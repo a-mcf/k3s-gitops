@@ -23,22 +23,29 @@ spec:
       shared_buffers: 512MB
   monitoring:
     enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cnpg-backups
-      endpointURL: https://s3-premium.${SECRET_DOMAIN}
-      serverName: mealie-cnpg
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret-garage
-          key: garage-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret-garage
-          key: garage-secret-access-key
+  # backup:
+  #   retentionPolicy: 30d
+  #   barmanObjectStore:
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
+  #     destinationPath: s3://cnpg-backups
+  #     endpointURL: https://s3-premium.${SECRET_DOMAIN}
+  #     serverName: mealie-cnpg
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: cloudnative-pg-secret-garage
+  #         key: garage-access-key-id
+  #       secretAccessKey:
+  #         name: cloudnative-pg-secret-garage
+  #         key: garage-secret-access-key
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: mealie-objectstore
+        serverName: mealie-cnpg
 
 
   bootstrap:
