@@ -67,6 +67,7 @@ spec:
                     key: idm-admin-password
               OC_ENABLE_OCM: false
               OC_INSECURE: false
+              OC_DECOMPOSEDFS_METADATA_BACKEND: messagepack
               OC_LOG_LEVEL: info
               OC_URL: https://opencloud.${SECRET_DOMAIN}
               PROXY_TLS: false
