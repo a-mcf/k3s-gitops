@@ -3,6 +3,7 @@
 skip-path:
   - cluster/base/flux-system/gotk-components.yaml # Flux-generated, not owned
   - cluster/base/flux-system # Flux-generated kustomize overlay; skip-path on gotk-components.yaml alone doesn't suppress kustomize scan
+  - archive # Retired configs, not deployed
 
 # Skip checks that produce false positives in this repo
 skip-check:
@@ -10,3 +11,7 @@ skip-check:
   - CKV_K8S_21
   # Flux variable substitution (${SECRET_DOMAIN/-}) causes kustomize runner crash
   - CKV_K8S_6
+  # False positive: ingress-authentik.yaml has no snippet annotations
+  - CKV_K8S_154
+  # Not applicable: this repo does not build artifacts
+  - CKV_GHA_6
