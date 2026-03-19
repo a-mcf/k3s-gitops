@@ -38,7 +38,14 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
-          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
+          allowed_bots: 'renovate'
+          prompt: |
+            /code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
+
+            If this PR contains dependency or image version upgrades (e.g. from Renovate), also:
+            - Assess the upgrade risk (patch/minor/major, stability, maturity of the project)
+            - Note any breaking changes between the old and new versions if known
+            - Flag anything that may require manual intervention or config changes
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 
