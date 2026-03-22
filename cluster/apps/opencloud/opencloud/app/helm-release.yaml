@@ -115,12 +115,12 @@ spec:
 
     persistence:
       storage-users:
-        existingClaim: ganesha-opencloud-storage-users-pvc
+        existingClaim: nfs-opencloud-storage-users-pvc
         globalMounts:
           - path: /var/lib/opencloud
             subPath: data
       data:
-        existingClaim: ganesha-opencloud-data-pvc
+        existingClaim: nfs-opencloud-data-pvc
         globalMounts:
           - path: /etc/opencloud
             subPath: config
