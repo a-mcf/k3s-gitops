@@ -32,7 +32,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           # modelURL: Qwen/Qwen3.5-9B
-          modelURL: Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF
+          modelUrl: lovedheart/Qwen3.5-9B-FP8
           replicaCount: 1
 
           requestCPU: 1
@@ -42,13 +42,13 @@ spec:
           vllmConfig:
             enableChunkedPrefill: true
             enablePrefixCaching: true
-            maxModelLen: 4096
-            dtype: float16
-            extraArgs:
-              - "--gpu-memory-utilization"
-              - "0.90"
-              - "--max-num-seqs"
-              - "32"
+            maxModelLen: 16384
+            # dtype: float16
+            # extraArgs:
+            #   - "--gpu-memory-utilization"
+            #   - "0.90"
+            #   - "--max-num-seqs"
+            #   - "32"
 
           shmSize: 8Gi
 
