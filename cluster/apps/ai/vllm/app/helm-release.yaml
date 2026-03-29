@@ -32,7 +32,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           # modelURL: Qwen/Qwen3.5-9B
-          modelUrl: lovedheart/Qwen3.5-9B-FP8
+          modelURL: lovedheart/Qwen3.5-9B-FP8
           replicaCount: 1
 
           requestCPU: 1
