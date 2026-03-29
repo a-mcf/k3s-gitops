@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-vllm-data-pv
+  namespace: ai
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/appscratch/vllm
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-vllm-data-pvc
+  namespace: ai
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeName: nfs-vllm-data-pv

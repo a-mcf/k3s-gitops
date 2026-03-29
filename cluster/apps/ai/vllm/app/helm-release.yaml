@@ -1,0 +1,93 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vllm
+  namespace: ai
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: vllm-stack
+      version: 0.1.10
+      sourceRef:
+        kind: HelmRepository
+        name: vllm
+        namespace: flux-system
+  timeout: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    servingEngineSpec:
+      runtimeClassName: nvidia
+
+      modelSpec:
+        - name: qwen-9b
+          repository: vllm/vllm-openai
+          tag: v0.8.0
+          modelURL: Qwen/Qwen3.5-9B
+          replicaCount: 1
+
+          requestCPU: 4
+          requestMemory: 24Gi
+          requestGPU: 0
+
+          vllmConfig:
+            enableChunkedPrefill: true
+            enablePrefixCaching: true
+            maxModelLen: 4096
+            dtype: float16
+            extraArgs:
+              - "--disable-log-requests"
+              - "--gpu-memory-utilization"
+              - "0.90"
+              - "--max-num-seqs"
+              - "32"
+
+          shmSize: 8Gi
+
+          env:
+            - name: TZ
+              value: "${TZ}"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: HF_HOME
+              value: "/data"
+
+          nodeSelector:
+            gpu: "true"
+
+          extraVolumeMounts:
+            - name: data
+              mountPath: /data
+
+          extraVolumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: nfs-vllm-data-pvc
+
+    routerSpec:
+      enabled: false
+
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        hajimari.io/icon: "mdi:brain"
+        hajimari.io/group: "Gen-AI"
+      hosts:
+        - host: "vllm.${SECRET_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - "vllm.${SECRET_DOMAIN}"

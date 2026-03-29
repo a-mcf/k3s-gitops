@@ -21,3 +21,4 @@ resources:
   - nvidia-charts.yaml
   - nvidia-device-plugin-charts.yaml
   - prometheus-community-charts.yaml
+  - vllm-charts.yaml
