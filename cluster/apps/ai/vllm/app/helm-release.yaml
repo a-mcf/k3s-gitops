@@ -59,8 +59,6 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
-            - name: HF_HOME
-              value: "/data"
 
           nodeSelector:
             gpu: "true"
