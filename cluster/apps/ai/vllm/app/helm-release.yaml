@@ -32,7 +32,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           #modelURL: Qwen/Qwen3.5-9B
-          modelURL: Qwen3.5-9B-Claude-4.6-HighIQ-THINKING-HERETIC-UNCENSORED-FP8-vLLM
+          modelURL: kanocz/Qwen3.5-9B-Claude-4.6-HighIQ-THINKING-HERETIC-UNCENSORED-FP8-vLLM
           replicaCount: 1
 
           requestCPU: 1
