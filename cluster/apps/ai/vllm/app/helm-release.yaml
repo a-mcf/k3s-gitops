@@ -45,7 +45,7 @@ spec:
             enableChunkedPrefill: true
             extraArgs:
               - "--quantization"
-              - "awq"
+              - "awq_marlin"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
