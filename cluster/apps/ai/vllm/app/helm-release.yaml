@@ -31,7 +31,8 @@ spec:
         - name: qwen-9b
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: Qwen/Qwen3.5-9B
+          # modelURL: Qwen/Qwen3.5-9B
+          modelURL: Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF
           replicaCount: 1
 
           requestCPU: 1
