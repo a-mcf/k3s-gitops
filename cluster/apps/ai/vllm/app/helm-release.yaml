@@ -46,9 +46,12 @@ spec:
             extraArgs:
               - "--quantization"
               - "awq"
+              - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
-              - "--trust-remote-code"
+              - "--enable-auto-tool-choice"
+              - "--tool-call-parser"
+              - "qwen3_coder"
 
           shmSize: 8Gi
 
