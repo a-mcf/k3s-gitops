@@ -30,7 +30,7 @@ spec:
       modelSpec:
         - name: qwen-9b
           repository: vllm/vllm-openai
-          tag: v0.8.0
+          tag: v0.18.0
           modelURL: Qwen/Qwen3.5-9B
           replicaCount: 1
 
