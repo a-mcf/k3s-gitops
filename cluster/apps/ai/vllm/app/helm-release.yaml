@@ -31,8 +31,8 @@ spec:
         - name: qwen-9b
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: Qwen/Qwen3.5-9B
-          #modelURL: lovedheart/Qwen3.5-9B-FP8
+          #modelURL: Qwen/Qwen3.5-9B
+          modelURL: lovedheart/Qwen3.5-9B-FP8
           replicaCount: 1
 
           requestCPU: 1
@@ -44,9 +44,9 @@ spec:
             enablePrefixCaching: true
             maxModelLen: 16384
             # dtype: float16
-            # extraArgs:
-            #   - "--gpu-memory-utilization"
-            #   - "0.90"
+            extraArgs:
+              - "--gpu-memory-utilization"
+              - "0.65"
             #   - "--max-num-seqs"
             #   - "32"
 
