@@ -52,6 +52,8 @@ spec:
               - "--enable-auto-tool-choice"
               - "--tool-call-parser"
               - "qwen3_coder"
+              - "--gpu-memory-utilization"
+              - "0.65"
 
           shmSize: 8Gi
 
