@@ -26,29 +26,29 @@ spec:
   values:
     servingEngineSpec:
       runtimeClassName: nvidia
-
       modelSpec:
-        - name: qwen-9b
+        - name: qwen35-9b-awq
           repository: vllm/vllm-openai
           tag: v0.18.0
-          #modelURL: Qwen/Qwen3.5-9B
-          modelURL: kanocz/Qwen3.5-9B-Claude-4.6-HighIQ-THINKING-HERETIC-UNCENSORED-FP8-vLLM
+          modelURL: QuantTrio/Qwen3.5-9B-AWQ
           replicaCount: 1
 
           requestCPU: 1
-          requestMemory: 2Gi
+          requestMemory: 4Gi
           requestGPU: 0
 
           vllmConfig:
-            enableChunkedPrefill: true
-            enablePrefixCaching: true
+            tensorParallelSize: 1
             maxModelLen: 16384
-            # dtype: float16
+            gpuMemoryUtilization: 0.9
+            enablePrefixCaching: true
+            enableChunkedPrefill: true
             extraArgs:
-              - "--gpu-memory-utilization"
-              - "0.65"
-            #   - "--max-num-seqs"
-            #   - "32"
+              - "--quantization"
+              - "awq"
+              - "--reasoning-parser"
+              - "qwen3"
+              - "--trust-remote-code"
 
           shmSize: 8Gi
 
