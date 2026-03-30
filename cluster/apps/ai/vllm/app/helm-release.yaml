@@ -89,7 +89,7 @@ spec:
                 claimName: nfs-vllm-data-pvc
 
         - name: qwen35-08b
-          repository: vllm/vllm-openai
+          repository: vllm/vllm-openai-cpu
           tag: v0.18.0
           modelURL: Qwen/Qwen3.5-0.8B
           replicaCount: 1
@@ -111,8 +111,6 @@ spec:
           env:
             - name: TZ
               value: "${TZ}"
-            - name: VLLM_TARGET_DEVICE
-              value: cpu
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
