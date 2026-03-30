@@ -98,8 +98,6 @@ spec:
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
-              - "--quantization"
-              - "awq_marlin"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
