@@ -31,7 +31,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           modelURL: QuantTrio/Qwen3.5-9B-AWQ
-          replicaCount: 1
+          replicaCount: 0
 
           requestCPU: 1
           requestMemory: 4Gi
@@ -81,23 +81,24 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: qwen35-35b-a3b-awq
+        - name: qwen35-27b-awq
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: np-deploys/Qwen3.5-35B-A3B-AWQ-4bit
+          modelURL: cyankiwi/Qwen3.5-27B-AWQ-4bit
           replicaCount: 1
 
-          requestCPU: 1
-          requestMemory: 4Gi
-          requestGPU: 0
+          requestCPU: 4
+          requestMemory: 8Gi
+          requestGPU: 1
 
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 16384
-            gpuMemoryUtilization: 0.9
+            maxModelLen: 32768
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
+              - "--quantization"
+              - "awq_marlin"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
@@ -105,7 +106,9 @@ spec:
               - "--tool-call-parser"
               - "qwen3_coder"
               - "--gpu-memory-utilization"
-              - "0.65"
+              - "0.90"
+              - "--max-num-seqs"
+              - "8"
 
           shmSize: 8Gi
 
@@ -116,6 +119,10 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
+            - name: HF_HOME
+              value: /data/hub
+            - name: TRANSFORMERS_CACHE
+              value: /data/hub
 
           nodeSelectorTerms:
             - matchExpressions:
