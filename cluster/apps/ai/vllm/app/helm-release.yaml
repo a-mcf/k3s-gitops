@@ -41,7 +41,7 @@ spec:
 
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 32768
+            maxModelLen: 65536
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
@@ -54,7 +54,7 @@ spec:
               - "--tool-call-parser"
               - "qwen3_coder"
               - "--gpu-memory-utilization"
-              - "0.65"
+              - "0.8"
               - "--download-dir"
               - "/data/huggingface"
 
