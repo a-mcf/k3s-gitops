@@ -119,10 +119,6 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
-            - name: HF_HOME
-              value: /data/hub
-            - name: TRANSFORMERS_CACHE
-              value: /data/hub
 
           nodeSelectorTerms:
             - matchExpressions:
