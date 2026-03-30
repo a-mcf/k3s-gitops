@@ -100,7 +100,7 @@ spec:
 
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 32768
+            maxModelLen: 2048
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
