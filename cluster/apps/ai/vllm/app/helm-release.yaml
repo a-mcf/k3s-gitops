@@ -55,6 +55,8 @@ spec:
               - "qwen3_coder"
               - "--gpu-memory-utilization"
               - "0.65"
+              - "--download-dir"
+              - "/data/huggingface"
 
           shmSize: 8Gi
 
@@ -65,8 +67,6 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
-            - name: HF_HOME
-              value: /data/huggingface
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
@@ -116,6 +116,8 @@ spec:
               - "0.90"
               - "--max-num-seqs"
               - "8"
+              - "--download-dir"
+              - "/data/huggingface"
 
           shmSize: 8Gi
 
@@ -126,8 +128,6 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
-            - name: HF_HOME
-              value: /data/huggingface
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
