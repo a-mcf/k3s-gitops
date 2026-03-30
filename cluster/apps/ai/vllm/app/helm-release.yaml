@@ -88,42 +88,6 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: tinyllama-1b
-          repository: vllm/vllm-openai-cpu
-          tag: v0.18.0
-          modelURL: TinyLlama/TinyLlama-1.1B-Chat-v1.0
-          replicaCount: 1
-
-          requestCPU: 0
-          requestMemory: 4Gi
-          requestGPU: 0
-
-          vllmConfig:
-            tensorParallelSize: 1
-            maxModelLen: 2048
-            enablePrefixCaching: true
-            enableChunkedPrefill: true
-            extraArgs:
-              - "--trust-remote-code"
-              - "--download-dir"
-              - "/data/huggingface"
-
-          env:
-            - name: TZ
-              value: "${TZ}"
-            - name: VLLM_CACHE_ROOT
-              value: /data/vllm-cache
-            - name: TRITON_CACHE_DIR
-              value: /data/vllm-cache/triton
-
-          extraVolumeMounts:
-            - name: data
-              mountPath: /data
-
-          extraVolumes:
-            - name: data
-              persistentVolumeClaim:
-                claimName: nfs-vllm-data-pvc
 
     routerSpec:
       enableRouter: true
