@@ -88,15 +88,15 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: qwen35-27b-awq
+        - name: qwen35-08b
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: QuantTrio/Qwen3.5-27B-AWQ
+          modelURL: Qwen/Qwen3.5-0.8B
           replicaCount: 0
 
-          requestCPU: 1
+          requestCPU: 2
           requestMemory: 4Gi
-          requestGPU: 1
+          requestGPU: 0
 
           vllmConfig:
             tensorParallelSize: 1
@@ -104,41 +104,19 @@ spec:
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
-              - "--quantization"
-              - "awq_marlin"
               - "--trust-remote-code"
-              - "--reasoning-parser"
-              - "qwen3"
-              - "--enable-auto-tool-choice"
-              - "--tool-call-parser"
-              - "qwen3_coder"
-              - "--gpu-memory-utilization"
-              - "0.90"
-              - "--max-num-seqs"
-              - "8"
               - "--download-dir"
               - "/data/huggingface"
-
-          shmSize: 8Gi
+              - "--device"
+              - "cpu"
 
           env:
             - name: TZ
               value: "${TZ}"
-            - name: NVIDIA_VISIBLE_DEVICES
-              value: all
-            - name: NVIDIA_DRIVER_CAPABILITIES
-              value: all
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
               value: /data/vllm-cache/triton
-
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: gpu
-                  operator: In
-                  values:
-                    - "true"
 
           extraVolumeMounts:
             - name: data
