@@ -88,43 +88,6 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: llama32-3b
-          repository: vllm/vllm-openai-cpu
-          tag: v0.18.0
-          modelURL: meta-llama/Llama-3.2-3B-Instruct
-          replicaCount: 1
-
-          requestCPU: 0
-          requestMemory: 8Gi
-          requestGPU: 0
-
-          vllmConfig:
-            tensorParallelSize: 1
-            maxModelLen: 4096
-            enablePrefixCaching: true
-            enableChunkedPrefill: true
-            extraArgs:
-              - "--trust-remote-code"
-              - "--download-dir"
-              - "/data/huggingface"
-
-          env:
-            - name: TZ
-              value: "${TZ}"
-            - name: VLLM_CACHE_ROOT
-              value: /data/vllm-cache
-            - name: TRITON_CACHE_DIR
-              value: /data/vllm-cache/triton
-
-          extraVolumeMounts:
-            - name: data
-              mountPath: /data
-
-          extraVolumes:
-            - name: data
-              persistentVolumeClaim:
-                claimName: nfs-vllm-data-pvc
-
     routerSpec:
       enableRouter: true
       ingress:
