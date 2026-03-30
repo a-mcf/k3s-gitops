@@ -31,7 +31,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           modelURL: QuantTrio/Qwen3.5-9B-AWQ
-          replicaCount: 0
+          replicaCount: 1
 
           requestCPU: 1
           requestMemory: 4Gi
@@ -85,7 +85,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           modelURL: QuantTrio/Qwen3.5-27B-AWQ
-          replicaCount: 1
+          replicaCount: 0
 
           requestCPU: 1
           requestMemory: 4Gi
