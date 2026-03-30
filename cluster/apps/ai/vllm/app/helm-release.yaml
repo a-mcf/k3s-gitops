@@ -88,11 +88,11 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: qwen35-08b
+        - name: gemma3-1b
           repository: vllm/vllm-openai-cpu
           tag: v0.18.0
-          modelURL: Qwen/Qwen3.5-0.8B
-          replicaCount: 1
+          modelURL: google/gemma-3-1b-it
+          replicaCount: 0
 
           requestCPU: 2
           requestMemory: 4Gi
