@@ -40,7 +40,6 @@ spec:
           vllmConfig:
             tensorParallelSize: 1
             maxModelLen: 32768
-            gpuMemoryUtilization: 0.9
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
@@ -64,6 +63,10 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
+            - name: VLLM_CACHE_ROOT
+              value: /data/vllm-cache
+            - name: TRITON_CACHE_DIR
+              value: /data/vllm-cache/triton
 
           nodeSelectorTerms:
             - matchExpressions:
