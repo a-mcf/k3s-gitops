@@ -88,13 +88,13 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        - name: gemma3-1b
+        - name: tinyllama-1b
           repository: vllm/vllm-openai-cpu
           tag: v0.18.0
-          modelURL: google/gemma-3-1b-it
-          replicaCount: 0
+          modelURL: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+          replicaCount: 1
 
-          requestCPU: 2
+          requestCPU: 1
           requestMemory: 4Gi
           requestGPU: 0
 
