@@ -84,7 +84,7 @@ spec:
         - name: qwen35-27b-awq
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: cyankiwi/Qwen3.5-27B-AWQ-4bit
+          modelURL: QuantTrio/Qwen3.5-27B-AWQ
           replicaCount: 1
 
           requestCPU: 1
