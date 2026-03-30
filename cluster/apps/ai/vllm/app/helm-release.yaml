@@ -107,12 +107,12 @@ spec:
               - "--trust-remote-code"
               - "--download-dir"
               - "/data/huggingface"
-              - "--device"
-              - "cpu"
 
           env:
             - name: TZ
               value: "${TZ}"
+            - name: VLLM_TARGET_DEVICE
+              value: cpu
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
