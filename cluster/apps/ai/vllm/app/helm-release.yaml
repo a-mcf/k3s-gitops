@@ -92,7 +92,7 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.18.0
           modelURL: Qwen/Qwen3.5-0.8B
-          replicaCount: 0
+          replicaCount: 1
 
           requestCPU: 2
           requestMemory: 4Gi
