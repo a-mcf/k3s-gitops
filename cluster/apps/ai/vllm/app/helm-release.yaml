@@ -65,6 +65,8 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
+            - name: HF_HOME
+              value: /data/huggingface
             - name: VLLM_CACHE_ROOT
               value: /data/vllm-cache
             - name: TRITON_CACHE_DIR
@@ -124,6 +126,12 @@ spec:
               value: all
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: all
+            - name: HF_HOME
+              value: /data/huggingface
+            - name: VLLM_CACHE_ROOT
+              value: /data/vllm-cache
+            - name: TRITON_CACHE_DIR
+              value: /data/vllm-cache/triton
 
           nodeSelectorTerms:
             - matchExpressions:
