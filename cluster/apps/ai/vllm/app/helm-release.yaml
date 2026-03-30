@@ -87,7 +87,7 @@ spec:
           modelURL: cyankiwi/Qwen3.5-27B-AWQ-4bit
           replicaCount: 1
 
-          requestCPU: 4
+          requestCPU: 1
           requestMemory: 8Gi
           requestGPU: 1
 
