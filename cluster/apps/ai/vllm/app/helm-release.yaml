@@ -140,7 +140,7 @@ spec:
                 claimName: nfs-vllm-data-pvc
 
     routerSpec:
-      enabled: false
+      enabled: true
 
     ingress:
       enabled: true
