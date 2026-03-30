@@ -26,6 +26,8 @@ spec:
   values:
     servingEngineSpec:
       runtimeClassName: nvidia
+      strategy:
+        type: Recreate
       modelSpec:
         - name: qwen35-9b-awq
           repository: vllm/vllm-openai
@@ -140,19 +142,18 @@ spec:
                 claimName: nfs-vllm-data-pvc
 
     routerSpec:
-      enabled: true
-
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        hajimari.io/icon: "mdi:brain"
-        hajimari.io/group: "Gen-AI"
-      hosts:
-        - host: "vllm.${SECRET_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "vllm.${SECRET_DOMAIN}"
+      enableRouter: true
+      ingress:
+        enabled: true
+        className: nginx
+        annotations:
+          hajimari.io/icon: "mdi:brain"
+          hajimari.io/group: "Gen-AI"
+        hosts:
+          - host: "vllm.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "vllm.${SECRET_DOMAIN}"
