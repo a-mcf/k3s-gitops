@@ -76,7 +76,7 @@ spec:
             enableChunkedPrefill: true
             extraArgs:
               - "--quantization"
-              - "gptq"
+              - "gptq_marlin"
               - "--dtype"
               - "float16"
               - "--trust-remote-code"
