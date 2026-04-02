@@ -59,9 +59,8 @@ spec:
 
         # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
         - name: glados-qwen35-9b-gptq
-          repository: vllm/vllm-openai
-          #tag: v0.18.0
-          tag: qwen3_5-cu130
+          repository: ghcr.io/a-mcf/vllm-docker-custom
+          tag: 8c1d5a7
           modelURL: /data/models/glados-gptq
           replicaCount: 1
 
@@ -89,8 +88,6 @@ spec:
               - "0.8"
               - "--download-dir"
               - "/data/huggingface"
-              - "--tokenizer"
-              - "QuantTrio/Qwen3.5-9B-AWQ"
 
         # Original AWQ model (uncomment to switch back):
         # - name: qwen35-9b-awq
