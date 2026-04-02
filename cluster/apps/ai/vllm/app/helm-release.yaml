@@ -60,6 +60,7 @@ spec:
               - "--enable-lora"
               - "--lora-modules"
               - "glados=/data/lora/glados"
+              - "--enforce-eager"
 
           shmSize: 8Gi
 
