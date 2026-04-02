@@ -30,7 +30,7 @@ spec:
         type: Recreate
       modelSpec:
         # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
-        - name: glados-qwen35-9b-gptq
+        - name: glados-qwen35-9b-b16
           repository: vllm/vllm-openai
           tag: v0.18.0
           modelURL: /data/models/glados-merged
