@@ -77,6 +77,8 @@ spec:
             extraArgs:
               - "--quantization"
               - "gptq"
+              - "--dtype"
+              - "float16"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
