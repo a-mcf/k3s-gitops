@@ -60,7 +60,7 @@ spec:
         # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
         - name: glados-qwen35-9b-gptq
           repository: ghcr.io/a-mcf/vllm-docker-custom
-          tag: 8c1d5a7
+          tag: 3fd5e0d
           modelURL: /data/models/glados-gptq
           replicaCount: 1
 
