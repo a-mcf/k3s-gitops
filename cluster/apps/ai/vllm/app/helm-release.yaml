@@ -118,6 +118,28 @@ spec:
 
           shmSize: 8Gi
 
+          # dirty hack to install transformers in the vllm image and verify it can load the model config (which requires trust_remote_code) before starting the server
+          command:
+            - /bin/sh
+            - -lc
+          args:
+            - |
+              set -eux
+              mkdir -p /data/pip
+              python3 -m pip install --no-cache-dir --target /data/pip \
+                "transformers>=5.3.0"
+              python3 - <<'PY'
+              import transformers
+              print("transformers:", transformers.__version__)
+              from transformers import AutoConfig
+              cfg = AutoConfig.from_pretrained("/data/models/glados-gptq", trust_remote_code=True)
+              print("model_type:", cfg.model_type)
+              PY
+              exec vllm serve /data/models/glados-gptq \
+                --quantization gptq \
+                --gpu-memory-utilization 0.8 \
+                --download-dir /data/huggingface
+
           env:
             - name: TZ
               value: "${TZ}"
