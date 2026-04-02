@@ -29,10 +29,11 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
-        - name: qwen35-9b-awq
+        # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
+        - name: glados-qwen35-9b-gptq
           repository: vllm/vllm-openai
           tag: v0.18.0
-          modelURL: QuantTrio/Qwen3.5-9B-AWQ
+          modelURL: /data/models/glados-gptq
           replicaCount: 1
 
           requestCPU: 0
@@ -46,7 +47,7 @@ spec:
             enableChunkedPrefill: true
             extraArgs:
               - "--quantization"
-              - "awq_marlin"
+              - "gptq"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
@@ -57,10 +58,33 @@ spec:
               - "0.8"
               - "--download-dir"
               - "/data/huggingface"
-              - "--enable-lora"
-              - "--lora-modules"
-              - "glados=/data/lora/glados"
-              - "--enforce-eager"
+        # Original AWQ model (uncomment to switch back):
+        # - name: qwen35-9b-awq
+        #   repository: vllm/vllm-openai
+        #   tag: v0.18.0
+        #   modelURL: QuantTrio/Qwen3.5-9B-AWQ
+        #   replicaCount: 1
+        #   requestCPU: 0
+        #   requestMemory: 4Gi
+        #   requestGPU: 0
+        #   vllmConfig:
+        #     tensorParallelSize: 1
+        #     maxModelLen: 65536
+        #     enablePrefixCaching: true
+        #     enableChunkedPrefill: true
+        #     extraArgs:
+        #       - "--quantization"
+        #       - "awq_marlin"
+        #       - "--trust-remote-code"
+        #       - "--reasoning-parser"
+        #       - "qwen3"
+        #       - "--enable-auto-tool-choice"
+        #       - "--tool-call-parser"
+        #       - "qwen3_coder"
+        #       - "--gpu-memory-utilization"
+        #       - "0.8"
+        #       - "--download-dir"
+        #       - "/data/huggingface"
 
           shmSize: 8Gi
 
