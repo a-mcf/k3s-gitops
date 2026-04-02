@@ -57,6 +57,9 @@ spec:
               - "0.8"
               - "--download-dir"
               - "/data/huggingface"
+              - "--enable-lora"
+              - "--lora-modules"
+              - "glados=/data/lora/glados"
 
           shmSize: 8Gi
 
