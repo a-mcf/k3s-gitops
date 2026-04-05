@@ -58,56 +58,26 @@ spec:
         #       - "/data/huggingface"
 
         # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
-        # - name: glados-qwen35-9b-gptq
-        #   repository: vllm/vllm-openai
-        #   tag: v0.18.1
-        #   modelURL: /data/models/glados-gptq
-        #   replicaCount: 1
-
-        #   requestCPU: 0
-        #   requestMemory: 4Gi
-        #   requestGPU: 0
-
-        #   vllmConfig:
-        #     tensorParallelSize: 1
-        #     maxModelLen: 32768
-        #     enablePrefixCaching: true
-        #     enableChunkedPrefill: true
-        #     extraArgs:
-        #       - "--quantization"
-        #       - "gptq_marlin"
-        #       - "--dtype"
-        #       - "float16"
-        #       - "--trust-remote-code"
-        #       - "--reasoning-parser"
-        #       - "qwen3"
-        #       - "--enable-auto-tool-choice"
-        #       - "--tool-call-parser"
-        #       - "qwen3_coder"
-        #       - "--gpu-memory-utilization"
-        #       - "0.8"
-        #       - "--download-dir"
-        #       - "/data/huggingface"
-        #       - "--tokenizer"
-        #       - "Qwen/Qwen3.5-9B"
-
-        # Original AWQ model (uncomment to switch back):
-        - name: qwen35-9b-awq
+        - name: glados-qwen35-9b-gptq
           repository: vllm/vllm-openai
           tag: v0.18.1
-          modelURL: QuantTrio/Qwen3.5-9B-AWQ
+          modelURL: /data/models/glados-gptq
           replicaCount: 1
+
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
+
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 65536
+            maxModelLen: 32768
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
               - "--quantization"
-              - "awq_marlin"
+              - "gptq_marlin"
+              - "--dtype"
+              - "float16"
               - "--trust-remote-code"
               - "--reasoning-parser"
               - "qwen3"
@@ -118,6 +88,8 @@ spec:
               - "0.8"
               - "--download-dir"
               - "/data/huggingface"
+              - "--tokenizer"
+              - "Qwen/Qwen3.5-9B"
 
           shmSize: 8Gi
 
@@ -148,6 +120,64 @@ spec:
             - name: data
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
+
+        # # Original AWQ model (uncomment to switch back):
+        # - name: qwen35-9b-awq
+        #   repository: vllm/vllm-openai
+        #   tag: v0.18.1
+        #   modelURL: QuantTrio/Qwen3.5-9B-AWQ
+        #   replicaCount: 1
+        #   requestCPU: 0
+        #   requestMemory: 4Gi
+        #   requestGPU: 0
+        #   vllmConfig:
+        #     tensorParallelSize: 1
+        #     maxModelLen: 65536
+        #     enablePrefixCaching: true
+        #     enableChunkedPrefill: true
+        #     extraArgs:
+        #       - "--quantization"
+        #       - "awq_marlin"
+        #       - "--trust-remote-code"
+        #       - "--reasoning-parser"
+        #       - "qwen3"
+        #       - "--enable-auto-tool-choice"
+        #       - "--tool-call-parser"
+        #       - "qwen3_coder"
+        #       - "--gpu-memory-utilization"
+        #       - "0.8"
+        #       - "--download-dir"
+        #       - "/data/huggingface"
+        #
+        #   shmSize: 8Gi
+        #
+        #   env:
+        #     - name: TZ
+        #       value: "${TZ}"
+        #     - name: NVIDIA_VISIBLE_DEVICES
+        #       value: all
+        #     - name: NVIDIA_DRIVER_CAPABILITIES
+        #       value: all
+        #     - name: VLLM_CACHE_ROOT
+        #       value: /data/vllm-cache
+        #     - name: TRITON_CACHE_DIR
+        #       value: /data/vllm-cache/triton
+        #
+        #   nodeSelectorTerms:
+        #     - matchExpressions:
+        #         - key: gpu
+        #           operator: In
+        #           values:
+        #             - "true"
+        #
+        #   extraVolumeMounts:
+        #     - name: data
+        #       mountPath: /data
+        #
+        #   extraVolumes:
+        #     - name: data
+        #       persistentVolumeClaim:
+        #         claimName: nfs-vllm-data-pvc
 
     routerSpec:
       enableRouter: true
