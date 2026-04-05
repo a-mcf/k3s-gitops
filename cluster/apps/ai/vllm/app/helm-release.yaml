@@ -29,6 +29,34 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
+        # Original AWQ model (uncomment to switch back):
+        - name: qwen35-9b-awq
+          repository: vllm/vllm-openai
+          tag: v0.18.1
+          modelURL: QuantTrio/Qwen3.5-9B-AWQ
+          replicaCount: 1
+          requestCPU: 0
+          requestMemory: 4Gi
+          requestGPU: 0
+          vllmConfig:
+            tensorParallelSize: 1
+            maxModelLen: 65536
+            enablePrefixCaching: true
+            enableChunkedPrefill: true
+            extraArgs:
+              - "--quantization"
+              - "awq_marlin"
+              - "--trust-remote-code"
+              - "--reasoning-parser"
+              - "qwen3"
+              - "--enable-auto-tool-choice"
+              - "--tool-call-parser"
+              - "qwen3_coder"
+              - "--gpu-memory-utilization"
+              - "0.8"
+              - "--download-dir"
+              - "/data/huggingface"
+
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
         # - name: glados-qwen35-9b-b16
         #   repository: vllm/vllm-openai
@@ -60,38 +88,38 @@ spec:
         #       - "Qwen/Qwen3.5-9B"
 
         # GLaDOS: merged LoRA + GPTQ 8-bit quantized Qwen3.5-9B
-        - name: glados-qwen35-9b-gptq-8bit
-          repository: vllm/vllm-openai
-          tag: v0.18.1
-          modelURL: /data/models/glados-gptq-8bit
-          replicaCount: 1
+        # - name: glados-qwen35-9b-gptq-8bit
+        #   repository: vllm/vllm-openai
+        #   tag: v0.18.1
+        #   modelURL: /data/models/glados-gptq-8bit
+        #   replicaCount: 1
 
-          requestCPU: 0
-          requestMemory: 4Gi
-          requestGPU: 0
+        #   requestCPU: 0
+        #   requestMemory: 4Gi
+        #   requestGPU: 0
 
-          vllmConfig:
-            tensorParallelSize: 1
-            maxModelLen: 32768
-            enablePrefixCaching: true
-            enableChunkedPrefill: true
-            extraArgs:
-              - "--quantization"
-              - "gptq_marlin"
-              - "--dtype"
-              - "float16"
-              - "--trust-remote-code"
-              - "--reasoning-parser"
-              - "qwen3"
-              - "--enable-auto-tool-choice"
-              - "--tool-call-parser"
-              - "qwen3_coder"
-              - "--gpu-memory-utilization"
-              - "0.85"
-              - "--download-dir"
-              - "/data/huggingface"
-              - "--tokenizer"
-              - "Qwen/Qwen3.5-9B"
+        #   vllmConfig:
+        #     tensorParallelSize: 1
+        #     maxModelLen: 32768
+        #     enablePrefixCaching: true
+        #     enableChunkedPrefill: true
+        #     extraArgs:
+        #       - "--quantization"
+        #       - "gptq_marlin"
+        #       - "--dtype"
+        #       - "float16"
+        #       - "--trust-remote-code"
+        #       - "--reasoning-parser"
+        #       - "qwen3"
+        #       - "--enable-auto-tool-choice"
+        #       - "--tool-call-parser"
+        #       - "qwen3_coder"
+        #       - "--gpu-memory-utilization"
+        #       - "0.85"
+        #       - "--download-dir"
+        #       - "/data/huggingface"
+        #       - "--tokenizer"
+        #       - "Qwen/Qwen3.5-9B"
 
         # # GLaDOS: merged LoRA + GPTQ 4-bit quantized Qwen3.5-9B
         # - name: glados-qwen35-9b-gptq
@@ -156,64 +184,6 @@ spec:
             - name: data
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
-
-        # # Original AWQ model (uncomment to switch back):
-        # - name: qwen35-9b-awq
-        #   repository: vllm/vllm-openai
-        #   tag: v0.18.1
-        #   modelURL: QuantTrio/Qwen3.5-9B-AWQ
-        #   replicaCount: 1
-        #   requestCPU: 0
-        #   requestMemory: 4Gi
-        #   requestGPU: 0
-        #   vllmConfig:
-        #     tensorParallelSize: 1
-        #     maxModelLen: 65536
-        #     enablePrefixCaching: true
-        #     enableChunkedPrefill: true
-        #     extraArgs:
-        #       - "--quantization"
-        #       - "awq_marlin"
-        #       - "--trust-remote-code"
-        #       - "--reasoning-parser"
-        #       - "qwen3"
-        #       - "--enable-auto-tool-choice"
-        #       - "--tool-call-parser"
-        #       - "qwen3_coder"
-        #       - "--gpu-memory-utilization"
-        #       - "0.8"
-        #       - "--download-dir"
-        #       - "/data/huggingface"
-        #
-        #   shmSize: 8Gi
-        #
-        #   env:
-        #     - name: TZ
-        #       value: "${TZ}"
-        #     - name: NVIDIA_VISIBLE_DEVICES
-        #       value: all
-        #     - name: NVIDIA_DRIVER_CAPABILITIES
-        #       value: all
-        #     - name: VLLM_CACHE_ROOT
-        #       value: /data/vllm-cache
-        #     - name: TRITON_CACHE_DIR
-        #       value: /data/vllm-cache/triton
-        #
-        #   nodeSelectorTerms:
-        #     - matchExpressions:
-        #         - key: gpu
-        #           operator: In
-        #           values:
-        #             - "true"
-        #
-        #   extraVolumeMounts:
-        #     - name: data
-        #       mountPath: /data
-        #
-        #   extraVolumes:
-        #     - name: data
-        #       persistentVolumeClaim:
-        #         claimName: nfs-vllm-data-pvc
 
     routerSpec:
       enableRouter: true
