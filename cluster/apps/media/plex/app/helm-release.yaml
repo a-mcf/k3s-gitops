@@ -61,10 +61,10 @@ spec:
               limits:
                 memory: 12Gi
                 #nvidia.com/gpu: 1
-        pod:
-          runtimeClassName: nvidia
-          nodeSelector:
-            gpu: "true"
+        # pod:
+        #   runtimeClassName: nvidia
+        #   nodeSelector:
+        #     gpu: "true"
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
