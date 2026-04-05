@@ -29,41 +29,11 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
-        # GLaDOS: merged LoRA bf16 Qwen3.5-9B
-        - name: glados-qwen35-9b-b16
-          repository: vllm/vllm-openai
-          tag: v0.18.1
-          modelURL: /data/models/glados-merged
-          replicaCount: 1
-
-          requestCPU: 0
-          requestMemory: 4Gi
-          requestGPU: 0
-
-          vllmConfig:
-            tensorParallelSize: 1
-            maxModelLen: 32768
-            enablePrefixCaching: true
-            enableChunkedPrefill: true
-            extraArgs:
-              - "--trust-remote-code"
-              - "--reasoning-parser"
-              - "qwen3"
-              - "--enable-auto-tool-choice"
-              - "--tool-call-parser"
-              - "qwen3_coder"
-              - "--gpu-memory-utilization"
-              - "0.95"
-              - "--download-dir"
-              - "/data/huggingface"
-              - "--tokenizer"
-              - "Qwen/Qwen3.5-9B"
-
-        # # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
-        # - name: glados-qwen35-9b-gptq
+        # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
+        # - name: glados-qwen35-9b-b16
         #   repository: vllm/vllm-openai
         #   tag: v0.18.1
-        #   modelURL: /data/models/glados-gptq
+        #   modelURL: /data/models/glados-merged
         #   replicaCount: 1
         #
         #   requestCPU: 0
@@ -76,10 +46,6 @@ spec:
         #     enablePrefixCaching: true
         #     enableChunkedPrefill: true
         #     extraArgs:
-        #       - "--quantization"
-        #       - "gptq_marlin"
-        #       - "--dtype"
-        #       - "float16"
         #       - "--trust-remote-code"
         #       - "--reasoning-parser"
         #       - "qwen3"
@@ -87,11 +53,45 @@ spec:
         #       - "--tool-call-parser"
         #       - "qwen3_coder"
         #       - "--gpu-memory-utilization"
-        #       - "0.8"
+        #       - "0.95"
         #       - "--download-dir"
         #       - "/data/huggingface"
         #       - "--tokenizer"
         #       - "Qwen/Qwen3.5-9B"
+
+        # GLaDOS: merged LoRA + GPTQ quantized Qwen3.5-9B
+        - name: glados-qwen35-9b-gptq
+          repository: vllm/vllm-openai
+          tag: v0.18.1
+          modelURL: /data/models/glados-gptq
+          replicaCount: 1
+
+          requestCPU: 0
+          requestMemory: 4Gi
+          requestGPU: 0
+
+          vllmConfig:
+            tensorParallelSize: 1
+            maxModelLen: 32768
+            enablePrefixCaching: true
+            enableChunkedPrefill: true
+            extraArgs:
+              - "--quantization"
+              - "gptq_marlin"
+              - "--dtype"
+              - "float16"
+              - "--trust-remote-code"
+              - "--reasoning-parser"
+              - "qwen3"
+              - "--enable-auto-tool-choice"
+              - "--tool-call-parser"
+              - "qwen3_coder"
+              - "--gpu-memory-utilization"
+              - "0.8"
+              - "--download-dir"
+              - "/data/huggingface"
+              - "--tokenizer"
+              - "Qwen/Qwen3.5-9B"
 
           shmSize: 8Gi
 
