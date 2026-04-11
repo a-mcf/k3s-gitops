@@ -56,6 +56,9 @@ spec:
               - "0.8"
               - "--download-dir"
               - "/data/huggingface"
+              - "--lora-modules"
+              - "glados-qwen35-9b=/data/lora/glados"
+
 
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
         # - name: glados-qwen35-9b-b16
