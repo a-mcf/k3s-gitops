@@ -9,6 +9,6 @@ configMapGenerator:
   - name: vllm-patches
     namespace: ai
     files:
-      - qwen3_5.py=patches/qwen3_5.py
+      - qwen3_5.py=./patches/qwen3_5.py
 generatorOptions:
   disableNameSuffixHash: true
