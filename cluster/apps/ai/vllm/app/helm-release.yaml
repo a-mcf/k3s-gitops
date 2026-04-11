@@ -32,7 +32,7 @@ spec:
         # Original AWQ model (uncomment to switch back):
         - name: qwen35-9b-awq
           repository: vllm/vllm-openai
-          tag: v0.18.1
+          tag: v0.19.0
           modelURL: QuantTrio/Qwen3.5-9B-AWQ
           replicaCount: 1
           requestCPU: 0
