@@ -183,11 +183,18 @@ spec:
           extraVolumeMounts:
             - name: data
               mountPath: /data
+            - name: vllm-patches
+              mountPath: /usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5.py
+              subPath: qwen3_5.py
+              readOnly: true
 
           extraVolumes:
             - name: data
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
+            - name: vllm-patches
+              configMap:
+                name: vllm-patches
 
     routerSpec:
       enableRouter: true
