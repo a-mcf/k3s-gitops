@@ -58,7 +58,7 @@ spec:
               - "/data/huggingface"
               - "--enable-lora"
               - "--lora-modules"
-              - "glados-qwen35-9b=/data/lora/glados"
+              - "glados-qwen35-9b=/data/lora/glados-mm"
 
 
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
