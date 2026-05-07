@@ -27,5 +27,6 @@ resources:
   - paperless
   - photoprism
   - proxmox-csi
+  - retrosavemanager
   - searxng
   - syncthing
