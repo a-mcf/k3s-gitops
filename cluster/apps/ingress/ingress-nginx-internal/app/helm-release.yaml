@@ -1,0 +1,48 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ingress-nginx-internal
+  namespace: ingress
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: ingress-nginx
+      version: 4.15.1
+      sourceRef:
+        kind: HelmRepository
+        name: ingress-nginx-charts
+        namespace: flux-system
+  values:
+    controller:
+      ingressClassResource:
+        name: nginx-internal
+        enabled: true
+        default: false
+        controllerValue: "k8s.io/ingress-nginx-internal"
+      ingressClass: nginx-internal
+      electionID: ingress-nginx-internal-leader
+      replicaCount: 1
+      allowSnippetAnnotations: true
+      service:
+        type: LoadBalancer
+        loadBalancerIP: "${INGRESS_NGINX_INTERNAL_LB}"
+        externalTrafficPolicy: Local
+      config:
+        ssl-protocols: "TLSv1.3 TLSv1.2"
+        proxy-body-size: "1g"
+        use-forwarded-headers: "true"
+        annotations-risk-level: Critical
+      metrics:
+        enabled: false
+        serviceMonitor:
+          enabled: false
+      extraArgs:
+        default-ssl-certificate: "ingress/${SECRET_DOMAIN/./-}-tls"
+      resources:
+        requests:
+          memory: 100Mi
+          cpu: 100m
+        limits:
+          memory: 500Mi

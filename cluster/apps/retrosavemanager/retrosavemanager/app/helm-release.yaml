@@ -77,6 +77,21 @@ spec:
         tls:
           - hosts:
               - *host
+      api:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx-internal"
+          hajimari.io/enable: "false"
+        hosts:
+          - host: &api-host "rsm-api.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: retrosavemanager
+                  port: http
+        tls:
+          - hosts:
+              - *api-host
     persistence:
       config:
         enabled: true
