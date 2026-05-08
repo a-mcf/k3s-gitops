@@ -85,6 +85,9 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx-internal"
+          # SGM-Helper clients hardcode http:// — no TLS support — so don't auto-redirect to https.
+          # Browsers can still hit this hostname over HTTPS; only the redirect is disabled.
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
           hajimari.io/enable: "false"
         hosts:
           - host: &api-host "rsm-api.${SECRET_DOMAIN}"
