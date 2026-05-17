@@ -65,8 +65,8 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Music Assistant"
           hajimari.io/icon: "music-assistant"
           hajimari.io/group: "home automation"

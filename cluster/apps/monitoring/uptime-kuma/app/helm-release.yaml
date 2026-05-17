@@ -36,8 +36,8 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Uptime Kuma"
           hajimari.io/icon: "simple-icons:uptimekuma"
           hajimari.io/group: "monitoring"

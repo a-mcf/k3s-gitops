@@ -80,9 +80,9 @@ spec:
 
       ingress:
         enabled: true
+        ingressClassName: traefik
         pathType: Prefix
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/enable: "false"
         hosts:
           - "alertmanager.${SECRET_DOMAIN}"
@@ -102,9 +102,9 @@ spec:
       adminPassword: "${SECRET_GRAFANA_PASSWORD}"
       ingress:
         enabled: true
+        ingressClassName: traefik
         pathType: Prefix
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "Grafana"
           hajimari.io/icon: "simple-icons:grafana"
           hajimari.io/group: "monitoring"
@@ -214,9 +214,9 @@ spec:
     prometheus:
       ingress:
         enabled: true
+        ingressClassName: traefik
         pathType: Prefix
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/enable: "false"
         hosts:
           - "prometheus.${SECRET_DOMAIN}"

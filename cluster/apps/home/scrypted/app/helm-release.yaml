@@ -64,9 +64,8 @@ spec:
     ingress:
       app:
         enabled: true
-        className: nginx
+        className: traefik
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/enable: "true"
           hajimari.io/icon: video-box
           hajimari.io/info: Video Management

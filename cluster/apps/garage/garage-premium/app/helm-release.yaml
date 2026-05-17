@@ -65,8 +65,7 @@ spec:
     ingress:
       app:
         enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
+        ingressClassName: traefik
         hosts:
           - host: &s3Host "s3-premium.${SECRET_DOMAIN}"
             paths:

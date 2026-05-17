@@ -76,8 +76,8 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/icon: mdi:z-wave
           hajimari.io/group: "home automation"
         hosts:
