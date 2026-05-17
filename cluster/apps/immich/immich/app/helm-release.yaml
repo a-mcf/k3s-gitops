@@ -68,9 +68,8 @@ spec:
       ingress:
         main:
           enabled: true
+          className: traefik
           annotations:
-            kubernetes.io/ingress.class: nginx
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
             hajimari.io/appName: Immich
             hajimari.io/icon: arcticons:immich
             hajimari.io/group: "media"
