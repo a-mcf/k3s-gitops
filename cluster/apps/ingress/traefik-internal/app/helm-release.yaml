@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik-internal
+  namespace: ingress
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: traefik
+      version: 33.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: traefik-charts
+        namespace: flux-system
+  values:
+    deployment:
+      replicas: 1
+
+    ingressClass:
+      enabled: true
+      name: traefik-internal
+      isDefaultClass: false
+
+    providers:
+      kubernetesIngress:
+        enabled: true
+        ingressClass: traefik-internal
+        publishedService:
+          enabled: true
+        # SGM-Helper client hits the API over HTTP and the api ingress
+        # uses an ExternalName-style backend path; permissive defaults
+        # mirror the previous nginx-internal behavior.
+        allowExternalNameServices: true
+      kubernetesCRD:
+        enabled: true
+        # Scope CRDs (Middleware/TLSStore/etc.) to this controller only,
+        # so they don't collide with the public traefik instance.
+        ingressClass: traefik-internal
+        allowCrossNamespace: false
+        allowExternalNameServices: false
+
+    ports:
+      # No redirectTo on web — internal clients (e.g. SGM-Helper) hit
+      # http:// directly. Apps that want HTTPS-only handle it themselves.
+      web:
+        port: 8000
+        expose:
+          default: true
+        exposedPort: 80
+        forwardedHeaders:
+          insecure: true
+        proxyProtocol:
+          insecure: true
+      websecure:
+        port: 8443
+        expose:
+          default: true
+        exposedPort: 443
+        tls:
+          enabled: true
+        forwardedHeaders:
+          insecure: true
+        proxyProtocol:
+          insecure: true
+
+    service:
+      enabled: true
+      type: LoadBalancer
+      spec:
+        loadBalancerIP: "${INGRESS_NGINX_INTERNAL_LB}"
+        externalTrafficPolicy: Local
+
+    tlsOptions:
+      default:
+        minVersion: VersionTLS12
+        sniStrict: false
+
+    # Match the public traefik: any TLS-enabled Ingress without its own
+    # secretName falls back to the wildcard cert.
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: "${SECRET_DOMAIN/./-}-tls"
+
+    logs:
+      general:
+        level: INFO
+      access:
+        enabled: false
+
+    metrics:
+      prometheus:
+        service:
+          enabled: false
+        serviceMonitor:
+          enabled: false
+
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 500Mi

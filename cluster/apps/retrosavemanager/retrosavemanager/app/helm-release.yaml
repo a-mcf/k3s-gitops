@@ -66,8 +66,8 @@ spec:
         # forceRename keeps the existing `retrosavemanager` Ingress name so helm patches it
         # in place instead of creating a colliding `retrosavemanager-main` resource.
         forceRename: retrosavemanager
+        className: traefik
         annotations:
-          kubernetes.io/ingress.class: "nginx"
           hajimari.io/appName: "RetroSaveManager"
           hajimari.io/icon: "gamepad-variant"
           hajimari.io/group: "gaming"
@@ -83,11 +83,11 @@ spec:
               - *host
       api:
         enabled: true
+        # SGM-Helper clients hardcode http://. traefik-internal's web entrypoint
+        # has no redirect-to-https rule, so HTTP just works for them; browsers can
+        # still hit the host over HTTPS via the TLS entry below.
+        className: traefik-internal
         annotations:
-          kubernetes.io/ingress.class: "nginx-internal"
-          # SGM-Helper clients hardcode http:// — no TLS support — so don't auto-redirect to https.
-          # Browsers can still hit this hostname over HTTPS; only the redirect is disabled.
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"
           hajimari.io/enable: "false"
         hosts:
           - host: &api-host "rsm-api.${SECRET_DOMAIN}"
