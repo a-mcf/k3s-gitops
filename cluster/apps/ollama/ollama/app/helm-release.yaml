@@ -31,6 +31,8 @@ spec:
     controllers:
       ollama:
         type: deployment
+        # Disabled while vLLM owns the GPU node — both can't share the device.
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
