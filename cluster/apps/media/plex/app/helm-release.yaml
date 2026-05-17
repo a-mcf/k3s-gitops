@@ -65,6 +65,7 @@ spec:
         #   runtimeClassName: nvidia
         #   nodeSelector:
         #     gpu: "true"
+        pod:
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
