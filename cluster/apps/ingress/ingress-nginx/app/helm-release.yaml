@@ -41,29 +41,6 @@ spec:
         limits:
           memory: 500Mi
 
-      # add sidecar for slack nebula to allow
-      # remote access
-      extraContainers:
-        - name: nebula
-          image: nebulaoss/nebula:1.10.3
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
-          volumeMounts:
-            - mountPath: /config
-              readOnly: true
-              name: nebula-conf
-            - mountPath: /dev/net/tun
-              name: devnet
-          args: ["-config", "/config/config.yaml"]
-      extraVolumes:
-        - name: nebula-conf
-          secret:
-            secretName: nebula-conf
-            items:
-              - key: nebula.conf
-                path: config.yaml
-        - name: devnet
-          hostPath:
-            path: /dev/net/tun
+      # Nebula sidecar moved to the traefik HelmRelease as part of
+      # the ingress migration. nginx is staying parked on 172.16.1.110
+      # until decommissioning; it no longer needs to host the VPN.
