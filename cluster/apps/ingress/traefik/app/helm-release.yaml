@@ -73,15 +73,20 @@ spec:
         allowExternalNameServices: false
 
     ports:
+      # Bind directly to 80/443 inside the container (chart default is
+      # 8000/8443 with a Service port-map) so the nebula sidecar's
+      # in-pod traffic can reach port 443 — Services don't apply to
+      # traffic already inside the pod's network namespace. The chart
+      # adds NET_BIND_SERVICE so non-root traefik can claim them.
       web:
-        port: 8000
+        port: 80
         expose:
           default: true
         exposedPort: 80
         redirectTo:
           port: websecure
       websecure:
-        port: 8443
+        port: 443
         expose:
           default: true
         exposedPort: 443
