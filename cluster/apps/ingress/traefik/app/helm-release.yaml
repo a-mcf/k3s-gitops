@@ -23,7 +23,12 @@ spec:
       additionalContainers:
         - name: nebula
           image: nebulaoss/nebula:1.10.3
+          # Override the pod-level runAsNonRoot/runAsUser: 65532 from the
+          # traefik chart — nebula needs root + CAP_NET_ADMIN to open
+          # /dev/net/tun and create the nebula1 interface.
           securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
             capabilities:
               add:
                 - NET_ADMIN
@@ -59,6 +64,9 @@ spec:
         ingressClass: traefik
         publishedService:
           enabled: true
+        # Required so the paperless authentik-outpost subpath Ingress
+        # (ExternalName backend to authentik-server) can be served.
+        allowExternalNameServices: true
       kubernetesCRD:
         enabled: true
         allowCrossNamespace: false

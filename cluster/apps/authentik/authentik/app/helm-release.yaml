@@ -31,9 +31,11 @@ spec:
           hajimari.io/group: "authentication"
         hosts:
           - authentik.${SECRET_DOMAIN}
+        # No secretName — fall back to the traefik TLSStore default
+        # wildcard cert. The previous `tls.authentik` secret never existed
+        # in this namespace; nginx must have served the default cert too.
         tls:
-          - secretName: tls.authentik
-            hosts:
+          - hosts:
               - authentik.${SECRET_DOMAIN}
 
     geoip:
