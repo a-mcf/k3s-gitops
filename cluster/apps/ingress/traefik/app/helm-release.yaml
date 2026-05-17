@@ -1,0 +1,125 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: ingress
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: traefik
+      version: 33.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: traefik-charts
+        namespace: flux-system
+  values:
+    deployment:
+      replicas: 1
+      # Sidecar for slack nebula to allow remote access.
+      # Re-uses the nebula-conf secret created by the ingress-nginx
+      # HelmRelease. If ingress-nginx is removed, relocate that secret
+      # before deleting it.
+      additionalContainers:
+        - name: nebula
+          image: nebulaoss/nebula:1.10.3
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config
+              readOnly: true
+              name: nebula-conf
+            - mountPath: /dev/net/tun
+              name: devnet
+          args: ["-config", "/config/config.yaml"]
+      additionalVolumes:
+        - name: nebula-conf
+          secret:
+            secretName: nebula-conf
+            items:
+              - key: nebula.conf
+                path: config.yaml
+        - name: devnet
+          hostPath:
+            path: /dev/net/tun
+
+    ingressClass:
+      enabled: true
+      name: traefik
+      # Side-by-side with ingress-nginx during migration.
+      # Apps opt in by setting `ingressClassName: traefik`.
+      isDefaultClass: false
+
+    providers:
+      kubernetesIngress:
+        enabled: true
+        # Only watch Ingress resources that target this controller.
+        ingressClass: traefik
+        publishedService:
+          enabled: true
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: false
+        allowExternalNameServices: false
+
+    ports:
+      web:
+        port: 8000
+        expose:
+          default: true
+        exposedPort: 80
+        redirectTo:
+          port: websecure
+      websecure:
+        port: 8443
+        expose:
+          default: true
+        exposedPort: 443
+        tls:
+          enabled: true
+        # Equivalent to nginx use-forwarded-headers; trust XFF from
+        # MetalLB-fronted requests.
+        forwardedHeaders:
+          insecure: true
+        proxyProtocol:
+          insecure: true
+
+    service:
+      enabled: true
+      type: LoadBalancer
+      spec:
+        loadBalancerIP: "${TRAEFIK_LB}"
+        externalTrafficPolicy: Local
+
+    tlsOptions:
+      default:
+        minVersion: VersionTLS12
+        sniStrict: false
+
+    additionalArguments:
+      # Match nginx proxy-body-size: 1g
+      - "--entrypoints.websecure.http.middlewares="
+      - "--providers.kubernetesingress.allowEmptyServices=true"
+
+    logs:
+      general:
+        level: INFO
+      access:
+        enabled: false
+
+    metrics:
+      prometheus:
+        service:
+          enabled: false
+        serviceMonitor:
+          enabled: false
+
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 500Mi
