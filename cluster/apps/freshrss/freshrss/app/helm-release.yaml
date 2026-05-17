@@ -52,7 +52,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: "nginx"
+        className: traefik
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "arcticons:freshrss"
