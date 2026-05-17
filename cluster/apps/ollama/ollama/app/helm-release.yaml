@@ -65,7 +65,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/icon: "fluent-emoji-high-contrast:llama"
           hajimari.io/group: "Gen-AI"

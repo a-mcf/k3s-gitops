@@ -62,7 +62,7 @@ spec:
 
     ingress:
       app:
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/appName: "ESP Home"
           hajimari.io/icon: "home-assistant"

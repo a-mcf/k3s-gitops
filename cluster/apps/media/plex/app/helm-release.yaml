@@ -80,7 +80,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/icon: "plex"
           hajimari.io/group: "media"

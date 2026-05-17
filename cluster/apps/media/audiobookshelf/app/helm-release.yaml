@@ -48,7 +48,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/icon: "bookshelf"
           hajimari.io/enable: "true"

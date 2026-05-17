@@ -65,7 +65,7 @@ spec:
     ingress:
       app:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         hosts:
           - host: &s3Host "s3-bulk.${SECRET_DOMAIN}"
             paths:

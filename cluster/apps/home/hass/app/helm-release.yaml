@@ -66,7 +66,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/appName: "Home Assistant"
           hajimari.io/icon: "home-assistant"

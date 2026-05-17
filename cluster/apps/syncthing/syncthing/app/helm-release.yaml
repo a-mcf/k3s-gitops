@@ -75,7 +75,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/appName: "Syncthing"
           hajimari.io/group: "Storage"

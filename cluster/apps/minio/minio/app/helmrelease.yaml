@@ -93,7 +93,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        className: traefik
         annotations:
           hajimari.io/appName: "Minio"
           hajimari.io/icon: "file storage"
