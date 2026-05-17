@@ -17,34 +17,33 @@ spec:
   values:
     deployment:
       replicas: 1
-      # Sidecar for slack nebula to allow remote access.
-      # Re-uses the nebula-conf secret created by the ingress-nginx
-      # HelmRelease. If ingress-nginx is removed, relocate that secret
-      # before deleting it.
-      additionalContainers:
-        - name: nebula
-          image: nebulaoss/nebula:1.10.3
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
-          volumeMounts:
-            - mountPath: /config
-              readOnly: true
-              name: nebula-conf
-            - mountPath: /dev/net/tun
-              name: devnet
-          args: ["-config", "/config/config.yaml"]
-      additionalVolumes:
-        - name: nebula-conf
-          secret:
-            secretName: nebula-conf
-            items:
-              - key: nebula.conf
-                path: config.yaml
-        - name: devnet
-          hostPath:
-            path: /dev/net/tun
+      # Nebula sidecar disabled during migration — the nebula-conf secret
+      # is currently in use by ingress-nginx. Re-enable (and relocate the
+      # secret) once nginx is decommissioned.
+      # additionalContainers:
+      #   - name: nebula
+      #     image: nebulaoss/nebula:1.10.3
+      #     securityContext:
+      #       capabilities:
+      #         add:
+      #           - NET_ADMIN
+      #     volumeMounts:
+      #       - mountPath: /config
+      #         readOnly: true
+      #         name: nebula-conf
+      #       - mountPath: /dev/net/tun
+      #         name: devnet
+      #     args: ["-config", "/config/config.yaml"]
+      # additionalVolumes:
+      #   - name: nebula-conf
+      #     secret:
+      #       secretName: nebula-conf
+      #       items:
+      #         - key: nebula.conf
+      #           path: config.yaml
+      #   - name: devnet
+      #     hostPath:
+      #       path: /dev/net/tun
 
     ingressClass:
       enabled: true
@@ -98,6 +97,15 @@ spec:
       default:
         minVersion: VersionTLS12
         sniStrict: false
+
+    # Equivalent of nginx `default-ssl-certificate`: any Ingress matched by
+    # Traefik that does not specify its own `tls.secretName` falls back to
+    # this wildcard cert. Reuses the cert managed by
+    # cluster-apps-ingress-nginx-certificate (Certificate `${SECRET_DOMAIN/./-}`).
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: "${SECRET_DOMAIN/./-}-tls"
 
     additionalArguments:
       # Match nginx proxy-body-size: 1g
