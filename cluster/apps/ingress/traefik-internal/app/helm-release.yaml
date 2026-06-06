@@ -58,8 +58,10 @@ spec:
         expose:
           default: true
         exposedPort: 443
-        tls:
-          enabled: true
+        # v40: tls moved under http.tls.
+        http:
+          tls:
+            enabled: true
         forwardedHeaders:
           insecure: true
         proxyProtocol:

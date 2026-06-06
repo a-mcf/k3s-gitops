@@ -83,15 +83,21 @@ spec:
         expose:
           default: true
         exposedPort: 80
-        redirectTo:
-          port: websecure
+        # v40: redirectTo moved under http.redirections.entryPoint.
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
       websecure:
         port: 443
         expose:
           default: true
         exposedPort: 443
-        tls:
-          enabled: true
+        # v40: tls moved under http.tls.
+        http:
+          tls:
+            enabled: true
         # Equivalent to nginx use-forwarded-headers; trust XFF from
         # MetalLB-fronted requests.
         forwardedHeaders:
