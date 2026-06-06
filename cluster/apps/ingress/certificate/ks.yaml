@@ -2,12 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-traefik
+  name: cluster-apps-ingress-certificate
   namespace: flux-system
 spec:
-  path: ./cluster/apps/ingress/traefik/app
-  dependsOn:
-    - name: cluster-apps-ingress-certificate
+  path: ./cluster/apps/ingress/certificate
   prune: true
   sourceRef:
     kind: GitRepository

@@ -114,7 +114,7 @@ spec:
     # Equivalent of nginx `default-ssl-certificate`: any Ingress matched by
     # Traefik that does not specify its own `tls.secretName` falls back to
     # this wildcard cert. Reuses the cert managed by
-    # cluster-apps-ingress-nginx-certificate (Certificate `${SECRET_DOMAIN/./-}`).
+    # cluster-apps-ingress-certificate (Certificate `${SECRET_DOMAIN/./-}`).
     tlsStore:
       default:
         defaultCertificate:
