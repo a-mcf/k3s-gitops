@@ -221,43 +221,6 @@ spec:
         #       - "--tokenizer"
         #       - "Qwen/Qwen3.5-9B"
 
-          shmSize: 8Gi
-
-          env:
-            - name: TZ
-              value: "${TZ}"
-            - name: NVIDIA_VISIBLE_DEVICES
-              value: all
-            - name: NVIDIA_DRIVER_CAPABILITIES
-              value: all
-            - name: VLLM_CACHE_ROOT
-              value: /data/vllm-cache
-            - name: TRITON_CACHE_DIR
-              value: /data/vllm-cache/triton
-
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: gpu
-                  operator: In
-                  values:
-                    - "true"
-
-          extraVolumeMounts:
-            - name: data
-              mountPath: /data
-            # - name: vllm-patches
-            #   mountPath: /usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5.py
-            #   subPath: qwen3_5.py
-            #   readOnly: true
-
-          extraVolumes:
-            - name: data
-              persistentVolumeClaim:
-                claimName: nfs-vllm-data-pvc
-            - name: vllm-patches
-              configMap:
-                name: vllm-patches
-
     routerSpec:
       enableRouter: true
       ingress:
