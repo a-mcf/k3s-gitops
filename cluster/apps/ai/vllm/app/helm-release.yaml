@@ -29,36 +29,98 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
-        # Original AWQ model (uncomment to switch back):
-        - name: qwen35-9b-awq
+        # Gemma 4 12B Unified (multimodal, encoder-free) — QAT W4A16 compressed-tensors.
+        # vLLM auto-detects quant config; no --quantization flag required.
+        # Image: gemma4-unified tag is required until Gemma 4 ships in a stable vLLM release.
+        # For CUDA 12.9 hosts, switch tag to gemma4-unified-cu129.
+        - name: gemma4-12b-qat
           repository: vllm/vllm-openai
-          tag: v0.19.0
-          modelURL: QuantTrio/Qwen3.5-9B-AWQ
+          tag: gemma4-unified
+          modelURL: google/gemma-4-12B-it-qat-w4a16-ct
           replicaCount: 1
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 65536
+            maxModelLen: 32768
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
-              - "--quantization"
-              - "awq_marlin"
-              - "--trust-remote-code"
               - "--reasoning-parser"
-              - "qwen3"
+              - "gemma4"
               - "--enable-auto-tool-choice"
               - "--tool-call-parser"
-              - "qwen3_coder"
+              - "gemma4"
               - "--gpu-memory-utilization"
-              - "0.8"
+              - "0.90"
               - "--download-dir"
               - "/data/huggingface"
-              - "--enable-lora"
-              - "--lora-modules"
-              - "glados-qwen35-9b=/data/lora/glados-mm"
+              # Skip image/audio profiling — 24GB 3090 has no headroom for multimodal at 32k ctx.
+              # Drop these two args to re-enable vision/audio (will need to lower maxModelLen).
+              - "--limit-mm-per-prompt"
+              - '{"image": 0, "audio": 0}'
+
+          shmSize: 8Gi
+
+          env:
+            - name: TZ
+              value: "${TZ}"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: VLLM_CACHE_ROOT
+              value: /data/vllm-cache
+            - name: TRITON_CACHE_DIR
+              value: /data/vllm-cache/triton
+
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: gpu
+                  operator: In
+                  values:
+                    - "true"
+
+          extraVolumeMounts:
+            - name: data
+              mountPath: /data
+
+          extraVolumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: nfs-vllm-data-pvc
+
+        # Qwen3.5 9B AWQ — previous active model. Uncomment to restore (and disable gemma4 above).
+        # - name: qwen35-9b-awq
+        #   repository: vllm/vllm-openai
+        #   tag: v0.19.0
+        #   modelURL: QuantTrio/Qwen3.5-9B-AWQ
+        #   replicaCount: 1
+        #   requestCPU: 0
+        #   requestMemory: 4Gi
+        #   requestGPU: 0
+        #   vllmConfig:
+        #     tensorParallelSize: 1
+        #     maxModelLen: 65536
+        #     enablePrefixCaching: true
+        #     enableChunkedPrefill: true
+        #     extraArgs:
+        #       - "--quantization"
+        #       - "awq_marlin"
+        #       - "--trust-remote-code"
+        #       - "--reasoning-parser"
+        #       - "qwen3"
+        #       - "--enable-auto-tool-choice"
+        #       - "--tool-call-parser"
+        #       - "qwen3_coder"
+        #       - "--gpu-memory-utilization"
+        #       - "0.8"
+        #       - "--download-dir"
+        #       - "/data/huggingface"
+        #       - "--enable-lora"
+        #       - "--lora-modules"
+        #       - "glados-qwen35-9b=/data/lora/glados-mm"
 
 
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
