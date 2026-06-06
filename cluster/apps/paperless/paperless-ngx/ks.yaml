@@ -23,7 +23,7 @@ metadata:
 spec:
   path: ./cluster/apps/paperless/paperless-ngx/app
   dependsOn:
-    - name: cluster-apps-ingress-nginx
+    - name: cluster-apps-traefik
     - name: cluster-apps-authentik
     - name: cluster-apps-proxmox-csi
     - name: cluster-apps-paperless-ngx-redis
