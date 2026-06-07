@@ -31,11 +31,13 @@ spec:
       modelSpec:
         # Gemma 4 12B Unified (multimodal, encoder-free) — QAT W4A16 compressed-tensors.
         # vLLM auto-detects quant config; no --quantization flag required.
-        # Image: gemma4-unified tag is required until Gemma 4 ships in a stable vLLM release.
-        # For CUDA 12.9 hosts, switch tag to gemma4-unified-cu129.
+        # Image: using nightly (cu130 default, matches host driver) because the
+        # frozen gemma4-unified tag (2026-06-03) crashed at init with
+        # AttributeError: 'Gemma4UnifiedVisionConfig' has no attribute 'num_soft_tokens'
+        # — field renamed to max_soft_tokens upstream after the launch tag was cut.
         - name: gemma4-12b-qat
           repository: vllm/vllm-openai
-          tag: gemma4-unified
+          tag: nightly
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
           replicaCount: 1
           requestCPU: 0
