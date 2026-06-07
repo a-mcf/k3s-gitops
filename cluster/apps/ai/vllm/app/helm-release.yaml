@@ -29,39 +29,37 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
-        # Gemma 4 12B Unified (multimodal, encoder-free) — QAT W4A16 compressed-tensors.
-        # vLLM auto-detects quant config; no --quantization flag required.
-        # Image: commit-pinned nightly (cu130 default, matches host driver).
-        # The frozen gemma4-unified tag (2026-06-03) crashed at init with
-        # AttributeError: 'Gemma4UnifiedVisionConfig' has no attribute 'num_soft_tokens'
-        # — field renamed to max_soft_tokens upstream after the launch tag was cut.
-        - name: gemma4-12b-qat
+        # Qwen3.5 9B AWQ — restored active. Tomorrow's gemma4 experiment lives
+        # in the commented block below.
+        - name: qwen35-9b-awq
           repository: vllm/vllm-openai
-          tag: nightly-9c7f7741d45154ca11455caa9875beb94e2e66b7
-          modelURL: google/gemma-4-12B-it-qat-w4a16-ct
+          tag: v0.19.0
+          modelURL: QuantTrio/Qwen3.5-9B-AWQ
           replicaCount: 1
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 32768
+            maxModelLen: 65536
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
+              - "--quantization"
+              - "awq_marlin"
+              - "--trust-remote-code"
               - "--reasoning-parser"
-              - "gemma4"
+              - "qwen3"
               - "--enable-auto-tool-choice"
               - "--tool-call-parser"
-              - "gemma4"
+              - "qwen3_coder"
               - "--gpu-memory-utilization"
-              - "0.90"
+              - "0.8"
               - "--download-dir"
               - "/data/huggingface"
-              # Skip image/audio profiling — 24GB 3090 has no headroom for multimodal at 32k ctx.
-              # Drop these two args to re-enable vision/audio (will need to lower maxModelLen).
-              - "--limit-mm-per-prompt"
-              - '{"image": 0, "audio": 0}'
+              - "--enable-lora"
+              - "--lora-modules"
+              - "glados-qwen35-9b=/data/lora/glados-mm"
 
           shmSize: 8Gi
 
@@ -93,36 +91,41 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        # Qwen3.5 9B AWQ — previous active model. Uncomment to restore (and disable gemma4 above).
-        # - name: qwen35-9b-awq
+        # Gemma 4 12B Unified (multimodal, encoder-free) — QAT W4A16 compressed-tensors.
+        # PARKED 2026-06-07. Both vllm/vllm-openai:gemma4-unified (2026-06-03)
+        # and nightly-9c7f7741... (2026-06-07) crash at init with:
+        #   AttributeError: 'Gemma4UnifiedVisionConfig' has no attribute 'num_soft_tokens'
+        # at vllm/model_executor/models/gemma4_unified.py:166 — the QAT model's
+        # vision_config doesn't expose num_soft_tokens, but vLLM reads it
+        # unconditionally during init. --limit-mm-per-prompt doesn't help (lookup
+        # happens at config-init, before per-request gating).
+        # Next steps to try: --hf-overrides to inject num_soft_tokens, switch to
+        # a different Gemma 4 variant, or wait for upstream fix.
+        # - name: gemma4-12b-qat
         #   repository: vllm/vllm-openai
-        #   tag: v0.19.0
-        #   modelURL: QuantTrio/Qwen3.5-9B-AWQ
+        #   tag: nightly-9c7f7741d45154ca11455caa9875beb94e2e66b7
+        #   modelURL: google/gemma-4-12B-it-qat-w4a16-ct
         #   replicaCount: 1
         #   requestCPU: 0
         #   requestMemory: 4Gi
         #   requestGPU: 0
         #   vllmConfig:
         #     tensorParallelSize: 1
-        #     maxModelLen: 65536
+        #     maxModelLen: 32768
         #     enablePrefixCaching: true
         #     enableChunkedPrefill: true
         #     extraArgs:
-        #       - "--quantization"
-        #       - "awq_marlin"
-        #       - "--trust-remote-code"
         #       - "--reasoning-parser"
-        #       - "qwen3"
+        #       - "gemma4"
         #       - "--enable-auto-tool-choice"
         #       - "--tool-call-parser"
-        #       - "qwen3_coder"
+        #       - "gemma4"
         #       - "--gpu-memory-utilization"
-        #       - "0.8"
+        #       - "0.90"
         #       - "--download-dir"
         #       - "/data/huggingface"
-        #       - "--enable-lora"
-        #       - "--lora-modules"
-        #       - "glados-qwen35-9b=/data/lora/glados-mm"
+        #       - "--limit-mm-per-prompt"
+        #       - '{"image": 0, "audio": 0}'
 
 
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
