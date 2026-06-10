@@ -164,7 +164,6 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
         # - name: glados-qwen35-9b-b16
         #   repository: vllm/vllm-openai
@@ -235,11 +234,11 @@ spec:
         #   tag: v0.18.1
         #   modelURL: /data/models/glados-gptq
         #   replicaCount: 1
-        
+
         #   requestCPU: 0
         #   requestMemory: 4Gi
         #   requestGPU: 0
-        
+
         #   vllmConfig:
         #     tensorParallelSize: 1
         #     maxModelLen: 32768
