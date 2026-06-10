@@ -29,13 +29,13 @@ spec:
       strategy:
         type: Recreate
       modelSpec:
-        # Qwen3.5 9B AWQ — restored active. Tomorrow's gemma4 experiment lives
-        # in the commented block below.
+        # Qwen3.5 9B AWQ — parked at 0 replicas while the gemma4 experiment
+        # below holds the GPU. Restore by flipping the two replicaCounts.
         - name: qwen35-9b-awq
           repository: vllm/vllm-openai
           tag: v0.19.0
           modelURL: QuantTrio/Qwen3.5-9B-AWQ
-          replicaCount: 1
+          replicaCount: 0
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
@@ -92,41 +92,77 @@ spec:
                 claimName: nfs-vllm-data-pvc
 
         # Gemma 4 12B Unified (multimodal, encoder-free) — QAT W4A16 compressed-tensors.
-        # PARKED 2026-06-07. Both vllm/vllm-openai:gemma4-unified (2026-06-03)
-        # and nightly-9c7f7741... (2026-06-07) crash at init with:
-        #   AttributeError: 'Gemma4UnifiedVisionConfig' has no attribute 'num_soft_tokens'
-        # at vllm/model_executor/models/gemma4_unified.py:166 — the QAT model's
-        # vision_config doesn't expose num_soft_tokens, but vLLM reads it
-        # unconditionally during init. --limit-mm-per-prompt doesn't help (lookup
-        # happens at config-init, before per-request gating).
-        # Next steps to try: --hf-overrides to inject num_soft_tokens, switch to
-        # a different Gemma 4 variant, or wait for upstream fix.
-        # - name: gemma4-12b-qat
-        #   repository: vllm/vllm-openai
-        #   tag: nightly-9c7f7741d45154ca11455caa9875beb94e2e66b7
-        #   modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-        #   replicaCount: 1
-        #   requestCPU: 0
-        #   requestMemory: 4Gi
-        #   requestGPU: 0
-        #   vllmConfig:
-        #     tensorParallelSize: 1
-        #     maxModelLen: 32768
-        #     enablePrefixCaching: true
-        #     enableChunkedPrefill: true
-        #     extraArgs:
-        #       - "--reasoning-parser"
-        #       - "gemma4"
-        #       - "--enable-auto-tool-choice"
-        #       - "--tool-call-parser"
-        #       - "gemma4"
-        #       - "--gpu-memory-utilization"
-        #       - "0.90"
-        #       - "--download-dir"
-        #       - "/data/huggingface"
-        #       - "--limit-mm-per-prompt"
-        #       - '{"image": 0, "audio": 0}'
+        # Take 2, 2026-06-10. Root cause of the 06-07 AttributeError (vllm#45039,
+        # still open as of today): Google's QAT export strips
+        # vision_config.num_soft_tokens from config.json, transformers'
+        # Gemma4UnifiedVisionConfig has no class default, and vLLM reads the
+        # field unconditionally at gemma4_unified.py:166/:197. Workaround:
+        # inject it via --hf-overrides. 280 is the value shipped in the BF16
+        # sibling google/gemma-4-12B-it config — not a guess.
+        # The unified arch is still nightly-only: v0.22.1 (latest stable,
+        # 2026-06-05) does not register Gemma4UnifiedForConditionalGeneration.
+        # maxModelLen 131072: 8/48 layers are full-attention (rest sliding
+        # window 1024), so KV is ~64KB/token + ~0.3GB fixed → ~8.3GB at 128k,
+        # alongside ~8GB W4A16 weights within the 0.90 budget on the 24GB 3090.
+        # Multimodal input stays disabled (limit-mm-per-prompt 0) to keep the
+        # full KV budget for text context; remove that flag to enable images.
+        - name: gemma4-12b-qat
+          repository: vllm/vllm-openai
+          tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
+          modelURL: google/gemma-4-12B-it-qat-w4a16-ct
+          replicaCount: 1
+          requestCPU: 0
+          requestMemory: 4Gi
+          requestGPU: 0
+          vllmConfig:
+            tensorParallelSize: 1
+            maxModelLen: 131072
+            enablePrefixCaching: true
+            enableChunkedPrefill: true
+            extraArgs:
+              - "--reasoning-parser"
+              - "gemma4"
+              - "--enable-auto-tool-choice"
+              - "--tool-call-parser"
+              - "gemma4"
+              - "--gpu-memory-utilization"
+              - "0.90"
+              - "--download-dir"
+              - "/data/huggingface"
+              - "--hf-overrides"
+              - '{"vision_config": {"num_soft_tokens": 280}}'
+              - "--limit-mm-per-prompt"
+              - '{"image": 0, "audio": 0}'
 
+          shmSize: 8Gi
+
+          env:
+            - name: TZ
+              value: "${TZ}"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: VLLM_CACHE_ROOT
+              value: /data/vllm-cache
+            - name: TRITON_CACHE_DIR
+              value: /data/vllm-cache/triton
+
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: gpu
+                  operator: In
+                  values:
+                    - "true"
+
+          extraVolumeMounts:
+            - name: data
+              mountPath: /data
+
+          extraVolumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: nfs-vllm-data-pvc
 
         # # GLaDOS: merged LoRA bf16 Qwen3.5-9B (OOMs on 3090)
         # - name: glados-qwen35-9b-b16
@@ -198,11 +234,11 @@ spec:
         #   tag: v0.18.1
         #   modelURL: /data/models/glados-gptq
         #   replicaCount: 1
-        
+
         #   requestCPU: 0
         #   requestMemory: 4Gi
         #   requestGPU: 0
-        
+
         #   vllmConfig:
         #     tensorParallelSize: 1
         #     maxModelLen: 32768
