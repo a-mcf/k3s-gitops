@@ -175,8 +175,6 @@ spec:
           enabled: true
         datasources:
           enabled: true
-        kubeApiServer:
-      enabled: true
     kubeApiServer:
       enabled: true
     kubeControllerManager:
