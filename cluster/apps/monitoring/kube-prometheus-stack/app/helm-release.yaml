@@ -230,15 +230,12 @@ spec:
         enableAdminAPI: true
         walCompression: true
         storageSpec:
-          # this is a hack:
-          # https://github.com/helm/charts/issues/9288#issuecomment-711165029
           volumeClaimTemplate:
             spec:
-              storageClassName: standard
+              storageClassName: proxmox-csi-ext4-ssd
               resources:
                 requests:
                   storage: 10Gi
-              selector: {}
         securityContext:
           runAsGroup: 2316
           runAsNonRoot: true
