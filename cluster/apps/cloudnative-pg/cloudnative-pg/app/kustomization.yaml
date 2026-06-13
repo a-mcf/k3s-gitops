@@ -6,6 +6,7 @@ resources:
   #- ./externalsecret.yaml
   - ./helm-release.yaml
   - ./plugin-barman-cloud.yaml
+  - ./prometheus-rule.yaml
 # configMapGenerator:
 #   - name: cloudnative-pg-dashboard
 #     files:
