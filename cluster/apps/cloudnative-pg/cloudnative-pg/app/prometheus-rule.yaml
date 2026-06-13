@@ -1,0 +1,40 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cloudnative-pg-backups
+spec:
+  groups:
+    - name: cnpg.backups
+      rules:
+        # Use the barman-cloud PLUGIN metrics. The legacy cnpg_collector_* /
+        # Cluster.status.lastSuccessfulBackup are deprecated and frozen at the
+        # in-core->plugin migration (CNPG #8902, plugin #380) — do NOT alert on
+        # them.
+        - alert: CNPGBackupTooOld
+          annotations:
+            summary: "CloudNativePG backup is stale in {{ $labels.namespace }}"
+            description: >-
+              No successful barman-cloud backup for the CloudNativePG cluster in
+              {{ $labels.namespace }} in {{ $value | humanizeDuration }}
+              (threshold 36h).
+          # all clusters back up daily; 36h leaves a ~12h grace window
+          expr: |
+            time() - max by (namespace) (barman_cloud_cloudnative_pg_io_last_available_backup_timestamp) > 129600
+          for: 30m
+          labels:
+            severity: critical
+        - alert: CNPGBackupFailing
+          annotations:
+            summary: "CloudNativePG backup failing in {{ $labels.namespace }}"
+            description: >-
+              The most recent barman-cloud backup attempt for the cluster in
+              {{ $labels.namespace }} failed more recently than the last
+              successful one.
+          expr: |
+            max by (namespace) (barman_cloud_cloudnative_pg_io_last_failed_backup_timestamp)
+              >
+            max by (namespace) (barman_cloud_cloudnative_pg_io_last_available_backup_timestamp)
+          for: 1h
+          labels:
+            severity: warning
