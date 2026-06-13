@@ -226,6 +226,30 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        additionalScrapeConfigs:
+          # shodan (Proxmox host) — not part of the k3s cluster, so scraped
+          # via static config rather than ServiceMonitor. ${NFS_SERVER} is the
+          # shodan IP, substituted by Flux postBuild from cluster-secrets.
+          - job_name: node-shodan
+            static_configs:
+              - targets:
+                  - ${NFS_SERVER}:9100
+                labels:
+                  instance: shodan
+          # prometheus-pve-exporter multi-target: the exporter runs on shodan
+          # and talks to its local PVE API (target=localhost).
+          - job_name: pve-shodan
+            metrics_path: /pve
+            static_configs:
+              - targets:
+                  - localhost
+                labels:
+                  instance: shodan
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - target_label: __address__
+                replacement: ${NFS_SERVER}:9221
         #retention: 6h
         enableAdminAPI: true
         walCompression: true
