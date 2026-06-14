@@ -28,11 +28,7 @@ spec:
             runAsGroup: 2316
             runAsNonRoot: true
             fsGroup: 2316
-            # Always (not OnRootMismatch): the ansible-created volume root is already
-            # owned 2316, so OnRootMismatch skips the recursive chown and the
-            # kubelet-created subPath subdirs (config/data) stay root:root → uid 2316
-            # can't write its config on a clean init. Always forces the recurse.
-            fsGroupChangePolicy: Always
+            fsGroupChangePolicy: OnRootMismatch
         containers:
           opencloud:
             image:
@@ -103,16 +99,19 @@ spec:
                   port: http
 
     persistence:
+      # NOTE: mounted at the volume ROOT (no subPath). The ansible-created NFS
+      # roots are owned 2316, so the pod can write directly on a clean init.
+      # subPath would make kubelet create a root:root subdir that fsGroup fails
+      # to chown over NFS → "permission denied". Prod uses subPath only because
+      # its subdirs were pre-created owned 2316 long ago.
       storage-users:
         existingClaim: nfs-opencloud-test-storage-users-pvc
         globalMounts:
           - path: /var/lib/opencloud
-            subPath: data
       data:
         existingClaim: nfs-opencloud-test-data-pvc
         globalMounts:
           - path: /etc/opencloud
-            subPath: config
       tmpfs:
         type: emptyDir
         globalMounts:
