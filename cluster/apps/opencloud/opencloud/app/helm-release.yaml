@@ -23,6 +23,10 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          # Give NATS time to drain on SIGTERM before SIGKILL — ungraceful NATS
+          # shutdown is the documented cause of jetstream KV corruption
+          # (opencloud-eu#2282/#2314), the original v4->v5 failure trigger.
+          terminationGracePeriodSeconds: 120
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
@@ -33,7 +37,7 @@ spec:
           opencloud:
             image:
               repository: opencloudeu/opencloud-rolling
-              tag: 4.1.0
+              tag: 7.1.0
             command:
               ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
@@ -70,6 +74,13 @@ spec:
               OC_LOG_LEVEL: info
               OC_URL: https://opencloud.${SECRET_DOMAIN}
               PROXY_TLS: false
+              # System/metadata (decomposed driver) uses messagepack so it never
+              # needs xattrs — matches the validated 7.1.0 test artifact.
+              OC_DECOMPOSEDFS_METADATA_BACKEND: messagepack
+              # Keep the NATS jetstream store OFF NFS (defaults to
+              # /var/lib/opencloud/nats on the NFS volume = corruption magnet).
+              # Non-authoritative cache/bus → local emptyDir is safe, self-heals.
+              NATS_NATS_STORE_DIR: /var/lib/nats-local
             envFrom:
               - secretRef:
                   name: opencloud-secret
@@ -129,3 +140,8 @@ spec:
         globalMounts:
           - path: /tmp
             subPath: tmp
+      # Local (non-NFS) home for the NATS jetstream store — see NATS_NATS_STORE_DIR.
+      nats-local:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/nats-local
