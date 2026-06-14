@@ -28,7 +28,11 @@ spec:
             runAsGroup: 2316
             runAsNonRoot: true
             fsGroup: 2316
-            fsGroupChangePolicy: OnRootMismatch
+            # Always (not OnRootMismatch): the ansible-created volume root is already
+            # owned 2316, so OnRootMismatch skips the recursive chown and the
+            # kubelet-created subPath subdirs (config/data) stay root:root → uid 2316
+            # can't write its config on a clean init. Always forces the recurse.
+            fsGroupChangePolicy: Always
         containers:
           opencloud:
             image:
