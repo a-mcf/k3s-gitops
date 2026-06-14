@@ -23,6 +23,10 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          # Give NATS time to drain on SIGTERM before SIGKILL — ungraceful NATS
+          # shutdown is the documented cause of jetstream KV corruption
+          # (opencloud-eu#2282/#2314), the original v4->v5 failure trigger.
+          terminationGracePeriodSeconds: 120
           securityContext:
             runAsUser: 2316
             runAsGroup: 2316
@@ -53,6 +57,11 @@ spec:
               # mount (verified 2026-06-13), so the storage-users posix driver default
               # is left in place for an honest "does current OpenCloud run here" test.
               OC_DECOMPOSEDFS_METADATA_BACKEND: messagepack
+              # Keep the NATS jetstream store OFF NFS (it defaults to
+              # /var/lib/opencloud/nats on the NFS volume = corruption magnet).
+              # NATS is non-authoritative cache/bus, so a local emptyDir is safe
+              # and self-healing on restart.
+              NATS_NATS_STORE_DIR: /var/lib/nats-local
               # --- tinker knob: uncomment to force the user-files store off posix/xattrs ---
               # STORAGE_USERS_DRIVER: decomposed
             envFrom:
@@ -117,3 +126,8 @@ spec:
         globalMounts:
           - path: /tmp
             subPath: tmp
+      # Local (non-NFS) home for the NATS jetstream store — see NATS_NATS_STORE_DIR.
+      nats-local:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/nats-local
