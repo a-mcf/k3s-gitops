@@ -110,7 +110,7 @@ spec:
           repository: vllm/vllm-openai
           tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-          replicaCount: 0
+          replicaCount: 1
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
@@ -164,9 +164,13 @@ spec:
               persistentVolumeClaim:
                 claimName: nfs-vllm-data-pvc
 
-        # Gemma 4 31B — DENSE, QAT W4A16 compressed-tensors. Spike 2026-06-15 to
-        # A/B against the 12B (12B parked at replicaCount 0 above; flip back to
-        # restore). Google ships W4A16 for 12B/31B but NOT the 26B-A4B MoE — its
+        # Gemma 4 31B — DENSE, QAT W4A16. ❌ NOT VIABLE ON vLLM/3090 (parked at 0,
+        # 2026-06-15 spike). Verdict: only 1.47 GiB KV left after weights → est.
+        # max context ~1728 tokens (vs the 12B's 10.99 GiB = 468K). fp8 KV can't
+        # rescue it: e4m3 unsupported on Ampere ("fp8e4nv"), e5m2 rejected by the
+        # fp8 checkpoint — so KV is fp16 (2x). The 31B-with-real-context is a
+        # llama.cpp/GGUF job (UD-Q4_XL), not vLLM. Kept here as a documented
+        # dead-end. To retry: this needs a bigger card or the llama.cpp path. Google ships W4A16 for 12B/31B but NOT the 26B-A4B MoE — its
         # tiny expert dim (704) loses too much at 4-bit, so the MoE's only QAT is
         # GGUF q4_0 (llama.cpp). arch = Gemma4ForConditionalGeneration (NOT the
         # 12B's encoder-free unified); QAT config keeps vision_soft_tokens_per_image
@@ -182,7 +186,7 @@ spec:
           repository: vllm/vllm-openai
           tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
           modelURL: google/gemma-4-31B-it-qat-w4a16-ct
-          replicaCount: 1
+          replicaCount: 0
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
