@@ -188,7 +188,10 @@ spec:
           requestGPU: 0
           vllmConfig:
             tensorParallelSize: 1
-            maxModelLen: 16384
+            # Conservative for first boot (fp16 KV is 2x fp8 and the 31B is
+            # VRAM-tight). Read "GPU KV cache size: N tokens" from the log and
+            # raise toward N once we know the real ceiling.
+            maxModelLen: 8192
             enablePrefixCaching: true
             enableChunkedPrefill: true
             extraArgs:
@@ -199,10 +202,12 @@ spec:
               - "gemma4"
               - "--gpu-memory-utilization"
               - "0.95"
-              # fp8_e5m2 (NOT plain fp8 = e4m3 "fp8e4nv", which Ampere/sm_86
-              # can't do — it only supports e5m2/e4b15). Halves KV memory.
-              - "--kv-cache-dtype"
-              - "fp8_e5m2"
+              # NO fp8 KV cache: this W4A16 checkpoint forces fp8 e4m3, which
+              # Ampere/sm_86 can't do ("fp8e4nv not supported"); and fp8_e5m2 is
+              # rejected ("not supported with fp8 checkpoints"). So KV stays fp16.
+              # --enforce-eager frees the ~2.6GB CUDA-graph memory for KV instead
+              # (the 31B is slow regardless; we want context + a clean boot).
+              - "--enforce-eager"
               - "--download-dir"
               - "/data/huggingface"
               - "--limit-mm-per-prompt"
