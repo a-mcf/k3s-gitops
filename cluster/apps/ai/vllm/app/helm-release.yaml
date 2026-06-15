@@ -110,7 +110,7 @@ spec:
           repository: vllm/vllm-openai
           tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-          replicaCount: 1
+          replicaCount: 0
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
@@ -131,6 +131,78 @@ spec:
               - "/data/huggingface"
               - "--hf-overrides"
               - '{"vision_config": {"num_soft_tokens": 280}}'
+              - "--limit-mm-per-prompt"
+              - '{"image": 0, "audio": 0}'
+
+          shmSize: 8Gi
+
+          env:
+            - name: TZ
+              value: "${TZ}"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: VLLM_CACHE_ROOT
+              value: /data/vllm-cache
+            - name: TRITON_CACHE_DIR
+              value: /data/vllm-cache/triton
+
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: gpu
+                  operator: In
+                  values:
+                    - "true"
+
+          extraVolumeMounts:
+            - name: data
+              mountPath: /data
+
+          extraVolumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: nfs-vllm-data-pvc
+
+        # Gemma 4 31B — DENSE, QAT W4A16 compressed-tensors. Spike 2026-06-15 to
+        # A/B against the 12B (12B parked at replicaCount 0 above; flip back to
+        # restore). Google ships W4A16 for 12B/31B but NOT the 26B-A4B MoE — its
+        # tiny expert dim (704) loses too much at 4-bit, so the MoE's only QAT is
+        # GGUF q4_0 (llama.cpp). arch = Gemma4ForConditionalGeneration (NOT the
+        # 12B's encoder-free unified); QAT config keeps vision_soft_tokens_per_image
+        # =280, so NO --hf-overrides num_soft_tokens hack needed. 60 layers
+        # (12 full-attn / 48 sliding-1024), 16 kv-heads, head_dim 256/global 512
+        # → Triton attn on Ampere (no FA4 kernel). VRAM is TIGHT: ~17-18GB weights
+        # on 24GB leaves little KV, and 12 full-attn ×16 kv-heads is KV-hungry, so:
+        # gpu-util 0.95 + fp8 KV cache (halves KV) + conservative maxModelLen 16384.
+        # Read "GPU KV cache size: N tokens" at startup and tune up (raise maxModelLen,
+        # or drop fp8 for quality / add --enforce-eager to trade graphs for KV).
+        # Text-only (limit-mm 0) to preserve KV budget. Dense → ~42 t/s.
+        - name: gemma4-31b-qat
+          repository: vllm/vllm-openai
+          tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
+          modelURL: google/gemma-4-31B-it-qat-w4a16-ct
+          replicaCount: 1
+          requestCPU: 0
+          requestMemory: 4Gi
+          requestGPU: 0
+          vllmConfig:
+            tensorParallelSize: 1
+            maxModelLen: 16384
+            enablePrefixCaching: true
+            enableChunkedPrefill: true
+            extraArgs:
+              - "--reasoning-parser"
+              - "gemma4"
+              - "--enable-auto-tool-choice"
+              - "--tool-call-parser"
+              - "gemma4"
+              - "--gpu-memory-utilization"
+              - "0.95"
+              - "--kv-cache-dtype"
+              - "fp8"
+              - "--download-dir"
+              - "/data/huggingface"
               - "--limit-mm-per-prompt"
               - '{"image": 0, "audio": 0}'
 
