@@ -199,8 +199,10 @@ spec:
               - "gemma4"
               - "--gpu-memory-utilization"
               - "0.95"
+              # fp8_e5m2 (NOT plain fp8 = e4m3 "fp8e4nv", which Ampere/sm_86
+              # can't do — it only supports e5m2/e4b15). Halves KV memory.
               - "--kv-cache-dtype"
-              - "fp8"
+              - "fp8_e5m2"
               - "--download-dir"
               - "/data/huggingface"
               - "--limit-mm-per-prompt"
