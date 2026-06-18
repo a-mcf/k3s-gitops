@@ -63,4 +63,3 @@ hostnames:
 engines:
   - name: duckduckgo
     disabled: true
-
