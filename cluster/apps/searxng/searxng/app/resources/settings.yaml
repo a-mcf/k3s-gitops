@@ -8,8 +8,8 @@ server:
   public_instance: false
 
 search:
-  autocomplete: duckduckgo
-  favicon_resolver: duckduckgo
+  autocomplete: google
+  favicon_resolver: google
   languages:
     - all
     - en
@@ -55,3 +55,11 @@ hostnames:
     - (.*\.)?stackoverflow.com$
     - (.*\.)?askubuntu.com$
     - (.*\.)?superuser.com$
+
+# DuckDuckGo serves anti-bot CAPTCHAs to this instance (SearxEngineCaptchaException),
+# which spammed errors + degraded results (incl. Vane's Discover). Its results
+# largely mirror Bing (still enabled), so disable it; merges with use_default_settings
+# by name. autocomplete/favicon_resolver also moved off DDG (above).
+engines:
+  - name: duckduckgo
+    disabled: true
