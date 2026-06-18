@@ -62,9 +62,10 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 256Mi
+                memory: 512Mi
               limits:
-                memory: 1Gi
+                # LiteLLM spikes loading provider SDKs at startup; 1Gi OOMKilled it.
+                memory: 2Gi
 
     service:
       app:
