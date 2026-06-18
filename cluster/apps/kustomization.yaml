@@ -30,3 +30,4 @@ resources:
   - retrosavemanager
   - searxng
   - syncthing
+  - vane

@@ -1,0 +1,16 @@
+---
+# proxmox-csi (not NFS): Vane's data is just UI-entered config, search history,
+# and the local embeddings cache — small + regenerable, doesn't warrant the
+# duplicacy file-backup path. (User decision 2026-06-18.)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vane-data
+  namespace: vane
+spec:
+  storageClassName: proxmox-csi-ext4-ssd-zfs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
