@@ -1,0 +1,41 @@
+---
+# LiteLLM proxy config — config-file-only mode (no DB).
+# Upgrade path to DB-backed (virtual keys, spend tracking, admin UI): stand up a
+# CloudNative-PG Cluster for litellm, add DATABASE_URL (from its secret) +
+# STORE_MODEL_IN_DB=true to the helm-release env, then keys/spend live in PG.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+  namespace: ai
+data:
+  config.yaml: |
+    model_list:
+      # Stable alias — point downstream apps (vane, OpenClaw, voice agent…) at
+      # "local" and you never re-plumb on a model/engine swap; just change the
+      # api_base/model below. THIS is the whole reason LiteLLM goes in first.
+      - model_name: local
+        litellm_params:
+          model: openai/google/gemma-4-12B-it-qat-w4a16-ct
+          api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
+          api_key: sk-noauth   # vLLM serves without auth; placeholder is required
+      # Explicit name too, for when you want to pin the exact model.
+      - model_name: gemma-12b
+        litellm_params:
+          model: openai/google/gemma-4-12B-it-qat-w4a16-ct
+          api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
+          api_key: sk-noauth
+      # --- future backends: add paid/free providers here, gated by sensitivity
+      # tier. e.g. a cloud frontier model for hard/non-sensitive work:
+      # - model_name: cloud-hard
+      #   litellm_params:
+      #     model: anthropic/<model-id>          # see claude-api skill for IDs
+      #     api_key: os.environ/ANTHROPIC_API_KEY
+
+    litellm_settings:
+      drop_params: true          # tolerate params a backend doesn't support
+      # num_retries: 2
+      # fallbacks: [{"local": ["cloud-hard"]}]   # when local is down/gaming
+
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY
