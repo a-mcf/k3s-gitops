@@ -23,6 +23,12 @@ spec:
 
     controllers:
       llamacpp:
+        # Parked at 0 — the Gemma 26B-A4B experiment was abandoned (open upstream
+        # Gemma-4 thinking termination bugs on llama.cpp: peg-gemma4 parser loop
+        # ggml-org/llama.cpp#21375 + INT_MAX reasoning-budget default = hangs).
+        # vLLM Gemma 4 12B is the daily driver. Flip to 1 to revisit when upstream
+        # fixes land (and scale vllm gemma4-12b-qat -> 0; one model per 3090).
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -61,7 +67,7 @@ spec:
               - "--port"
               - "8080"
               - "--alias"
-              - "gemma-26b"
+              - "gemma4-26b"
             env:
               TZ: "${TZ}"
               NVIDIA_VISIBLE_DEVICES: all

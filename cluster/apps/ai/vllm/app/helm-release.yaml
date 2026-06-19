@@ -104,16 +104,16 @@ spec:
         # maxModelLen 131072: 8/48 layers are full-attention (rest sliding
         # window 1024), so KV is ~64KB/token + ~0.3GB fixed → ~8.3GB at 128k,
         # alongside ~8GB W4A16 weights within the 0.90 budget on the 24GB 3090.
-        # Multimodal input stays disabled (limit-mm-per-prompt 0) to keep the
-        # full KV budget for text context; remove that flag to enable images.
+        # Multimodal ENABLED (limit-mm-per-prompt image:1) — HA vision tasks need it.
+        # The encoder-free unified arch carries the image as ~280 soft tokens, so KV
+        # cost is modest; if startup OOMs at 131072, trim maxModelLen.
         - name: gemma4-12b-qat
           repository: vllm/vllm-openai
           tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-          # Toggled to 0 while the llama.cpp Gemma 26B-A4B holds the GPU (one model
-          # per 3090). Flip back to 1 (+ repoint LiteLLM `local`→gemma-12b, scale
-          # llamacpp to 0) to restore the 12B.
-          replicaCount: 0
+          # LIVE — daily driver. (The llama.cpp 26B-A4B experiment was abandoned:
+          # open upstream Gemma-4 thinking termination bugs hang it. llamacpp -> 0.)
+          replicaCount: 1
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
@@ -135,7 +135,7 @@ spec:
               - "--hf-overrides"
               - '{"vision_config": {"num_soft_tokens": 280}}'
               - "--limit-mm-per-prompt"
-              - '{"image": 0, "audio": 0}'
+              - '{"image": 1, "audio": 0}'
 
           shmSize: 8Gi
 
