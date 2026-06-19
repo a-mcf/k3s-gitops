@@ -110,7 +110,10 @@ spec:
           repository: vllm/vllm-openai
           tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-          replicaCount: 1
+          # Toggled to 0 while the llama.cpp Gemma 26B-A4B holds the GPU (one model
+          # per 3090). Flip back to 1 (+ repoint LiteLLM `local`→gemma-12b, scale
+          # llamacpp to 0) to restore the 12B.
+          replicaCount: 0
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
