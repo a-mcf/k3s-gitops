@@ -16,16 +16,18 @@ data:
       # api_base/model below. THIS is the whole reason LiteLLM goes in first.
       - model_name: local
         litellm_params:
-          # SWAPPED to the llama.cpp Gemma 26B-A4B (2026-06-19 experiment). Downstream
-          # (HA/GLaDOS, Vane) follow automatically with zero changes — the whole point
-          # of the gateway. To revert: point this back at gemma4-12b/vllm + re-toggle.
-          model: openai/gemma-26b
-          api_base: http://llamacpp.ai.svc.cluster.local:8080/v1
+          # Back on the vLLM Gemma 4 12B (2026-06-19): the llama.cpp 26B-A4B was
+          # abandoned — Gemma-4 thinking on llama.cpp has open upstream termination
+          # bugs (peg-gemma4 parser loop ggml-org/llama.cpp#21375 + INT_MAX
+          # reasoning-budget default) that hang the model. Downstream (HA/GLaDOS,
+          # Vane) follow automatically — the whole point of the gateway.
+          model: openai/google/gemma-4-12B-it-qat-w4a16-ct
+          api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth
       # Explicit names so you can pin a specific backend regardless of what "local" is.
       - model_name: gemma4-26b
         litellm_params:
-          model: openai/gemma-26b
+          model: openai/gemma4-26b
           api_base: http://llamacpp.ai.svc.cluster.local:8080/v1
           api_key: sk-noauth
       - model_name: gemma4-12b
