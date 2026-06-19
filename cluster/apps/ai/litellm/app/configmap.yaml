@@ -16,12 +16,22 @@ data:
       # api_base/model below. THIS is the whole reason LiteLLM goes in first.
       - model_name: local
         litellm_params:
-          model: openai/google/gemma-4-12B-it-qat-w4a16-ct
-          api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
-          api_key: sk-noauth   # vLLM serves without auth; placeholder is required
-      # Explicit name too, for when you want to pin the exact model.
+          # SWAPPED to the llama.cpp Gemma 26B-A4B (2026-06-19 experiment). Downstream
+          # (HA/GLaDOS, Vane) follow automatically with zero changes — the whole point
+          # of the gateway. To revert: point this back at gemma-12b/vllm + re-toggle.
+          model: openai/gemma-26b
+          api_base: http://llamacpp.ai.svc.cluster.local:8080/v1
+          api_key: sk-noauth
+      # Explicit names so you can pin a specific backend regardless of what "local" is.
+      - model_name: gemma-26b
+        litellm_params:
+          model: openai/gemma-26b
+          api_base: http://llamacpp.ai.svc.cluster.local:8080/v1
+          api_key: sk-noauth
       - model_name: gemma-12b
         litellm_params:
+          # vLLM 12B — parked (its replicaCount is 0 while the 26B holds the GPU);
+          # this alias 404s until you toggle the 12B back up.
           model: openai/google/gemma-4-12B-it-qat-w4a16-ct
           api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth

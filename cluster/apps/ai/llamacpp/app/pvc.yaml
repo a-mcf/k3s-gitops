@@ -1,0 +1,15 @@
+---
+# proxmox-csi for the GGUF cache — the model file is large (~17GB) but regenerable
+# (re-downloadable from HF), so no NFS/backup needed (same call as Vane).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: llamacpp-models
+  namespace: ai
+spec:
+  storageClassName: proxmox-csi-ext4-ssd-zfs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
