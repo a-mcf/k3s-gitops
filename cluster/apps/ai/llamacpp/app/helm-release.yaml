@@ -50,7 +50,12 @@ spec:
               # -c 32768 conservative for first boot; KV math says far more fits (raise later).
               - "-c"
               - "32768"
+              # -fa REQUIRES a value in this build (bare -fa ate the next arg -> crash).
               - "-fa"
+              - "on"
+              # Vision: 26B-A4B is encoder-based (Gemma4ForConditionalGeneration, has a
+              # real vision encoder — unlike the 12B's encoder-free unified arch). --hf-repo
+              # AUTO-downloads the mmproj, so vision is on by default (no --no-mmproj).
               - "--host"
               - "0.0.0.0"
               - "--port"
