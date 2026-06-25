@@ -48,5 +48,14 @@ spec:
         fstype: ext4
         storage: local-zfs
         ssd: true
+      # HDD-backed (pve-bulk) for write-heavy, disposable data like the
+      # Prometheus TSDB: keeps it on block (NFS corrupts TSDB) but off the
+      # expensive/high-wear SSD tier. Delete reclaim — data is throwaway, so
+      # no orphaned Released PVs to hand-clean on every recreate.
+      - name: proxmox-csi-hdd
+        reclaimPolicy: Delete
+        fstype: ext4
+        storage: pve-bulk
+        ssd: false
     existingConfigSecret: "proxmox-csi-cluster-config"
     existingConfigSecretKey: "config"
