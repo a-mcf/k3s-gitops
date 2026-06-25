@@ -250,16 +250,21 @@ spec:
                 target_label: __param_target
               - target_label: __address__
                 replacement: ${NFS_SERVER}:9221
-        #retention: 6h
+        # retentionSize is the real safety valve on a fixed-size disk: Prometheus
+        # GCs by size before it can ever hit ENOSPC (a full 10Gi SSD PVC wedged
+        # the TSDB 2026-06-20 → blind 5d). Keep it comfortably under the PVC size.
+        retention: 30d
+        retentionSize: "45GiB"
         enableAdminAPI: true
         walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: proxmox-csi-ext4-ssd
+              # HDD-backed bulk: TSDB is write-heavy + disposable, no need for SSD.
+              storageClassName: proxmox-csi-hdd
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 50Gi
         securityContext:
           runAsGroup: 2316
           runAsNonRoot: true
