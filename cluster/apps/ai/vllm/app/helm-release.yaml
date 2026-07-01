@@ -99,8 +99,9 @@ spec:
         # field unconditionally at gemma4_unified.py:166/:197. Workaround:
         # inject it via --hf-overrides. 280 is the value shipped in the BF16
         # sibling google/gemma-4-12B-it config — not a guess.
-        # The unified arch is still nightly-only: v0.22.1 (latest stable,
-        # 2026-06-05) does not register Gemma4UnifiedForConditionalGeneration.
+        # Image pinned to v0.24.0 stable (contains the unified arch; the
+        # previously pinned nightly-2c9c07c tag was pruned from Docker Hub —
+        # nightly-<sha> tags only live ~10 days upstream, never pin them).
         # maxModelLen 131072: 8/48 layers are full-attention (rest sliding
         # window 1024), so KV is ~64KB/token + ~0.3GB fixed → ~8.3GB at 128k,
         # alongside ~8GB W4A16 weights within the 0.90 budget on the 24GB 3090.
@@ -109,7 +110,7 @@ spec:
         # cost is modest; if startup OOMs at 131072, trim maxModelLen.
         - name: gemma4-12b-qat
           repository: vllm/vllm-openai
-          tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
+          tag: v0.24.0
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
           # LIVE — daily driver. (The llama.cpp 26B-A4B experiment was abandoned:
           # open upstream Gemma-4 thinking termination bugs hang it. llamacpp -> 0.)
@@ -187,7 +188,7 @@ spec:
         # Text-only (limit-mm 0) to preserve KV budget. Dense → ~42 t/s.
         - name: gemma4-31b-qat
           repository: vllm/vllm-openai
-          tag: nightly-2c9c07c85e56c799afffd5a671a8a0bace377a39
+          tag: v0.24.0
           modelURL: google/gemma-4-31B-it-qat-w4a16-ct
           replicaCount: 0
           requestCPU: 0
