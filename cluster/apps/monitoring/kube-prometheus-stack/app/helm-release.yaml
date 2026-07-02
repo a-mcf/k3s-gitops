@@ -270,6 +270,14 @@ spec:
                 target_label: __param_target
               - target_label: __address__
                 replacement: ${NFS_SERVER}:9221
+          # zfs_exporter: pool health/capacity + dataset usage via the zfs
+          # CLIs — invisible to node_exporter's kstat-based zfs collector.
+          - job_name: zfs-shodan
+            static_configs:
+              - targets:
+                  - ${NFS_SERVER}:9134
+                labels:
+                  instance: shodan
         # retentionSize is the real safety valve on a fixed-size disk: Prometheus
         # GCs by size before it can ever hit ENOSPC (a full 10Gi SSD PVC wedged
         # the TSDB 2026-06-20 → blind 5d). Keep it comfortably under the PVC size.

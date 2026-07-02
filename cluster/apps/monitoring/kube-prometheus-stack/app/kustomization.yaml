@@ -2,3 +2,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - helm-release.yaml
+  - prometheus-rule.yaml
+# Vendored Grafana dashboards, loaded by the sidecar via the
+# grafana_dashboard label. Vendored (vs gnetId) because these need local
+# edits: zfs-arc is upstream 7845 patched for our job/instance labels with
+# the OpenZFS-2.x-dead pool-IO panels removed; zfs-pools is purpose-built
+# for pdf/zfs_exporter metric names.
+configMapGenerator:
+  - name: grafana-dashboards-zfs
+    namespace: monitoring
+    files:
+      - dashboards/zfs-arc.json
+      - dashboards/zfs-pools.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
