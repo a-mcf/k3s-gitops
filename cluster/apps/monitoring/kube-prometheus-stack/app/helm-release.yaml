@@ -135,11 +135,18 @@ spec:
       dashboards:
         default:
           # Proxmox host/VM/storage view from the pve-shodan exporter job.
+          # This board uses an import-time ${DS_PROMETHEUS} input (not a
+          # template variable), so it needs the list-form mapping — the
+          # string form only rewrites legacy "datasource": lines and left
+          # every panel pointing at a nonexistent datasource. The value is
+          # the datasource UID, since the placeholder sits in uid fields.
           # Ref: https://grafana.com/grafana/dashboards/10347
           proxmox-via-prometheus:
             gnetId: 10347
             revision: 5
-            datasource: Prometheus
+            datasource:
+              - name: DS_PROMETHEUS
+                value: prometheus
           # Host-level metrics with a plain instance selector — covers the
           # node-shodan job, which the stock k8s Nodes dashboards filter out.
           # Ref: https://grafana.com/grafana/dashboards/1860
