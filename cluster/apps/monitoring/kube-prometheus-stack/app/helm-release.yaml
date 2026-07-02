@@ -134,6 +134,19 @@ spec:
                 path: /var/lib/grafana/dashboards/default
       dashboards:
         default:
+          # Proxmox host/VM/storage view from the pve-shodan exporter job.
+          # Ref: https://grafana.com/grafana/dashboards/10347
+          proxmox-via-prometheus:
+            gnetId: 10347
+            revision: 5
+            datasource: Prometheus
+          # Host-level metrics with a plain instance selector — covers the
+          # node-shodan job, which the stock k8s Nodes dashboards filter out.
+          # Ref: https://grafana.com/grafana/dashboards/1860
+          node-exporter-full:
+            gnetId: 1860
+            revision: 45
+            datasource: Prometheus
           # Ref: https://grafana.com/grafana/dashboards/11315
           unifi-client-insights:
             gnetId: 11315
