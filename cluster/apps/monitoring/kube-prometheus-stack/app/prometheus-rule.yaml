@@ -1,0 +1,48 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: zfs-pools
+  namespace: monitoring
+spec:
+  groups:
+    - name: zfs.pools
+      rules:
+        # zfs_pool_health enum (pdf/zfs_exporter): 0 ONLINE, 1 DEGRADED,
+        # 2 FAULTED, 3 OFFLINE, 4 UNAVAIL, 5 REMOVED, 6 SUSPENDED.
+        - alert: ZFSPoolUnhealthy
+          annotations:
+            summary: "ZFS pool {{ $labels.pool }} is not ONLINE"
+            description: >-
+              Pool {{ $labels.pool }} on {{ $labels.instance }} reports health
+              code {{ $value }} (1=DEGRADED 2=FAULTED 3=OFFLINE 4=UNAVAIL
+              5=REMOVED 6=SUSPENDED). Check `zpool status {{ $labels.pool }}`.
+          expr: |
+            max by (pool, instance) (zfs_pool_health) > 0
+          for: 5m
+          labels:
+            severity: critical
+        # ZFS allocation/perf degrades as pools fill; 85% is the "plan a
+        # cleanup" line, 95% is the "act now" line.
+        - alert: ZFSPoolCapacityHigh
+          annotations:
+            summary: "ZFS pool {{ $labels.pool }} over 85% full"
+            description: >-
+              Pool {{ $labels.pool }} on {{ $labels.instance }} is
+              {{ $value | humanizePercentage }} full (warning threshold 85%).
+          expr: |
+            max by (pool, instance) (zfs_pool_allocated_bytes / zfs_pool_size_bytes) > 0.85
+          for: 1h
+          labels:
+            severity: warning
+        - alert: ZFSPoolCapacityCritical
+          annotations:
+            summary: "ZFS pool {{ $labels.pool }} over 95% full"
+            description: >-
+              Pool {{ $labels.pool }} on {{ $labels.instance }} is
+              {{ $value | humanizePercentage }} full (critical threshold 95%).
+          expr: |
+            max by (pool, instance) (zfs_pool_allocated_bytes / zfs_pool_size_bytes) > 0.95
+          for: 15m
+          labels:
+            severity: critical
