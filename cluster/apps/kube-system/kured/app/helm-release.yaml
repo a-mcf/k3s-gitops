@@ -21,6 +21,9 @@ spec:
     configuration:
       startTime: "9:00"
       endTime: "18:00"
+      # Tue-Thu only: keeps reboot churn away from weekends (GPU node =
+      # gaming) and Monday patch pileups / pre-weekend surprises.
+      rebootDays: [tu, we, th]
       timeZone: "${TZ}"
       logFormat: json
       rebootCommand: "/bin/systemctl reboot"
