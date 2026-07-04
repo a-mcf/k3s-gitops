@@ -28,6 +28,12 @@ spec:
       drainTimeout: 0
       drainDelay: 30s
       rebootDelay: 120s
+      # When several nodes need reboots on the same day (a kernel update
+      # lands everywhere at once), hold the lock after each node returns
+      # Ready so the cluster resettles before the next drain begins.
+      # Back-to-back drains concentrate all workloads + image pulls on the
+      # survivors (ephemeral-storage DiskPressure evictions, 2026-07-04).
+      lockReleaseDelay: 30m
       period: 10m
       slackHookUrl: "${SECRET_SLACK_WEBHOOK}"
       slackChannel: "#kured"
