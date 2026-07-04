@@ -44,13 +44,24 @@ spec:
           repeat_interval: 12h
           receiver: "null"
           routes:
+            # Watchdog is the always-firing dead-man's-switch: it must reach an
+            # ALERT-ON-SILENCE monitor outside this stack (Uptime Kuma push
+            # monitor). If these heartbeats stop, Prometheus/alertmanager is
+            # down — the one failure Slack can never report.
             - match:
                 alertname: Watchdog
-              receiver: "null"
+              receiver: "deadman"
+              group_wait: 0s
+              group_interval: 1m
+              repeat_interval: 1m
             - receiver: "slack-notifications"
               continue: true
         receivers:
           - name: "null"
+          - name: "deadman"
+            webhook_configs:
+              - url: "${SECRET_ALERTMANAGER_DEADMAN_URL}"
+                send_resolved: false
           - name: "slack-notifications"
             slack_configs:
               - channel: "#prometheus"
