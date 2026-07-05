@@ -62,6 +62,8 @@ spec:
             port: &s3port 3900
           api:
             port: &apiport 3903
+          web:
+            port: &webport 3902
     ingress:
       app:
         enabled: true
@@ -73,6 +75,12 @@ spec:
                 service:
                   identifier: garage-bulk
                   port: *s3port
+          - host: files.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: garage-bulk
+                  port: *webport
           - host: &apiHost s3-api-bulk.${SECRET_DOMAIN}
             paths:
               - path: /
@@ -103,6 +111,14 @@ spec:
             s3_region = "us-east-1"
             api_bind_addr = "[::]:3900"
             root_domain = ".s3.rafaribe.com"
+
+            # Static web endpoint: serves website-enabled buckets over
+            # unauthenticated HTTP, routed by Host header (<bucket>.<root_domain>).
+            # Used for the ansible software-download bucket (ex-minio).
+            [s3_web]
+            bind_addr = "[::]:3902"
+            root_domain = ".${SECRET_DOMAIN}"
+            index = "index.html"
 
             [admin]
             api_bind_addr = "[::]:3903"
