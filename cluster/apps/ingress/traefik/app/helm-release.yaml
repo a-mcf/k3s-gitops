@@ -6,10 +6,14 @@ metadata:
   namespace: ingress
 spec:
   interval: 5m
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
   chart:
     spec:
       chart: traefik
-      version: 40.3.0
+      version: 41.0.1
       sourceRef:
         kind: HelmRepository
         name: traefik-charts
@@ -131,11 +135,11 @@ spec:
       - "--entrypoints.websecure.http.middlewares="
       - "--providers.kubernetesingress.allowEmptyServices=true"
 
-    logs:
-      general:
-        level: INFO
-      access:
-        enabled: false
+    # v41 renamed logs.general -> log and logs.access -> accessLog
+    log:
+      level: INFO
+    accessLog:
+      enabled: false
 
     metrics:
       prometheus:
