@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: retrosync-db
+  namespace: retrosync
+spec:
+  instances: 1
+  enablePDB: false
+  # RetroSync's store targets Postgres 16 (its integration suite runs against
+  # postgres:16); precedent for 16.x in this repo is the immich cluster.
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  inheritedMetadata:
+    labels:
+      kube-image-keeper.enix.io/image-caching-policy: ignore
+  primaryUpdateStrategy: unsupervised
+  storage:
+    # Registry + capped save-version history (10 versions per member, saves are
+    # KB-scale SRAM files) — this is generous.
+    size: 5Gi
+    storageClass: proxmox-csi-ext4-ssd
+  monitoring:
+    enablePodMonitor: true
+  # Fresh database: RetroSync runs its own schema migrations at startup, so
+  # initdb is all CNPG needs to do. WAL archiving / barman backups are a
+  # follow-up (save-version blobs live in this DB, so they're worth having;
+  # copy the mealie objectstore pattern when wiring them).
+  bootstrap:
+    initdb:
+      database: app
+      owner: app

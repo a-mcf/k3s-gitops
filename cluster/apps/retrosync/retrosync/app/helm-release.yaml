@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: retrosync
+  namespace: retrosync
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      # Match syncthing's identity (2316) so save files written by either
+      # workload into the shared NFS export stay mutually readable/writable.
+      securityContext:
+        runAsUser: 2316
+        runAsGroup: 2316
+        fsGroup: 2316
+        fsGroupChangePolicy: OnRootMismatch
+
+    controllers:
+      retrosync:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        # Single-writer by design: the mirror daemon must be a singleton and
+        # startup migrations have no advisory lock — never run two at once.
+        strategy: Recreate
+        initContainers:
+          # `user set` is an idempotent upsert, so running it every pod start
+          # is safe — it just guarantees the admin exists with the password
+          # from retrosync-secret. No manual bootstrap step (mealie pattern).
+          bootstrap-admin:
+            image:
+              repository: ghcr.io/a-mcf/retrosync
+              tag: v0.1.0
+            args: ["user", "set", "alex", "--display", "Alex", "--role", "admin"]
+            env:
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: retrosync-db-app
+                    key: uri
+              RETROSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: retrosync-secret
+                    key: RETROSYNC_PASSWORD
+        containers:
+          app:
+            image:
+              repository: ghcr.io/a-mcf/retrosync
+              tag: v0.1.0
+            args: ["serve"]
+            env:
+              # CNPG's auto-generated app secret ships a ready-made connection
+              # URI; RetroSync takes it verbatim.
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: retrosync-db-app
+                    key: uri
+              RETROSYNC_POLL_INTERVAL: 15s
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probe
+            resources:
+              requests:
+                cpu: 15m
+                memory: 64Mi
+              limits:
+                # Login verification is argon2id at 64Mi per attempt, capped at
+                # 4 concurrent in-app: ~256Mi worst case + baseline.
+                memory: 512Mi
+
+    service:
+      app:
+        controller: retrosync
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      app:
+        className: traefik
+        annotations:
+          hajimari.io/appName: "RetroSync"
+          hajimari.io/group: "Home"
+          hajimari.io/icon: mdi:gamepad-variant
+        hosts:
+          - host: "retrosync.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      saves:
+        existingClaim: nfs-retrosync-saves-pvc
+        globalMounts:
+          - path: /shares
