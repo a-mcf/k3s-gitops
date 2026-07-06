@@ -42,7 +42,7 @@ spec:
             image:
               repository: ghcr.io/ggml-org/llama.cpp
               # server-cuda, digest-pinned (rolling tag → immutable digest as of 2026-06-19).
-              tag: "server-cuda@sha256:c52d27d6c81fa224711ab8fd9cf415fd824bd1eeefb380bf920abaa54bebb752"
+              tag: "server-cuda@sha256:4c8e5e3dc25d6b044e90f7eecb2243920a15d2f09a7df67787b03229620c934e"
             args:
               # Unsloth dynamic QAT GGUF — recovers MoE-expert quality (70.2->85.6% vs
               # naive q4_0). Auto-downloads to LLAMA_CACHE (the PVC) on first boot.
