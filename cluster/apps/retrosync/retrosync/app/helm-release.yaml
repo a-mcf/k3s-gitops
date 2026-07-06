@@ -44,6 +44,26 @@ spec:
         # Single-writer by design: the mirror daemon must be a singleton and
         # startup migrations have no advisory lock — never run two at once.
         strategy: Recreate
+        initContainers:
+          # `user set` is an idempotent upsert, so running it every pod start
+          # is safe — it just guarantees the admin exists with the password
+          # from retrosync-secret. No manual bootstrap step (mealie pattern).
+          bootstrap-admin:
+            image:
+              repository: ghcr.io/a-mcf/retrosync
+              tag: v0.1.0
+            args: ["user", "set", "alex", "--display", "Alex", "--role", "admin"]
+            env:
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: retrosync-db-app
+                    key: uri
+              RETROSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: retrosync-secret
+                    key: RETROSYNC_PASSWORD
         containers:
           app:
             image:
