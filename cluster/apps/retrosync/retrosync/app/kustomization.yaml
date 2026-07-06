@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: retrosync
+resources:
+  - ./secret.sops.yaml
+  - ./saves-pvc.yaml
+  - ./helm-release.yaml
+  # NOTE: bootstrap-job.yaml is intentionally absent — apply it manually once
+  # (see comments in that file).

@@ -1,0 +1,36 @@
+---
+# Same NFS export the syncthing workload mounts at /var/syncthing (PVs are
+# cluster-scoped, but PVC binding is 1:1 — hence a second PV over the same
+# export rather than reusing nfs-syncthing-pv). RetroSync reads each device's
+# Syncthing share as a local filesystem and writes winners back through it;
+# node reach paths in the UI are relative to /shares.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-retrosync-saves-pv
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /tank/appdata/syncthing
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-retrosync-saves-pvc
+  namespace: retrosync
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: nfs-retrosync-saves-pv

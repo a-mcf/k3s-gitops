@@ -28,6 +28,7 @@ resources:
   - photoprism
   - proxmox-csi
   - retrosavemanager
+  - retrosync
   - searxng
   - syncthing
   - vane

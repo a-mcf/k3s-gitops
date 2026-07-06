@@ -1,0 +1,40 @@
+---
+# One-shot admin bootstrap — deliberately NOT referenced by kustomization.yaml
+# (Jobs are immutable; Flux would fight re-reconciling it). Apply by hand once
+# the app is up, then delete:
+#
+#   kubectl apply -f bootstrap-job.yaml
+#   kubectl -n retrosync wait --for=condition=complete job/retrosync-bootstrap
+#   kubectl -n retrosync delete job retrosync-bootstrap
+#
+# The image is distroless (no shell), so a Job is the only way to run the
+# admin CLI in-cluster. Password comes from the SOPS-managed retrosync-secret.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: retrosync-bootstrap
+  namespace: retrosync
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsUser: 2316
+        runAsGroup: 2316
+      containers:
+        - name: bootstrap
+          image: ghcr.io/a-mcf/retrosync:v0.1.0
+          args: ["user", "set", "alex", "--display", "Alex", "--role", "admin"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: retrosync-db-app
+                  key: uri
+            - name: RETROSYNC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: retrosync-secret
+                  key: RETROSYNC_PASSWORD
