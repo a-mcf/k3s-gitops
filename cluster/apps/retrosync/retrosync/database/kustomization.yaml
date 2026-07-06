@@ -4,3 +4,6 @@ kind: Kustomization
 namespace: retrosync
 resources:
   - ./cluster.yaml
+  - ./external-secret.yaml
+  - ./objectstore.yaml
+  - ./scheduledbackup.yaml

@@ -26,6 +26,13 @@ spec:
   # initdb is all CNPG needs to do. WAL archiving / barman backups are a
   # follow-up (save-version blobs live in this DB, so they're worth having;
   # copy the mealie objectstore pattern when wiring them).
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: retrosync-objectstore
+        serverName: retrosync-db
+
   bootstrap:
     initdb:
       database: app
