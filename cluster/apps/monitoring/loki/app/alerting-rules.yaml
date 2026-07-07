@@ -13,21 +13,24 @@ data:
       - name: security-auth
         rules:
           - alert: AuthentikLoginFailureBurst
-            expr: sum(count_over_time({namespace="authentik"} |~ `"event": "(invalid_login|login_failed)"` [15m])) > 5
+            expr: |
+              sum(count_over_time({namespace="authentik"} |~ `"event": "(invalid_login|login_failed)"` [15m])) > 5
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: ">5 failed authentik logins in 15m — possible credential guessing"
           - alert: NodeSSHAuthFailures
-            expr: sum by (host) (count_over_time({job="systemd-journal"} |~ `Failed password|Invalid user|authentication failure` [15m])) > 3
+            expr: |
+              sum by (host) (count_over_time({job="systemd-journal"} |~ `Failed password|Invalid user|authentication failure` [15m])) > 3
             for: 0m
             labels:
               severity: warning
             annotations:
               summary: "SSH/auth failures on {{ $labels.host }} — >3 in 15m"
           - alert: NodeSudoFailure
-            expr: sum by (host) (count_over_time({job="systemd-journal"} |~ `sudo.*(authentication failure|incorrect password)` [15m])) > 0
+            expr: |
+              sum by (host) (count_over_time({job="systemd-journal"} |~ `sudo.*(authentication failure|incorrect password)` [15m])) > 0
             for: 0m
             labels:
               severity: warning
