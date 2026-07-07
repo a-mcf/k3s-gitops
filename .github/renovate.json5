@@ -164,6 +164,16 @@
       ],
     },
     {
+      description: 'SearXNG datever tags (YYYY.M.D-shorthash) — without this rule renovate cannot order them and the image silently goes stale (11 months, July 2026)',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'ghcr.io/searxng/searxng',
+      ],
+      versioning: 'regex:^(?<major>\\d{4})\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>[a-f0-9]+)$',
+    },
+    {
       description: 'Use loose versioning for certain dependencies',
       matchDatasources: [
         'docker',
