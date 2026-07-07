@@ -6,3 +6,4 @@ resources:
   - ./secret.sops.yaml
   - ./saves-pvc.yaml
   - ./helm-release.yaml
+  - ./networkpolicy.yaml
