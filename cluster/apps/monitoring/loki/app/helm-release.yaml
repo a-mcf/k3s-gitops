@@ -45,6 +45,17 @@ spec:
         analytics:
           reporting_enabled: false
 
+        ruler:
+          enable_api: true
+          storage:
+            type: local
+            local:
+              directory: /rules
+          rule_path: /tmp/loki-rules-scratch
+          alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
+          enable_alertmanager_v2: true
+
+
     ingress:
       enabled: true
       ingressClassName: traefik
@@ -69,6 +80,11 @@ spec:
       tls:
         - hosts:
             - *host
+
+    sidecar:
+      rules:
+        enabled: true
+        searchNamespace: monitoring
 
     deploymentMode: SingleBinary
     singleBinary:
