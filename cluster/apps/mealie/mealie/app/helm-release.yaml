@@ -39,7 +39,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
-              tag: 18
+              tag: 18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
             env:
               INIT_POSTGRES_DBNAME: mealie
               INIT_POSTGRES_HOST: mealiedb-rw

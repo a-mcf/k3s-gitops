@@ -174,6 +174,16 @@
       versioning: 'regex:^(?<major>\\d{4})\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>[a-f0-9]+)$',
     },
     {
+      description: 'Vane slim-prefixed tags (slim-vX.Y.Z) — prefix hides them from default versioning',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'itzcrazykns1337/vane',
+      ],
+      versioning: 'regex:^slim-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$',
+    },
+    {
       description: 'Use loose versioning for certain dependencies',
       matchDatasources: [
         'docker',
