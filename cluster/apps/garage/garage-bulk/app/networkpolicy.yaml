@@ -1,0 +1,82 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: garage
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller
+  namespace: garage
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-monitoring
+  namespace: garage
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-same-namespace
+  namespace: garage
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-consumers
+  namespace: garage
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: vane
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ai
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: authentik
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: freshrss
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: immich
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: mealie
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: retrosync
