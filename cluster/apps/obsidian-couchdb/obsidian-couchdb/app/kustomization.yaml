@@ -4,6 +4,7 @@ namespace: obsidian-couchdb
 resources:
   - config-pvc.yaml
   - helm-release.yaml
+  - networkpolicy.yaml
   - obsidian-couchdb.sops.yaml
 configMapGenerator:
   - name: obsidian-couchdb-configmap
