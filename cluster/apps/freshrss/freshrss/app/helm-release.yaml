@@ -37,7 +37,7 @@ spec:
               repository: freshrss/freshrss
               tag: 1.29.1
             env:
-              TZ: ${TIMEZONE}
+              TZ: ${TZ}
               CRON_MIN: "18,48"
               DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
     service:
