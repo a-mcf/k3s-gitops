@@ -85,6 +85,8 @@ spec:
       rules:
         enabled: true
         searchNamespace: monitoring
+        # ruler scans /rules/<tenant>; single-tenant (auth off) tenant is 'fake'
+        folder: /rules/fake
 
     deploymentMode: SingleBinary
     singleBinary:
