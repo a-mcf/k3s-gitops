@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./opencloud/ks.yaml
+  - ./netpol

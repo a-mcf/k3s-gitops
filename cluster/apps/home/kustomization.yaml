@@ -12,3 +12,4 @@ resources:
   - ./openwakeword/ks.yaml
   - ./scrypted/ks.yaml
   - ./music-assistant/ks.yaml
+  - ./netpol

@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./garage-premium/ks.yaml
   - ./garage-bulk/ks.yaml
+  - ./netpol

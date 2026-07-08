@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./retrosavemanager/ks.yaml
+  - ./netpol

@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./config-pvc.yaml
   - ./helm-release.yaml
-  - ./networkpolicy.yaml
   - ./externalsecret.yaml

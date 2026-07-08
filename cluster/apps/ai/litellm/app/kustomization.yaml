@@ -6,4 +6,3 @@ resources:
   - ./configmap.yaml
   - ./externalsecret.yaml
   - ./helm-release.yaml
-  - ./networkpolicy.yaml

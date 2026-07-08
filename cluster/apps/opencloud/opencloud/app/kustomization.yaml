@@ -6,4 +6,3 @@ resources:
   - ./config-pvc.yaml
   - ./externalsecret.yaml
   - ./helm-release.yaml
-  - ./networkpolicy.yaml

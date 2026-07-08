@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./syncthing/ks.yaml
+  - ./netpol
