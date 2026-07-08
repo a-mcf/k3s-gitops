@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Explicit list: keeps ./components (kustomize Components consumed by app
+# overlays) out of the flux-system build, which cannot accumulate them as
+# resources. New files under cluster/base must be added here.
+resources:
+  - ./apps.yaml
+  - ./cluster-secrets.yaml
+  - ./cluster-settings.yaml
+  - ./flux-system
