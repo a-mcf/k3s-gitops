@@ -61,3 +61,14 @@ spec:
     - from:
         - ipBlock:
             cidr: 172.16.1.0/24
+        # cross-node traffic from hostNetwork pods is sourced from the
+        # origin node's flannel.1/cni0 IPs (.0/.1 of its pod CIDR), not
+        # its LAN IP — pods themselves start at .2, so /31s stay tight
+        - ipBlock:
+            cidr: 10.42.0.0/31
+        - ipBlock:
+            cidr: 10.42.1.0/31
+        - ipBlock:
+            cidr: 10.42.3.0/31
+        - ipBlock:
+            cidr: 10.42.4.0/31
