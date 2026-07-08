@@ -3,51 +3,87 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review, reopened]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
 
 permissions: {}
 
-jobs:
-  claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
+jobs:
+  # Renovate PRs: assess upgrade risk and post the verdict as a PR comment.
+  renovate-upgrade-risk:
+    if: contains(github.event.pull_request.user.login, 'renovate')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
       issues: read
       id-token: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
-      - name: Run Claude Code Review
-        id: claude-review
+      - name: Assess upgrade risk
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
-          plugins: 'code-review@claude-code-plugins'
           allowed_bots: 'renovate'
+          claude_args: '--allowedTools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*),WebFetch,WebSearch"'
           prompt: |
-            /code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
+            Renovate PR ${{ github.repository }}#${{ github.event.pull_request.number }}
+            in a Flux/Kustomize GitOps repo.
 
-            If this PR contains dependency or image version upgrades (e.g. from Renovate), also:
-            - Assess the upgrade risk (patch/minor/major, stability, maturity of the project)
-            - Note any breaking changes between the old and new versions if known
-            - Flag anything that may require manual intervention or config changes
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
+            Your deliverable is EXACTLY ONE PR comment posted with `gh pr comment`.
+            A run that posts nothing is a wasted run. Format, under 25 lines:
 
+            - **Risk**: LOW / MEDIUM / HIGH (semver jump + blast radius of the app)
+            - **Breaking changes**: only those affecting how THIS repo uses the
+              dependency. Read the relevant HelmRelease values / manifests in the
+              repo and compare against the upstream changelog between the old and
+              new versions (WebFetch the release notes).
+            - **Action needed**: values renames, CRD updates, migration steps —
+              or "none, safe to merge on green".
+
+            If the release notes are unreachable, say so explicitly instead of
+            guessing.
+
+  # Human PRs: this is a PUBLIC repo for a private homelab — scan the diff
+  # for information that should not be published. Silent when clean.
+  public-leak-check:
+    if: ${{ !contains(github.event.pull_request.user.login, 'renovate') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Scan diff for private information
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowedTools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
+          prompt: |
+            This is a PUBLIC repository backing a private homelab. Review ONLY the
+            diff of PR ${{ github.repository }}#${{ github.event.pull_request.number }}
+            for information that should not be published:
+
+            - secrets, tokens, or key material that is not SOPS-encrypted
+            - healthcheck/webhook UUIDs or other capability URLs
+            - personal information or physical location details
+            - NEW private hostnames, host IPs, or network topology beyond the
+              conventions already established in the repo (cluster-internal
+              CIDRs, existing ingress hostnames, and Flux variable placeholders
+              are fine)
+
+            If you find something: post ONE `gh pr comment` listing each finding
+            as file, line, and why it should not be public. If the diff is clean:
+            post nothing and finish silently — the passing check is the signal.
