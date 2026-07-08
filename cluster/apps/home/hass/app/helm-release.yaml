@@ -33,6 +33,15 @@ spec:
           # needed for homekit integration? more research requried.
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
+          # ndots:1 = external names resolve absolute-first instead of
+          # walking the search-domain list, so one flaky upstream answer
+          # for a search-path variant can't fail the whole lookup
+          # (glibc aborts on SERVFAIL). Cluster shortnames still resolve
+          # via the search path.
+          dnsConfig:
+            options:
+              - name: ndots
+                value: "1"
         containers:
           home-assistant:
             image:
