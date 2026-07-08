@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./obsidian-couchdb/ks.yaml
+  - ./netpol

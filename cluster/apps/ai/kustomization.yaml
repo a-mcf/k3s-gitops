@@ -7,3 +7,4 @@ resources:
   - ./vllm/ks.yaml
   - ./litellm/ks.yaml
   - ./llamacpp/ks.yaml
+  - ./netpol

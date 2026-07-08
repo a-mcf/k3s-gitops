@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./hajimari/ks.yaml
   - ./namespace.yaml
+  - ./netpol

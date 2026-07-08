@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: syncthing
+components:
+  - ../../../base/components/netpol/baseline
+  - ../../../base/components/netpol/ingress-controller
+resources:
+  - ./extras.yaml
