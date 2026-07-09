@@ -56,15 +56,19 @@ spec:
     server:
       controllers:
         main:
-          resources:
-            requests:
-              cpu: 1500m
-              memory: 2048M
+          containers:
+            main:
+              resources:
+                requests:
+                  cpu: 1500m
+                  memory: 2048M
       persistence:
         external:
           enabled: true
           existingClaim: nfs-immich-photprism-originals-pvc
-          readOnly: true
+          globalMounts:
+            - path: /external
+              readOnly: true
       ingress:
         main:
           enabled: true
@@ -82,20 +86,16 @@ spec:
             - hosts:
                 - immich.${SECRET_DOMAIN}
 
-    microservices:
-      persistence:
-        external:
-          enabled: true
-          existingClaim: nfs-immich-photprism-originals-pvc
-          readOnly: true
-
     machine-learning:
       controllers:
         main:
-          resources:
-            requests:
-              cpu: 500m
-              memory: 4096M
+          containers:
+            main:
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 4096M
       persistence:
         cache:
+          type: persistentVolumeClaim
           existingClaim: nfs-immich-ml-cache-pvc
