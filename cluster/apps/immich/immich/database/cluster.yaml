@@ -8,7 +8,10 @@ metadata:
 spec:
   instances: 1
   enablePDB: false
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.4-v0.3.0
+  # Migration-window image (vchord + pgvecto.rs 0.3.0) for the immich
+  # pgvecto.rs -> VectorChord reindex; move to plain cloudnative-vectorchord
+  # and drop vectors.so once the vectors schema is gone.
+  imageName: ghcr.io/a-mcf/cnpg-vectorchord-migration:16.14-vchord1.1.1-pgvectors0.3.0@sha256:4898bc79734633a7e5dd71b56a3e85b1f6274f3598d311d237d3673c9edcfbb6
   enableSuperuserAccess: true
   startDelay: 30
   stopDelay: 100
@@ -19,6 +22,7 @@ spec:
       max_connections: "600"
       shared_buffers: 512MB
     shared_preload_libraries:
+      - "vchord.so"
       - "vectors.so"
   storage:
     size: 25Gi
