@@ -5,6 +5,10 @@ metadata:
   namespace: immich
 spec:
   interval: 5m
+  # DB migrations run inside server startup; give upgrades room so helm's
+  # wait doesn't expire mid-migration and trigger a rollback the migrated
+  # schema can't satisfy.
+  timeout: 15m
   chart:
     spec:
       chart: immich
