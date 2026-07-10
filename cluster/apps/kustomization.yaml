@@ -16,6 +16,7 @@ resources:
   - immich
   - ingress
   - kube-system
+  - mcp-tools
   - media
   - metallb-system
   - minio
