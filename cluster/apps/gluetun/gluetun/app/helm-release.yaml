@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gluetun
+  namespace: gluetun
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      gluetun:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.1@sha256:1a5bf4b4820a879cdf8d93d7ef0d2d963af56670c9ebff8981860b6804ebc8ab
+            env:
+              VPN_SERVICE_PROVIDER: surfshark
+              VPN_TYPE: wireguard
+              HTTPPROXY: "on"
+              # the proxy port must be allowed through gluetun's own
+              # killswitch firewall
+              FIREWALL_INPUT_PORTS: "8888"
+              # replies to cluster-internal proxy clients must bypass the
+              # tunnel-only routing (k3s pod + service CIDRs)
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+            envFrom:
+              - secretRef:
+                  name: gluetun-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["/gluetun-entrypoint", "healthcheck"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              # gluetun needs root + CAP_NET_ADMIN to open /dev/net/tun,
+              # bring up wireguard and manage its iptables killswitch
+              # (same pattern as the nebula sidecar in ingress/traefik)
+              runAsUser: 0
+              runAsNonRoot: false
+              capabilities:
+                add:
+                  - NET_ADMIN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      automountServiceAccountToken: false
+    service:
+      app:
+        ports:
+          http-proxy:
+            port: 8888
+    persistence:
+      devnet:
+        type: hostPath
+        hostPath: /dev/net/tun
+        hostPathType: CharDevice
+        globalMounts:
+          - path: /dev/net/tun
