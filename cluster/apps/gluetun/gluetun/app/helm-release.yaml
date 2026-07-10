@@ -27,6 +27,9 @@ spec:
               VPN_SERVICE_PROVIDER: surfshark
               VPN_TYPE: wireguard
               HTTPPROXY: "on"
+              # one log line per proxied request (hostname only, not content);
+              # the observable for which apps are riding the tunnel
+              HTTPPROXY_LOG: "on"
               # the proxy port must be allowed through gluetun's own
               # killswitch firewall
               FIREWALL_INPUT_PORTS: "8888"
