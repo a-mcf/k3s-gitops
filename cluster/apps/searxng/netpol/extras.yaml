@@ -14,6 +14,22 @@ spec:
       ports:
         - port: 8080
 ---
+# the search-mcp tool server queries searxng directly (cross-namespace consumer)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-search-mcp
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: mcp-tools
+      ports:
+        - port: 8080
+---
 # vane queries searxng directly (cross-namespace consumer)
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
