@@ -1,4 +1,11 @@
 ---
+# Scan raw manifests only. The kustomize framework renders overlays into /tmp
+# where skip-path can't match (it resurrects the skipped Flux-generated
+# resources as "overlay:base:*"), and it crashes on Flux-only features like
+# ${VAR} substitution anyway.
+skip-framework:
+  - kustomize
+
 # Skip paths that are upstream/generated files or can't be scanned
 skip-path:
   - cluster/base/flux-system/gotk-components.yaml # Flux-generated, not owned
