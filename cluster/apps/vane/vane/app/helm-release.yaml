@@ -39,6 +39,14 @@ spec:
               TZ: "${TZ}"
               # existing in-cluster SearXNG (formats already include json)
               SEARXNG_API_URL: http://searxng.searxng.svc.cluster.local:8080
+              # external page fetches egress via the gluetun (VPN) proxy;
+              # NO_PROXY carves out cluster services and internal ingress
+              HTTP_PROXY: &proxy http://gluetun.gluetun.svc.cluster.local:8888
+              HTTPS_PROXY: *proxy
+              NO_PROXY: localhost,127.0.0.1,.svc,.svc.cluster.local,.cluster.local,${SECRET_DOMAIN},.${SECRET_DOMAIN}
+              # Node's built-in fetch (undici) ignores proxy env vars unless
+              # this is set (axios honors them regardless)
+              NODE_USE_ENV_PROXY: "1"
             probes:
               liveness:
                 enabled: true
