@@ -34,7 +34,9 @@ jobs:
           TERRAFORM_TFLINT_CONFIG_FILE: .tflint.hcl
           YAML_CONFIG_FILE: .yamllint.yaml
           KUBERNETES_KUBEVAL_OPTIONS: --ignore-missing-schemas -v 1.23.3
-          KUBERNETES_KUBECONFORM_OPTIONS: -skip HelmRelease,Kustomization,Component,PrometheusRule,ExternalSecret
+          # Secret: always SOPS-encrypted here, and the sops metadata block can
+          # never pass strict schema validation
+          KUBERNETES_KUBECONFORM_OPTIONS: -skip HelmRelease,Kustomization,Component,PrometheusRule,ExternalSecret,Secret
           # JSCPD: all detected clones are legitimate GitOps boilerplate (HelmRelease
           # spec blocks, SOPS metadata). Super-linter v7 overrides threshold to 0%
           # via CLI flags, making the .jscpdrc.json threshold setting ineffective.
