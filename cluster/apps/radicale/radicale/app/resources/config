@@ -1,0 +1,21 @@
+[server]
+hosts = 0.0.0.0:5232
+
+[auth]
+type = htpasswd
+htpasswd_filename = /etc/radicale/users
+htpasswd_encryption = autodetect
+# slow down brute force over the (VPN-only) network anyway
+delay = 2
+
+[rights]
+# family-trust model: any authenticated user can read/write all
+# collections, so shared calendars just work; tighten with a rights
+# file later if separation is ever wanted
+type = authenticated
+
+[storage]
+filesystem_folder = /data/collections
+
+[logging]
+level = info
