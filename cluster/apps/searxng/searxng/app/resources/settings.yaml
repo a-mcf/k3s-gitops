@@ -21,6 +21,13 @@ search:
 general:
   instance_name: Search
 
+outgoing:
+  # all engine/autocomplete/image-proxy traffic egresses via the gluetun
+  # HTTP proxy (VPN) instead of directly
+  proxies:
+    all://:
+      - http://gluetun.gluetun.svc.cluster.local:8888
+
 ui:
   default_theme: simple
   infinite_scroll: true
