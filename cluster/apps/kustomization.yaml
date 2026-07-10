@@ -29,6 +29,7 @@ resources:
   - paperless
   - photoprism
   - proxmox-csi
+  - radicale
   - retrosavemanager
   - retrosync
   - searxng
