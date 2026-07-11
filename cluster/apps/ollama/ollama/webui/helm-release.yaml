@@ -56,8 +56,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/icon: "fluent-emoji-high-contrast:llama"
-          hajimari.io/group: "Gen-AI"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Open WebUI"
+          gethomepage.dev/group: "Gen-AI"
+          gethomepage.dev/icon: "open-webui.png"
         hosts:
           - host: &host "blunderbot.${SECRET_DOMAIN}"
             paths:

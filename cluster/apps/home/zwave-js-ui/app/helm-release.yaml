@@ -78,8 +78,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/icon: mdi:z-wave
-          hajimari.io/group: "home automation"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Z-Wave JS UI"
+          gethomepage.dev/group: "Home"
+          gethomepage.dev/icon: "mdi-z-wave"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

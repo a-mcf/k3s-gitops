@@ -355,8 +355,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/icon: "mdi:brain"
-          hajimari.io/group: "Gen-AI"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "vLLM"
+          gethomepage.dev/group: "Gen-AI"
+          gethomepage.dev/icon: "mdi-brain"
         hosts:
           - host: "vllm.${SECRET_DOMAIN}"
             paths:

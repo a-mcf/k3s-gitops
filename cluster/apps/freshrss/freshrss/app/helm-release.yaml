@@ -54,9 +54,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "arcticons:freshrss"
-          hajimari.io/group: "media"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "FreshRSS"
+          gethomepage.dev/group: "Media"
+          gethomepage.dev/icon: "freshrss.png"
         hosts:
           - host: &host "freshrss.${SECRET_DOMAIN}"
             paths:

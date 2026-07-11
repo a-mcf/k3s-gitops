@@ -113,9 +113,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "RetroSync"
-          hajimari.io/group: "Home"
-          hajimari.io/icon: mdi:gamepad-variant
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "RetroSync"
+          gethomepage.dev/group: "Gaming"
+          gethomepage.dev/icon: "mdi-gamepad-variant"
         hosts:
           - host: "retrosync.${SECRET_DOMAIN}"
             paths:

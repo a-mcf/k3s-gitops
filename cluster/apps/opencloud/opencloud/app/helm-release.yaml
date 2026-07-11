@@ -113,9 +113,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "OCIS"
-          hajimari.io/group: "Storage"
-          hajimari.io/icon: arcticons:owncloud
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "OpenCloud"
+          gethomepage.dev/group: "Storage"
+          gethomepage.dev/icon: "owncloud.png"
         hosts:
           - host: "opencloud.${SECRET_DOMAIN}"
             paths:

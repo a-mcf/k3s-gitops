@@ -78,9 +78,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "LiteLLM"
-          hajimari.io/group: "Gen-AI"
-          hajimari.io/icon: mdi:router-network
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "LiteLLM"
+          gethomepage.dev/group: "Gen-AI"
+          gethomepage.dev/icon: "mdi-router-network"
         hosts:
           - host: "litellm.${SECRET_DOMAIN}"
             paths:

@@ -66,10 +66,11 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: calendar-account
-          hajimari.io/info: Family Calendar & Contacts
-          hajimari.io/group: tools
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Radicale"
+          gethomepage.dev/group: "Tools"
+          gethomepage.dev/icon: "mdi-calendar-account"
+          gethomepage.dev/description: "Family Calendar & Contacts"
         hosts:
           - host: &host "radicale.${SECRET_DOMAIN}"
             paths:

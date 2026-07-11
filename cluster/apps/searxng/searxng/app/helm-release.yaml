@@ -68,10 +68,11 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: cloud-search-outline
-          hajimari.io/info: Internet Search
-          hajimari.io/group: tools
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "SearXNG"
+          gethomepage.dev/group: "Tools"
+          gethomepage.dev/icon: "searxng.png"
+          gethomepage.dev/description: "Internet Search"
         hosts:
           - host: &host "search.${SECRET_DOMAIN}"
             paths:

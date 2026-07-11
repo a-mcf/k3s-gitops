@@ -58,9 +58,10 @@ spec:
         annotations:
           # https://goauthentik.io/docs/providers/proxy/forward_auth
           traefik.ingress.kubernetes.io/router.middlewares: paperless-authentik@kubernetescrd
-          hajimari.io/icon: "leaf"
-          hajimari.io/enable: "true"
-          hajimari.io/group: "file storage"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Paperless-ngx"
+          gethomepage.dev/group: "Storage"
+          gethomepage.dev/icon: "paperless-ngx.png"
         hosts:
           - host: "paperless.${SECRET_DOMAIN}"
             paths:

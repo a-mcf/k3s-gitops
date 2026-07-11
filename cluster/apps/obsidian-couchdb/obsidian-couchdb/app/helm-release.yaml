@@ -89,8 +89,6 @@ spec:
       main:
         enabled: true
         className: traefik
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
           - host: &host "obsidian-db.${SECRET_DOMAIN}"
             paths:

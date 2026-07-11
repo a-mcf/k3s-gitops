@@ -77,9 +77,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/appName: "Home Assistant"
-          hajimari.io/icon: "home-assistant"
-          hajimari.io/group: "home automation"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Home Assistant"
+          gethomepage.dev/group: "Home"
+          gethomepage.dev/icon: "home-assistant.png"
         hosts:
           - host: &host "hass.${SECRET_DOMAIN}"
             paths:
