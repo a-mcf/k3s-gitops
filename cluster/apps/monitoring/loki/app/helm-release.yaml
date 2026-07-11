@@ -55,7 +55,6 @@ spec:
           alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
           enable_alertmanager_v2: true
 
-
     ingress:
       enabled: true
       ingressClassName: traefik

@@ -47,7 +47,6 @@ spec:
         barmanObjectName: mealie-objectstore
         serverName: mealie-cnpg
 
-
   bootstrap:
     recovery:
       source: minio

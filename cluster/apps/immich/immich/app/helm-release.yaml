@@ -53,7 +53,7 @@ spec:
                     key: password
               DB_DATABASE_NAME: app
               TZ: ${TZ}
-  
+
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v3.0.2

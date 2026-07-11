@@ -13,19 +13,19 @@ spec:
     labels:
       kube-image-keeper.enix.io/image-caching-policy: ignore
   primaryUpdateStrategy: unsupervised
-  
+
   storage:
     size: 10Gi
     storageClass: proxmox-csi-ext4-ssd
-  
+
   postgresql:
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
-  
+
   monitoring:
     enablePodMonitor: true
-  
+
   # backup:
   #   retentionPolicy: 30d
   #   barmanObjectStore:
@@ -49,7 +49,6 @@ spec:
       parameters:
         barmanObjectName: freshrss-objectstore
         serverName: freshrss-cnpg-backup
-
 
   # # restore from backup of different cluster
 

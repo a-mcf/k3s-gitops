@@ -52,7 +52,8 @@ spec:
             image:
               repository: ghcr.io/a-mcf/retrosync
               tag: v0.1.0
-            args: ["user", "set", "alex", "--display", "Alex", "--role", "admin"]
+            args:
+              ["user", "set", "alex", "--display", "Alex", "--role", "admin"]
             env:
               DATABASE_URL:
                 valueFrom:

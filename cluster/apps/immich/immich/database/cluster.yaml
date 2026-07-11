@@ -67,8 +67,8 @@ spec:
   # bootstrap:
   #   recovery:
   #     source: freshrssdb-backup-minio
-      # recoveryTarget:
-      #   targetTime: "2025-10-27T10:00:00" #20251025T220000
+  # recoveryTarget:
+  #   targetTime: "2025-10-27T10:00:00" #20251025T220000
   externalClusters:
     - name: minio
       barmanObjectStore:
@@ -97,9 +97,6 @@ spec:
   #       name: immichdb-superuser
   #       key: password
 
-
-
-
   # bootstrap:
   #   initdb:
   #     import:
@@ -119,7 +116,6 @@ spec:
   #     password:
   #       name: immichdb-superuser
   #       key: password
-
 # POST-RESTORE CHECKLIST:
 # If restoring from backup, the postInitApplicationSQL commands will NOT run automatically.
 # Manually execute these commands after restore:
