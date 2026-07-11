@@ -1,6 +1,6 @@
 ---
 # static entries (not behind cluster ingresses) — carried over from
-# hajimari's customApps; URLs are flux postBuild substitutions
+# carried over from the old dashboard's customApps; flux postBuild substitutions
 - Infrastructure:
     - Proxmox VE:
         href: "${PVE_URL}"
