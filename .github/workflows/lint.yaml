@@ -43,3 +43,6 @@ jobs:
           # spec blocks, SOPS metadata). Super-linter v7 overrides threshold to 0%
           # via CLI flags, making the .jscpdrc.json threshold setting ineffective.
           VALIDATE_JSCPD: false
+          # standardjs and js-prettier demand OPPOSITE quote/semicolon styles;
+          # prettier is the repo-wide formatter, so it rules JS too
+          VALIDATE_JAVASCRIPT_STANDARD: false
