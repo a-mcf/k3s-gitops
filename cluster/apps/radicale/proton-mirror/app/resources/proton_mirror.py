@@ -16,6 +16,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -27,18 +28,28 @@ MARKER = "X-PROTON-MIRROR"
 
 
 def http(method, url, auth=None, body=None, headers=None):
-    """One-shot HTTP request; returns (status, body bytes)."""
+    """One-shot HTTP request; returns (status, body bytes).
+
+    Retries connection-refused a few times: a fresh job pod's IP takes a
+    moment to land in kube-router's netpol ipsets, so the first packets
+    to in-cluster services can bounce.
+    """
     req = urllib.request.Request(url, method=method, data=body)
     if auth is not None:
         token = base64.b64encode(f"{auth[0]}:{auth[1]}".encode()).decode()
         req.add_header("Authorization", f"Basic {token}")
     for key, value in (headers or {}).items():
         req.add_header(key, value)
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return resp.status, resp.read()
-    except urllib.error.HTTPError as err:
-        return err.code, err.read()
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return resp.status, resp.read()
+        except urllib.error.HTTPError as err:
+            return err.code, err.read()
+        except urllib.error.URLError as err:
+            if attempt == 3 or not isinstance(err.reason, ConnectionRefusedError):
+                raise
+            time.sleep(2 * (attempt + 1))
 
 
 def unfold(text):
