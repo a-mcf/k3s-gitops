@@ -123,4 +123,3 @@ spec:
         existingClaim: proxmox-csi-obsidian-data
         globalMounts:
           - path: /opt/couchdb/data
-

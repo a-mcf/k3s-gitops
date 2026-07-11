@@ -13,4 +13,3 @@ spec:
   storageClassName: proxmox-csi-ext4-ssd
   volumeMode: Filesystem
   volumeName: pvc-ff820449-4878-4886-bf73-40d7c2ab38a6
-

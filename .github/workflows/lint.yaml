@@ -36,7 +36,9 @@ jobs:
           KUBERNETES_KUBEVAL_OPTIONS: --ignore-missing-schemas -v 1.23.3
           # Secret: always SOPS-encrypted here, and the sops metadata block can
           # never pass strict schema validation
-          KUBERNETES_KUBECONFORM_OPTIONS: -skip HelmRelease,Kustomization,Component,PrometheusRule,ExternalSecret,Secret
+          # -ignore-missing-schemas: CRD kinds (CNPG, MetalLB, traefik…) have no
+          # public schema; same posture as the kubeval options below
+          KUBERNETES_KUBECONFORM_OPTIONS: -skip HelmRelease,Kustomization,Component,PrometheusRule,ExternalSecret,Secret -ignore-missing-schemas
           # JSCPD: all detected clones are legitimate GitOps boilerplate (HelmRelease
           # spec blocks, SOPS metadata). Super-linter v7 overrides threshold to 0%
           # via CLI flags, making the .jscpdrc.json threshold setting ineffective.

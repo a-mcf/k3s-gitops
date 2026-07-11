@@ -1,0 +1,61 @@
+# Local mirror of what CI (.github/workflows/lint.yaml, super-linter) enforces,
+# so lint failures surface at commit time instead of PR time.
+# Setup: ./hack/setup.sh   Full sweep: pre-commit run --all-files
+# Checkov (slow, optional): pre-commit run checkov --hook-stage manual --all-files
+---
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args: [-c, .github/linters/.yamllint.yaml]
+
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.5.1
+    hooks:
+      - id: black
+        # TODO: has pre-existing python lint debt (isort/mypy/pylint too) —
+        # formatting it wakes ALL the CI python linters; clean up in one
+        # deliberate PR, then drop this exclude
+        exclude: ^hack/staleness-audit\.py$
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier --check
+        # version pinned for reproducibility; bump alongside CI image updates
+        entry: npx --yes prettier@3.9.5 --config .github/linters/prettierrc.yaml --ignore-path .github/linters/.prettierignore --check
+        language: system
+        types: [yaml]
+        # extensionless dotfile — prettier can't infer a parser for it
+        exclude: ^\.github/linters/\.ansible-lint$
+
+      - id: kubeconform
+        name: kubeconform (CI flag parity)
+        entry: hack/hooks/kubeconform.sh
+        language: script
+        files: ^cluster/.*\.ya?ml$
+        # resources/ dirs hold app config files, not k8s manifests
+        exclude: (^cluster/base/flux-system/|kustomization\.yaml$|\.sops\.ya?ml$|/resources/)
+
+      - id: sops-encrypted
+        name: sops files are actually encrypted
+        entry: hack/hooks/sops-guard.sh
+        language: script
+        files: \.sops\.ya?ml$
+        # the bare dotfile is the sops CONFIG, not a secret
+        exclude: (^|/)\.sops\.ya?ml$
+
+      - id: kustomize-smoke
+        name: kustomize build smoke (cluster/apps + cluster/base)
+        entry: hack/hooks/kustomize-smoke.sh
+        language: script
+        files: ^cluster/
+        pass_filenames: false
+
+      - id: checkov
+        name: checkov (manual stage — slow; CI runs it regardless)
+        entry: pipx run checkov --config-file .github/linters/.checkov.yaml --quiet --compact -d cluster
+        language: system
+        pass_filenames: false
+        stages: [manual]
