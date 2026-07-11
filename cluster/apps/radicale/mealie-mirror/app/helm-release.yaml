@@ -21,9 +21,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "23 * * * *"
-          # suspended until the config.json secret holds a real Mealie API
-          # token; flip to false to go live
-          suspend: true
+          suspend: false
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 2
