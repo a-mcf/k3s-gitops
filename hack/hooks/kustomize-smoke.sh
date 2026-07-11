@@ -4,6 +4,6 @@
 # accumulation trap that broke the flux-system build in #1608.
 set -euo pipefail
 
-kubectl kustomize cluster/apps > /dev/null
-kubectl kustomize cluster/base > /dev/null
+kubectl kustomize cluster/apps >/dev/null
+kubectl kustomize cluster/base >/dev/null
 echo "cluster/apps + cluster/base build clean"
