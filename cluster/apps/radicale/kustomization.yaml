@@ -6,4 +6,5 @@ resources:
   - ./namespace.yaml
   - ./radicale/ks.yaml
   - ./proton-mirror/ks.yaml
+  - ./mealie-mirror/ks.yaml
   - ./netpol
