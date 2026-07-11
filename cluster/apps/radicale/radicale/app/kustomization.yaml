@@ -11,5 +11,6 @@ configMapGenerator:
   - name: radicale-configmap
     files:
       - config=./resources/config
+      - rights=./resources/rights
     options:
       disableNameSuffixHash: true
