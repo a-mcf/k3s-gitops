@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: radicale
+resources:
+  - ./secret.sops.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: proton-mirror-configmap
+    files:
+      - proton_mirror.py=./resources/proton_mirror.py
+    options:
+      disableNameSuffixHash: true
