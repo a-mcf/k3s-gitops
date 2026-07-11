@@ -19,7 +19,6 @@ resources:
   - mcp-tools
   - media
   - metallb-system
-  - minio
   - mealie
   - monitoring
   - nvidia-device-plugin
