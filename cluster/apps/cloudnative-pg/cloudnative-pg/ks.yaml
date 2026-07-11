@@ -8,7 +8,6 @@ spec:
   path: ./cluster/apps/cloudnative-pg/cloudnative-pg/app
   dependsOn:
     - name: cluster-apps-proxmox-csi
-    - name: cluster-apps-minio
   prune: true
   sourceRef:
     kind: GitRepository
