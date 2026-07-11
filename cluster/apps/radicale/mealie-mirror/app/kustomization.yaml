@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: radicale
+resources:
+  - ./secret.sops.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: mealie-mirror-configmap
+    files:
+      - mealie_mirror.py=./resources/mealie_mirror.py
+    options:
+      disableNameSuffixHash: true
