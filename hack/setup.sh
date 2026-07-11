@@ -11,18 +11,18 @@ cd "$(git rev-parse --show-toplevel)"
 mkdir -p "${BIN_DIR}"
 
 if ! command -v pre-commit >/dev/null; then
-  echo "==> installing pre-commit via pipx"
-  pipx install pre-commit
+	echo "==> installing pre-commit via pipx"
+	pipx install pre-commit
 fi
 
 if ! command -v kubeconform >/dev/null; then
-  echo "==> installing kubeconform ${KUBECONFORM_VERSION} to ${BIN_DIR}"
-  tmp=$(mktemp -d)
-  curl -sL -o "${tmp}/kubeconform.tar.gz" \
-    "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
-  echo "${KUBECONFORM_SHA256}  ${tmp}/kubeconform.tar.gz" | sha256sum -c -
-  tar -C "${BIN_DIR}" -xzf "${tmp}/kubeconform.tar.gz" kubeconform
-  rm -rf "${tmp}"
+	echo "==> installing kubeconform ${KUBECONFORM_VERSION} to ${BIN_DIR}"
+	tmp=$(mktemp -d)
+	curl -sL -o "${tmp}/kubeconform.tar.gz" \
+		"https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+	echo "${KUBECONFORM_SHA256}  ${tmp}/kubeconform.tar.gz" | sha256sum -c -
+	tar -C "${BIN_DIR}" -xzf "${tmp}/kubeconform.tar.gz" kubeconform
+	rm -rf "${tmp}"
 fi
 
 echo "==> registering git hooks"

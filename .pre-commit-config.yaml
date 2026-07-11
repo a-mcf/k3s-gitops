@@ -23,8 +23,8 @@ repos:
     hooks:
       - id: prettier
         name: prettier --check
-        # version pinned for reproducibility; bump alongside CI image updates
-        entry: npx --yes prettier@3.9.5 --config .github/linters/prettierrc.yaml --ignore-path .github/linters/.prettierignore --check
+        # pinned to the version super-linter ships — versions disagree on details
+        entry: npx --yes prettier@3.3.3 --config .github/linters/prettierrc.yaml --ignore-path .github/linters/.prettierignore --check
         language: system
         types: [yaml]
         # extensionless dotfile — prettier can't infer a parser for it

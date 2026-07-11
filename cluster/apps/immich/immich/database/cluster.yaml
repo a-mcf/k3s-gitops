@@ -116,7 +116,6 @@ spec:
   #     password:
   #       name: immichdb-superuser
   #       key: password
-
 # POST-RESTORE CHECKLIST:
 # If restoring from backup, the postInitApplicationSQL commands will NOT run automatically.
 # Manually execute these commands after restore:
