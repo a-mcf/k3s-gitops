@@ -285,6 +285,14 @@ spec:
                   - ${NFS_SERVER}:9134
                 labels:
                   instance: shodan
+          # pfSense router — official node_exporter package, scraped the
+          # same static-config way as the other non-cluster hosts.
+          - job_name: node-pfsense
+            static_configs:
+              - targets:
+                  - ${PFSENSE_HOST}:9100
+                labels:
+                  instance: pfsense
         # retentionSize is the real safety valve on a fixed-size disk: Prometheus
         # GCs by size before it can ever hit ENOSPC (a full 10Gi SSD PVC wedged
         # the TSDB 2026-06-20 → blind 5d). Keep it comfortably under the PVC size.
