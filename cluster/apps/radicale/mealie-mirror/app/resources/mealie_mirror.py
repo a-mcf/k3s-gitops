@@ -22,6 +22,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -35,18 +36,28 @@ WINDOW_FUTURE = int(os.environ.get("WINDOW_FUTURE", "30"))
 
 
 def http(method, url, auth=None, body=None, headers=None):
-    """One-shot HTTP request; returns (status, body bytes)."""
+    """One-shot HTTP request; returns (status, body bytes).
+
+    Retries connection-refused a few times: a fresh job pod's IP takes a
+    moment to land in kube-router's netpol ipsets, so the first packets
+    to in-cluster services can bounce.
+    """
     req = urllib.request.Request(url, method=method, data=body)
     if auth is not None:
         token = base64.b64encode(f"{auth[0]}:{auth[1]}".encode()).decode()
         req.add_header("Authorization", f"Basic {token}")
     for key, value in (headers or {}).items():
         req.add_header(key, value)
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return resp.status, resp.read()
-    except urllib.error.HTTPError as err:
-        return err.code, err.read()
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return resp.status, resp.read()
+        except urllib.error.HTTPError as err:
+            return err.code, err.read()
+        except urllib.error.URLError as err:
+            if attempt == 3 or not isinstance(err.reason, ConnectionRefusedError):
+                raise
+            time.sleep(2 * (attempt + 1))
 
 
 def unfold(text):
@@ -85,11 +96,12 @@ def fetch_plan(config, start, end):
         f"{config['mealie_url']}/api/households/mealplans"
         f"?start_date={start.isoformat()}&end_date={end.isoformat()}&perPage=-1"
     )
-    req = urllib.request.Request(
-        url, headers={"Authorization": f"Bearer {config['mealie_token']}"}
+    status, body = http(
+        "GET", url, headers={"Authorization": f"Bearer {config['mealie_token']}"}
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        payload = json.load(resp)
+    if status != 200:
+        raise RuntimeError(f"mealie fetch -> {status}")
+    payload = json.loads(body)
     events = {}
     for entry in payload.get("items", []):
         day = datetime.date.fromisoformat(entry["date"])
