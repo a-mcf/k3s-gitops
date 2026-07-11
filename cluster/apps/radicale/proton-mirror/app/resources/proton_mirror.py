@@ -7,8 +7,8 @@ X-PROTON-MIRROR property with a content hash, so each run can identify
 its own events, update changed ones, and delete upstream cancellations —
 without ever touching events created directly in Radicale.
 
-Config: /config/mirrors.json — [{"ics_url", "user", "password",
-"collection"}, ...]; RADICALE_URL and DRY_RUN come from the environment.
+Config: mirrors.json — [{"ics_url", "user", "password", "collection"},
+...]; MIRRORS_CONFIG, RADICALE_URL and DRY_RUN come from the environment.
 """
 
 import base64
@@ -26,18 +26,19 @@ DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 MARKER = "X-PROTON-MIRROR"
 
 
-def http(method, url, user=None, password=None, body=None, headers=None):
+def http(method, url, auth=None, body=None, headers=None):
+    """One-shot HTTP request; returns (status, body bytes)."""
     req = urllib.request.Request(url, method=method, data=body)
-    if user is not None:
-        token = base64.b64encode(f"{user}:{password}".encode()).decode()
+    if auth is not None:
+        token = base64.b64encode(f"{auth[0]}:{auth[1]}".encode()).decode()
         req.add_header("Authorization", f"Basic {token}")
-    for k, v in (headers or {}).items():
-        req.add_header(k, v)
+    for key, value in (headers or {}).items():
+        req.add_header(key, value)
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             return resp.status, resp.read()
-    except urllib.error.HTTPError as e:
-        return e.code, e.read()
+    except urllib.error.HTTPError as err:
+        return err.code, err.read()
 
 
 def unfold(text):
@@ -68,10 +69,10 @@ def extract_blocks(lines, kind):
 
 
 def prop_value(block, name):
+    """Value of the first property `name` in an unfolded component block."""
     for line in block:
-        if line.upper().startswith(name.upper() + ":") or line.upper().startswith(
-            name.upper() + ";"
-        ):
+        upper = line.upper()
+        if upper.startswith(name.upper() + ":") or upper.startswith(name.upper() + ";"):
             return line.split(":", 1)[1].strip()
     return None
 
@@ -81,27 +82,28 @@ def feed_events(ics_text):
     lines = unfold(ics_text)
     tz_blocks = extract_blocks(lines, "VTIMEZONE")
     events = {}
-    for ev in extract_blocks(lines, "VEVENT"):
-        uid = prop_value(ev, "UID")
+    for event in extract_blocks(lines, "VEVENT"):
+        uid = prop_value(event, "UID")
         if not uid:
             continue
-        digest = hashlib.sha256("\n".join(ev).encode()).hexdigest()[:16]
-        events[uid] = (digest, ev)
+        digest = hashlib.sha256("\n".join(event).encode()).hexdigest()[:16]
+        events[uid] = (digest, event)
     return tz_blocks, events
 
 
 def wrap_event(ev_lines, tz_blocks, digest):
+    """Wrap one VEVENT (plus feed timezones) into a marked VCALENDAR."""
     body = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//proton-mirror//EN"]
-    for tz in tz_blocks:
-        body.extend(tz)
-    ev = list(ev_lines)
-    ev.insert(-1, f"{MARKER}:{digest}")
-    body.extend(ev)
+    for timezone in tz_blocks:
+        body.extend(timezone)
+    event = list(ev_lines)
+    event.insert(-1, f"{MARKER}:{digest}")
+    body.extend(event)
     body.append("END:VCALENDAR")
     return "\r\n".join(body) + "\r\n"
 
 
-def existing_mirrored(base, user, password):
+def existing_mirrored(base, auth):
     """REPORT the collection -> {uid: (href, digest)} for mirror-owned items."""
     report = (
         '<?xml version="1.0" encoding="utf-8" ?>'
@@ -115,18 +117,17 @@ def existing_mirrored(base, user, password):
     status, body = http(
         "REPORT",
         base,
-        user,
-        password,
+        auth,
         report.encode(),
         {"Content-Type": "application/xml", "Depth": "1"},
     )
     if status != 207:
         raise RuntimeError(f"REPORT {base} -> {status}")
     out = {}
-    ns = {"D": "DAV:", "C": "urn:ietf:params:xml:ns:caldav"}
-    for resp in ET.fromstring(body).findall("D:response", ns):
-        href = resp.findtext("D:href", namespaces=ns)
-        data = resp.findtext(".//C:calendar-data", namespaces=ns) or ""
+    namespaces = {"D": "DAV:", "C": "urn:ietf:params:xml:ns:caldav"}
+    for resp in ET.fromstring(body).findall("D:response", namespaces):
+        href = resp.findtext("D:href", namespaces=namespaces)
+        data = resp.findtext(".//C:calendar-data", namespaces=namespaces) or ""
         lines = unfold(data)
         digest = prop_value(lines, MARKER)
         uid = prop_value(lines, "UID")
@@ -135,52 +136,63 @@ def existing_mirrored(base, user, password):
     return out
 
 
-def sync(mirror):
-    base = f"{RADICALE_URL}{mirror['collection']}"
-    user, password = mirror["user"], mirror["password"]
-
-    status, feed = http("GET", mirror["ics_url"])
-    if status != 200:
-        raise RuntimeError(f"feed fetch -> {status}")
-    tz_blocks, events = feed_events(feed.decode("utf-8", "replace"))
-    mirrored = existing_mirrored(base, user, password)
-
-    created = updated = deleted = kept = 0
-    for uid, (digest, ev) in events.items():
+def upsert_events(base, auth, events, mirrored, tz_blocks):
+    """PUT new/changed feed events; returns (created, updated, kept)."""
+    created = updated = kept = 0
+    for uid, (digest, event) in events.items():
         if uid in mirrored and mirrored[uid][1] == digest:
             kept += 1
             continue
         action = "update" if uid in mirrored else "create"
         safe = hashlib.sha256(uid.encode()).hexdigest()[:32]
-        url = f"{base}proton-{safe}.ics"
         if DRY_RUN:
             print(f"DRY: {action} {uid}")
         else:
-            s, _ = http(
+            status, _ = http(
                 "PUT",
-                url,
-                user,
-                password,
-                wrap_event(ev, tz_blocks, digest).encode(),
+                f"{base}proton-{safe}.ics",
+                auth,
+                wrap_event(event, tz_blocks, digest).encode(),
                 {"Content-Type": "text/calendar"},
             )
-            if s not in (200, 201, 204):
-                print(f"WARN: PUT {uid} -> {s}", file=sys.stderr)
+            if status not in (200, 201, 204):
+                print(f"WARN: PUT {uid} -> {status}", file=sys.stderr)
                 continue
         created += action == "create"
         updated += action == "update"
+    return created, updated, kept
 
+
+def delete_cancelled(auth, events, mirrored):
+    """DELETE mirror-owned events that left the feed; returns count."""
+    deleted = 0
     for uid, (href, _) in mirrored.items():
-        if uid not in events:
-            if DRY_RUN:
-                print(f"DRY: delete {uid}")
-            else:
-                s, _ = http("DELETE", f"{RADICALE_URL}{href}", user, password)
-                if s not in (200, 204):
-                    print(f"WARN: DELETE {uid} -> {s}", file=sys.stderr)
-                    continue
-            deleted += 1
+        if uid in events:
+            continue
+        if DRY_RUN:
+            print(f"DRY: delete {uid}")
+        else:
+            status, _ = http("DELETE", f"{RADICALE_URL}{href}", auth)
+            if status not in (200, 204):
+                print(f"WARN: DELETE {uid} -> {status}", file=sys.stderr)
+                continue
+        deleted += 1
+    return deleted
 
+
+def sync(mirror):
+    """Sync one feed -> collection pair."""
+    base = f"{RADICALE_URL}{mirror['collection']}"
+    auth = (mirror["user"], mirror["password"])
+
+    status, feed = http("GET", mirror["ics_url"])
+    if status != 200:
+        raise RuntimeError(f"feed fetch -> {status}")
+    tz_blocks, events = feed_events(feed.decode("utf-8", "replace"))
+    mirrored = existing_mirrored(base, auth)
+
+    created, updated, kept = upsert_events(base, auth, events, mirrored, tz_blocks)
+    deleted = delete_cancelled(auth, events, mirrored)
     print(
         f"{mirror['collection']}: {len(events)} in feed | "
         f"+{created} ~{updated} -{deleted} ={kept}"
@@ -188,13 +200,15 @@ def sync(mirror):
 
 
 def main():
+    """Run every configured mirror; exit nonzero if any failed."""
     config = os.environ.get("MIRRORS_CONFIG", "/config/mirrors.json")
-    mirrors = json.load(open(config))
+    with open(config, encoding="utf-8") as handle:
+        mirrors = json.load(handle)
     failures = 0
     for mirror in mirrors:
         try:
             sync(mirror)
-        except Exception as exc:  # noqa: BLE001 - keep other mirrors running
+        except Exception as exc:  # pylint: disable=broad-exception-caught
             print(f"ERROR {mirror.get('collection')}: {exc}", file=sys.stderr)
             failures += 1
     sys.exit(1 if failures else 0)
