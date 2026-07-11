@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./search-mcp/ks.yaml
+  - ./research-mcp/ks.yaml
   - ./netpol
