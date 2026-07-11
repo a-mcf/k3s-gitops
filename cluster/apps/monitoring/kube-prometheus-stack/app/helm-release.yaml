@@ -163,6 +163,16 @@ spec:
             gnetId: 1860
             revision: 45
             datasource: Prometheus
+          # Router view of the node-pfsense job. Same import-time
+          # ${DS_PROMETHEUS} input as the Proxmox board above, so it needs
+          # the same list-form mapping to the datasource UID.
+          # Ref: https://grafana.com/grafana/dashboards/11491
+          pfsense-node-exporter:
+            gnetId: 11491
+            revision: 1
+            datasource:
+              - name: DS_PROMETHEUS
+                value: prometheus
           # Ref: https://grafana.com/grafana/dashboards/11315
           unifi-client-insights:
             gnetId: 11315
