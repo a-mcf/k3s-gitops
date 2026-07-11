@@ -64,9 +64,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "ESP Home"
-          hajimari.io/icon: "home-assistant"
-          hajimari.io/group: "home automation"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "ESPHome"
+          gethomepage.dev/group: "Home"
+          gethomepage.dev/icon: "esphome.png"
         hosts:
           - host: &host "esphome.${SECRET_DOMAIN}"
             paths:

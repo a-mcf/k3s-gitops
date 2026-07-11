@@ -68,10 +68,6 @@ spec:
       main:
         enabled: true
         className: traefik
-        annotations:
-          hajimari.io/icon: "fluent-emoji-high-contrast:llama"
-          hajimari.io/group: "Gen-AI"
-          hajimari.io/enable: "false"
         hosts:
           - host: &host "ollama.${SECRET_DOMAIN}"
             paths:

@@ -125,9 +125,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "llama.cpp (Gemma 26B)"
-          hajimari.io/group: "Gen-AI"
-          hajimari.io/icon: mdi:brain
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "llama.cpp (Gemma 26B)"
+          gethomepage.dev/group: "Gen-AI"
+          gethomepage.dev/icon: "mdi-brain"
         hosts:
           - host: "llamacpp.${SECRET_DOMAIN}"
             paths:

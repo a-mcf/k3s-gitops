@@ -93,8 +93,6 @@ spec:
         enabled: true
         ingressClassName: traefik
         pathType: Prefix
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
           - "alertmanager.${SECRET_DOMAIN}"
         tls:
@@ -116,10 +114,10 @@ spec:
         ingressClassName: traefik
         pathType: Prefix
         annotations:
-          hajimari.io/appName: "Grafana"
-          hajimari.io/icon: "simple-icons:grafana"
-          hajimari.io/group: "monitoring"
-          hajimari.io/enable: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Grafana"
+          gethomepage.dev/group: "Monitoring"
+          gethomepage.dev/icon: "grafana.png"
         hosts:
           - "grafana.${SECRET_DOMAIN}"
         tls:
@@ -245,8 +243,6 @@ spec:
         enabled: true
         ingressClassName: traefik
         pathType: Prefix
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
           - "prometheus.${SECRET_DOMAIN}"
         tls:

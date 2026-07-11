@@ -68,9 +68,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/appName: "Garage Premium"
-          hajimari.io/icon: "database"
-          hajimari.io/group: "storage"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Garage Premium"
+          gethomepage.dev/group: "Storage"
+          gethomepage.dev/icon: "mdi-database"
         hosts:
           - host: &host "garage-premium.${SECRET_DOMAIN}"
             paths:

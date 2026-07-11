@@ -1,0 +1,39 @@
+---
+title: Apps
+theme: dark
+color: slate
+headerStyle: clean
+hideVersion: true
+disableUpdateCheck: true
+target: _blank
+layout:
+  Home:
+    style: row
+    columns: 4
+  Media:
+    style: row
+    columns: 4
+  Gen-AI:
+    style: row
+    columns: 4
+  Tools:
+    style: row
+    columns: 4
+  Storage:
+    style: row
+    columns: 4
+  Monitoring:
+    style: row
+    columns: 4
+  Lifestyle:
+    style: row
+    columns: 4
+  Gaming:
+    style: row
+    columns: 4
+  Auth:
+    style: row
+    columns: 4
+  Infrastructure:
+    style: row
+    columns: 4

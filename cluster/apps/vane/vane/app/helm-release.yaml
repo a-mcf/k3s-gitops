@@ -87,9 +87,11 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/appName: "Vane"
-          hajimari.io/group: "Gen-AI"
-          hajimari.io/icon: mdi:magnify-scan
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Vane"
+          gethomepage.dev/group: "Gen-AI"
+          gethomepage.dev/icon: "mdi-magnify-scan"
+          gethomepage.dev/description: "AI Research"
         hosts:
           - host: "vane.${SECRET_DOMAIN}"
             paths:

@@ -19,8 +19,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: authentik-outpost
-  annotations:
-    hajimari.io/enable: "false"
   namespace: paperless
 spec:
   ingressClassName: traefik

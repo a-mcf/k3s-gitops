@@ -66,10 +66,11 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: video-box
-          hajimari.io/info: Video Management
-          hajimari.io/group: home
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Scrypted"
+          gethomepage.dev/group: "Home"
+          gethomepage.dev/icon: "scrypted.png"
+          gethomepage.dev/description: "Video Management"
         hosts:
           - host: &host "scrypted.${SECRET_DOMAIN}"
             paths:

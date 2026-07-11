@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radicale
-  namespace: radicale
+  name: homepage
+  namespace: homepage
 spec:
   interval: 5m
   chart:
@@ -17,62 +17,58 @@ spec:
         namespace: flux-system
   values:
     controllers:
-      radicale:
-        annotations:
-          reloader.stakater.com/auto: "true"
+      homepage:
         containers:
           app:
             image:
-              repository: tomsquest/docker-radicale
-              tag: 3.7.5.0@sha256:e4e694f859c5580c8e925d15905cae36b378150b43ab9b71c52f9cfeed4a3906
+              repository: ghcr.io/gethomepage/homepage
+              tag: v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28
+            env:
+              HOMEPAGE_ALLOWED_HOSTS: "apps.${SECRET_DOMAIN}"
+              LOG_TARGETS: stdout
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   tcpSocket:
-                    port: 5232
-                  initialDelaySeconds: 10
+                    port: 3000
+                  initialDelaySeconds: 15
                   periodSeconds: 30
                   timeoutSeconds: 5
                   failureThreshold: 3
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
-                memory: 64Mi
+                cpu: 15m
+                memory: 128Mi
               limits:
-                memory: 256Mi
+                memory: 512Mi
     defaultPodOptions:
-      automountServiceAccountToken: false
+      # homepage needs the SA token for ingress discovery + metrics
+      automountServiceAccountToken: true
       securityContext:
-        # k8sappdata on the NFS export
         runAsNonRoot: true
-        runAsUser: 2316
-        runAsGroup: 2316
-        fsGroup: 2316
-        fsGroupChangePolicy: OnRootMismatch
+        runAsUser: 1000
+        runAsGroup: 1000
+    serviceAccount:
+      homepage: {}
     service:
       app:
         ports:
           http:
-            port: 5232
+            port: 3000
     ingress:
       main:
         enabled: true
         className: traefik
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/name: "Radicale"
-          gethomepage.dev/group: "Tools"
-          gethomepage.dev/icon: "mdi-calendar-account"
-          gethomepage.dev/description: "Family Calendar & Contacts"
+          gethomepage.dev/enabled: "false"
         hosts:
-          - host: &host "radicale.${SECRET_DOMAIN}"
+          - host: &host "apps.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -80,24 +76,29 @@ spec:
           - hosts:
               - *host
     persistence:
-      data:
-        existingClaim: nfs-radicale-data-pvc
-        globalMounts:
-          - path: /data
       config:
         type: configMap
-        name: radicale-configmap
+        name: homepage-config
         globalMounts:
-          - path: /config/config
-            subPath: config
+          - path: /app/config/settings.yaml
+            subPath: settings.yaml
             readOnly: true
-          - path: /etc/radicale/rights
-            subPath: rights
+          - path: /app/config/kubernetes.yaml
+            subPath: kubernetes.yaml
             readOnly: true
-      users:
-        type: secret
-        name: radicale-secret
+          - path: /app/config/services.yaml
+            subPath: services.yaml
+            readOnly: true
+          - path: /app/config/widgets.yaml
+            subPath: widgets.yaml
+            readOnly: true
+          - path: /app/config/bookmarks.yaml
+            subPath: bookmarks.yaml
+            readOnly: true
+          - path: /app/config/docker.yaml
+            subPath: docker.yaml
+            readOnly: true
+      logs:
+        type: emptyDir
         globalMounts:
-          - path: /etc/radicale/users
-            subPath: users
-            readOnly: true
+          - path: /app/config/logs

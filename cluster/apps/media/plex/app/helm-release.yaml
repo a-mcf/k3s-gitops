@@ -83,8 +83,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/icon: "plex"
-          hajimari.io/group: "media"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Plex"
+          gethomepage.dev/group: "Media"
+          gethomepage.dev/icon: "plex.png"
         hosts:
           - host: &host "plex.${SECRET_DOMAIN}"
             paths:

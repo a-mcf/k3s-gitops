@@ -68,9 +68,10 @@ spec:
         forceRename: retrosavemanager
         className: traefik
         annotations:
-          hajimari.io/appName: "RetroSaveManager"
-          hajimari.io/icon: "gamepad-variant"
-          hajimari.io/group: "gaming"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "RetroSaveManager"
+          gethomepage.dev/group: "Gaming"
+          gethomepage.dev/icon: "mdi-gamepad-variant"
         hosts:
           - host: &host "rsm.${SECRET_DOMAIN}"
             paths:
@@ -87,8 +88,6 @@ spec:
         # has no redirect-to-https rule, so HTTP just works for them; browsers can
         # still hit the host over HTTPS via the TLS entry below.
         className: traefik-internal
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
           - host: &api-host "rsm-api.${SECRET_DOMAIN}"
             paths:

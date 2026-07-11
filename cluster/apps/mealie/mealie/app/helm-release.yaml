@@ -110,9 +110,10 @@ spec:
       app:
         className: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "arcticons:mealient"
-          hajimari.io/group: "lifestyle"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Mealie"
+          gethomepage.dev/group: "Lifestyle"
+          gethomepage.dev/icon: "mealie.png"
         hosts:
           - host: &host "mealie.${SECRET_DOMAIN}"
             paths:

@@ -77,9 +77,10 @@ spec:
         enabled: true
         className: traefik
         annotations:
-          hajimari.io/appName: "Syncthing"
-          hajimari.io/group: "Storage"
-          hajimari.io/icon: "cloud"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Syncthing"
+          gethomepage.dev/group: "Storage"
+          gethomepage.dev/icon: "syncthing.png"
         hosts:
           - host: &host "syncthing.${SECRET_DOMAIN}"
             paths:

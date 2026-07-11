@@ -79,9 +79,10 @@ spec:
           enabled: true
           className: traefik
           annotations:
-            hajimari.io/appName: Immich
-            hajimari.io/icon: arcticons:immich
-            hajimari.io/group: "media"
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/name: "Immich"
+            gethomepage.dev/group: "Media"
+            gethomepage.dev/icon: "immich.png"
           hosts:
             - host: immich.${SECRET_DOMAIN}
               paths:
