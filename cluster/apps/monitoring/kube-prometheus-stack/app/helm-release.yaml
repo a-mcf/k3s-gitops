@@ -301,6 +301,9 @@ spec:
           # host:port instance label (its variables split on the colon),
           # so no instance override here.
           - job_name: pfsense
+            # the 11491 board rates over 30s windows (some hardcoded), which
+            # needs >1 sample per window — scrape faster than the 30s global
+            scrape_interval: 15s
             static_configs:
               - targets:
                   - ${PFSENSE_HOST}:9100
