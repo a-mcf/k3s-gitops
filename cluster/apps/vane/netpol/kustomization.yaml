@@ -6,3 +6,5 @@ namespace: vane
 components:
   - ../../../base/components/netpol/baseline
   - ../../../base/components/netpol/ingress-controller
+resources:
+  - ./extras.yaml

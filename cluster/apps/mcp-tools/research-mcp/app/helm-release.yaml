@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: research-mcp
+  namespace: mcp-tools
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      research-mcp:
+        containers:
+          app:
+            image:
+              repository: python
+              tag: 3.13-slim@sha256:eb43ff125d8d58d7449dcba7d336c23bcac412f526d861db493b9994d8010280
+            command:
+              - sh
+              - -c
+              # deps installed at startup into an emptyDir, same imageless
+              # pattern as search-mcp
+              - >-
+                pip install --no-cache-dir --target /deps 'mcp==1.28.1' &&
+                exec python /app/research_mcp.py
+            env:
+              HOME: /tmp
+              PYTHONPATH: /deps
+              PYTHONUNBUFFERED: "1"
+              VANE_URL: http://vane.vane.svc.cluster.local:3000
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8000
+                  # startup includes the pip install
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    service:
+      app:
+        ports:
+          http:
+            port: 8000
+    persistence:
+      script:
+        type: configMap
+        name: research-mcp-configmap
+        globalMounts:
+          - path: /app/research_mcp.py
+            subPath: research_mcp.py
+            readOnly: true
+      deps:
+        type: emptyDir
+        globalMounts:
+          - path: /deps
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
