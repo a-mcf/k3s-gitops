@@ -15,5 +15,8 @@ configMapGenerator:
       - widgets.yaml=./resources/widgets.yaml
       - bookmarks.yaml=./resources/bookmarks.yaml
       - docker.yaml=./resources/docker.yaml
+      - proxmox.yaml=./resources/proxmox.yaml
+      - custom.css=./resources/custom.css
+      - custom.js=./resources/custom.js
     options:
       disableNameSuffixHash: true
