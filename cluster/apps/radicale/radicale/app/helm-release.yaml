@@ -71,7 +71,7 @@ spec:
           hajimari.io/info: Family Calendar & Contacts
           hajimari.io/group: tools
         hosts:
-          - host: &host "dav.${SECRET_DOMAIN}"
+          - host: &host "radicale.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -89,6 +89,9 @@ spec:
         globalMounts:
           - path: /config/config
             subPath: config
+            readOnly: true
+          - path: /etc/radicale/rights
+            subPath: rights
             readOnly: true
       users:
         type: secret

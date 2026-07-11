@@ -9,10 +9,10 @@ htpasswd_encryption = autodetect
 delay = 2
 
 [rights]
-# family-trust model: any authenticated user can read/write all
-# collections, so shared calendars just work; tighten with a rights
-# file later if separation is ever wanted
-type = authenticated
+# personal spaces private to their owner; the `family` account's tree
+# shared read/write by all (see the rights file for the rules)
+type = from_file
+file = /etc/radicale/rights
 
 [storage]
 filesystem_folder = /data/collections

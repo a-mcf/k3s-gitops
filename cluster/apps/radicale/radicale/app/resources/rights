@@ -1,0 +1,29 @@
+# Radicale rights — FIRST MATCHING RULE WINS, order is load-bearing.
+# Model: own tree = full control; family tree = shared read/write;
+# other users' calendars = read-only; other users' contacts = invisible.
+# Uppercase R/W = the collection itself, lowercase r/w = items within.
+
+# principal discovery at the root
+[root]
+user: .+
+collection:
+permissions: R
+
+# everyone owns their own tree (must precede the read-only rule)
+[own-space]
+user: .+
+collection: {user}(/.*)?
+permissions: RrWw
+
+# the shared family tree (calendar, contacts, tasks, ...)
+[family-shared]
+user: .+
+collection: family(/.*)?
+permissions: RrWw
+
+# anyone may READ another user's calendar (glance at schedules);
+# contacts deliberately have no cross-user rule -> denied
+[other-calendars-read-only]
+user: .+
+collection: [^/]+/calendar(/.*)?
+permissions: Rr
