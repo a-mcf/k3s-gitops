@@ -21,9 +21,9 @@ spec:
         type: cronjob
         cronjob:
           schedule: "*/15 * * * *"
-          # suspended until the mirrors.json secret holds real ICS links +
-          # credentials; flip to false to go live
-          suspend: true
+          # entries waiting on credentials live in mirrors-pending.json
+          # inside the secret; move them into mirrors.json to activate
+          suspend: false
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 2
