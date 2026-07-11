@@ -24,7 +24,7 @@ repos:
       - id: prettier
         name: prettier --check
         # pinned to the version super-linter ships — versions disagree on details
-        entry: npx --yes prettier@3.3.3 --config .github/linters/prettierrc.yaml --ignore-path .github/linters/.prettierignore --check
+        entry: npx --yes prettier@3.3.3 --config .github/linters/.prettierrc.yml --ignore-path .github/linters/.prettierignore --check
         language: system
         types: [yaml]
         # extensionless dotfile — prettier can't infer a parser for it
