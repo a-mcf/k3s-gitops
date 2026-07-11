@@ -69,12 +69,16 @@ spec:
           gethomepage.dev/enabled: "false"
         hosts:
           - host: &host "apps.${SECRET_DOMAIN}"
-            paths:
+            paths: &paths
               - path: /
                 pathType: Prefix
+          # hajimari's old address, kept alive out of muscle memory
+          - host: &homeHost "home.${SECRET_DOMAIN}"
+            paths: *paths
         tls:
           - hosts:
               - *host
+              - *homeHost
     persistence:
       config:
         type: configMap
