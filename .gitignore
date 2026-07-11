@@ -7,3 +7,5 @@ Thumbs.db
 kubeconfig
 # vscode-sops
 .decrypted~*.yaml
+__pycache__/
+*.pyc
