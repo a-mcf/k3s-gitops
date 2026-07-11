@@ -1,0 +1,13 @@
+---
+# static entries (not behind cluster ingresses) — carried over from
+# hajimari's customApps; URLs are flux postBuild substitutions
+- Infrastructure:
+    - Proxmox VE:
+        href: "${PVE_URL}"
+        icon: proxmox.png
+    - Unifi:
+        href: "https://${UNIFI_HOST}"
+        icon: unifi.png
+    - pfSense:
+        href: "https://${PFSENSE_HOST}"
+        icon: pfsense.png

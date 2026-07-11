@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: homepage
+resources:
+  - ./rbac.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: homepage-config
+    files:
+      - settings.yaml=./resources/settings.yaml
+      - kubernetes.yaml=./resources/kubernetes.yaml
+      - services.yaml=./resources/services.yaml
+      - widgets.yaml=./resources/widgets.yaml
+      - bookmarks.yaml=./resources/bookmarks.yaml
+      - docker.yaml=./resources/docker.yaml
+    options:
+      disableNameSuffixHash: true

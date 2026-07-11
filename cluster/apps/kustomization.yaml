@@ -13,6 +13,7 @@ resources:
   - gluetun
   - hajimari
   - home
+  - homepage
   - immich
   - ingress
   - kube-system

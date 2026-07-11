@@ -1,0 +1,22 @@
+---
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: cluster
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+- search:
+    provider: custom
+    url: https://search.${SECRET_DOMAIN}/search?q=
+    target: _blank
+- datetime:
+    text_size: xl
+    format:
+      dateStyle: long
+      timeStyle: short
