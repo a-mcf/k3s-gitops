@@ -32,13 +32,15 @@ spec:
               # baked into an image: keeps this ~70-line tool imageless at
               # the cost of a PyPI dependency on pod start
               - >-
-                pip install --no-cache-dir --target /deps 'mcp==1.28.1' &&
+                pip install --no-cache-dir --target /deps
+                'mcp==1.28.1' 'trafilatura==2.1.0' &&
                 exec python /app/search_mcp.py
             env:
               HOME: /tmp
               PYTHONPATH: /deps
               PYTHONUNBUFFERED: "1"
               SEARXNG_URL: http://searxng.searxng.svc.cluster.local:8080
+              PROXY_URL: http://gluetun.gluetun.svc.cluster.local:8888
             probes:
               liveness: &probes
                 enabled: true

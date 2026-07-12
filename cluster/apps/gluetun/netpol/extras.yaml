@@ -15,5 +15,8 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: vane
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: mcp-tools
       ports:
         - port: 8888
