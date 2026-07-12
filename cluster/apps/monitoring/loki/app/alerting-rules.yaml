@@ -36,3 +36,17 @@ data:
               severity: warning
             annotations:
               summary: "Failed sudo attempt on {{ $labels.host }}"
+      - name: service-health
+        rules:
+          # Apple expires Music Assistant's user token ~6-monthly; every API
+          # call then 403s (library syncs + playback) while voice playback
+          # fails claiming success. Symptom-based: fires on the periodic
+          # sync failures.
+          - alert: MusicAssistantAppleTokenExpired
+            expr: |
+              sum(count_over_time({namespace="home", pod=~"music-assistant.*"} |= `api.music.apple.com` |= `403` [6h])) > 2
+            for: 0m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Music Assistant Apple Music calls are returning 403 — user token likely expired; re-authenticate in MA settings → providers"
