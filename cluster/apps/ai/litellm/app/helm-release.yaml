@@ -26,7 +26,7 @@ spec:
           litellm:
             image:
               repository: ghcr.io/berriai/litellm
-              tag: v1.91.0
+              tag: v1.93.0
             args:
               - "--config"
               - "/etc/litellm/config.yaml"
