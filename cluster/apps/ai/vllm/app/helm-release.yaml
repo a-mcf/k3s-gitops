@@ -351,6 +351,30 @@ spec:
 
     routerSpec:
       enableRouter: true
+      # The router is LMCache's production-stack router (lmcache/lmstack-router),
+      # a SEPARATE project from the vLLM engine (vllm/vllm-openai) — its version
+      # tracks the vllm-stack chart (0.1.11), NOT the engine tag (v0.24.0 above).
+      # Chart default is tag `latest` + imagePullPolicy Always, so every pod start
+      # re-pulls from Docker Hub (slow cold-start, e.g. after a power outage) and
+      # drifts from git. v0.1.11 is the exact digest `latest` pointed at on
+      # 2026-06-25, so this pin is a no-op on behavior; IfNotPresent lets it start
+      # from the node's local image cache.
+      repository: lmcache/lmstack-router
+      tag: v0.1.11@sha256:936084b8dc78c9e9cd837b8a54242f414c0948c82dcd9a8109c19de229f3eb23
+      imagePullPolicy: IfNotPresent
+      # Chart default startupProbe (delay 5s + 3 × 5s) gives the container ~15s to
+      # bind :8000. Measured cold start after a node reboot: 20.5s of silence for
+      # the python import phase, then it binds. It misses by one probe interval and
+      # crashloops — on a warm node it squeaked in, which is why this only shows up
+      # after kured cycles a node. 12 failures = ~65s budget, plenty of headroom
+      # without masking a genuinely wedged router (liveness still catches that).
+      startupProbe:
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        failureThreshold: 12
+        httpGet:
+          path: /health
+          port: router-port
       ingress:
         enabled: true
         className: traefik
