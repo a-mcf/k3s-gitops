@@ -24,7 +24,8 @@ spec:
               repository: ghcr.io/gethomepage/homepage
               tag: v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28
             env:
-              HOMEPAGE_ALLOWED_HOSTS: "apps.${SECRET_DOMAIN}"
+              # must match every host the ingress answers on, or homepage 403s
+              HOMEPAGE_ALLOWED_HOSTS: "home.${SECRET_DOMAIN}"
               LOG_TARGETS: stdout
             probes:
               liveness: &probes
@@ -68,17 +69,13 @@ spec:
         annotations:
           gethomepage.dev/enabled: "false"
         hosts:
-          - host: &host "apps.${SECRET_DOMAIN}"
-            paths: &paths
+          - host: &host "home.${SECRET_DOMAIN}"
+            paths:
               - path: /
                 pathType: Prefix
-          # hajimari's old address, kept alive out of muscle memory
-          - host: &homeHost "home.${SECRET_DOMAIN}"
-            paths: *paths
         tls:
           - hosts:
               - *host
-              - *homeHost
     persistence:
       config:
         type: configMap
