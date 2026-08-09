@@ -26,7 +26,7 @@ spec:
       # secret in the ingress namespace.
       additionalContainers:
         - name: nebula
-          image: nebulaoss/nebula:1.10.3
+          image: nebulaoss/nebula:1.11.0
           # Override the pod-level runAsNonRoot/runAsUser: 65532 from the
           # traefik chart — nebula needs root + CAP_NET_ADMIN to open
           # /dev/net/tun and create the nebula1 interface.
