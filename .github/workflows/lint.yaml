@@ -46,3 +46,20 @@ jobs:
           # standardjs and js-prettier demand OPPOSITE quote/semicolon styles;
           # prettier is the repo-wide formatter, so it rules JS too
           VALIDATE_JAVASCRIPT_STANDARD: false
+          # super-linter bundles Renovate 39.x, which predates `fileMatch` being
+          # renamed to `managerFilePatterns`, so it rejects the current key on
+          # every manager — including flux/helm-values/kubernetes, which the
+          # dependency dashboard shows detecting 255 deps. Config is fine; the
+          # bundled validator is old. Replaced by the step below.
+          VALIDATE_RENOVATE: false
+
+      - name: Validate renovate config
+        # `@latest` is load-bearing, not laziness: the hosted Mend bot is always
+        # current, so validating against anything older reports failures the real
+        # bot would never produce. Bare `--package renovate` is NOT enough — npx
+        # will happily serve a cached older major (that is exactly how 39.x got
+        # mistaken for current while diagnosing this). If a future Renovate really
+        # does break this config, failing here is the signal we want.
+        run: npx --yes --package renovate@latest renovate-config-validator --strict
+        env:
+          RENOVATE_CONFIG_FILE: .github/renovate.json5
