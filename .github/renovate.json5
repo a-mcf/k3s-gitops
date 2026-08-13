@@ -184,6 +184,20 @@
       versioning: 'regex:^slim-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$',
     },
     {
+      description: 'python base image: security rebuilds (digest) only, never feature releases. The tools on this image keep their code in configMaps and pip-install deps at pod start, so a feature bump can only be validated by hand (ABI tag moves cp3XX, wheels must be rebuilt upstream; stdlib removals hit the scripts). Revisit if these move to built images with CI.',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'python',
+      ],
+      matchUpdateTypes: [
+        'major',
+        'minor',
+      ],
+      enabled: false,
+    },
+    {
       description: 'Use loose versioning for certain dependencies',
       matchDatasources: [
         'docker',
