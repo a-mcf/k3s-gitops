@@ -1,4 +1,31 @@
 ---
+# Syncthing v2 keeps its indexes in SQLite (config/index-v2/*.db + -wal), and
+# SQLite on NFS is pathological: unreliable locking and largely defeated page
+# caching mean it re-reads constantly. Before this moved to block storage,
+# syncthing pegged a full CPU core continuously for days and racked up 73TB of
+# reads, tripping NodeMemoryMajorPagesFaults on its node. Under v1's LevelDB the
+# NFS layout was fine; the v2 migration (2026-08-06) is what broke it.
+#
+# This is the "CSI PV with a stated reason" carve-out from the storage philosophy.
+# Only config + database live here (~300MB); every synced folder stays on the NFS
+# /backups share, which is bulk file data and belongs there.
+#
+# ⚠ Backup coverage: the databases are regenerable (syncthing rebuilds indexes),
+# but config.xml and cert.pem/key.pem are NOT — they are this node's device
+# identity. Losing them means re-pairing every device.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syncthing-config
+  namespace: syncthing
+spec:
+  storageClassName: proxmox-csi-ext4-ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:

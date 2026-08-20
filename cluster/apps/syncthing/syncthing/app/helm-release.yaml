@@ -94,7 +94,10 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: nfs-syncthing-pvc
+        # Block storage, not NFS: v2 keeps its indexes in SQLite and SQLite on
+        # NFS thrashes (see config-pvc.yaml). Only config + db live here; the
+        # synced folders are all under /backups below.
+        existingClaim: syncthing-config
         globalMounts:
           - path: /var/syncthing
       backups:
