@@ -37,6 +37,55 @@ data:
           model: openai/google/gemma-4-12B-it-qat-w4a16-ct
           api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth
+      # --- agent tier -----------------------------------------------------
+      # A separate accelerator with enough memory to keep several models
+      # resident at once, so switching between them costs nothing. Kept
+      # separate from "local" on purpose -- the agent hardware trades latency
+      # for capability, which is the opposite of what the voice path wants.
+      # Moving this tier to different hardware is a cluster-secrets var change,
+      # not a config change; consumers keep pointing at "agent".
+      #
+      # Routing rule, measured rather than assumed: generation here is
+      # memory-bandwidth-bound, so tok/s tracks model size, not cleverness.
+      # Anything that fits on the 3090 belongs on the 3090 -- these aliases
+      # earn their keep on tool-calling and long-context work, not on speed.
+      - model_name: agent
+        litellm_params:
+          # Mixture-of-experts, ~3B active params: generation tracks ACTIVE
+          # weights, so this answers faster than models a quarter its size.
+          # Best measured tool discipline + latency combination available here.
+          #
+          # CALLER BEWARE, both of these bit us during evaluation:
+          #  - it reasons at length with NO delimiter token, so a small
+          #    max_tokens truncates mid-thought and is indistinguishable from a
+          #    refusal or an empty tool call. Budget >=3000.
+          #  - no reasoning parser is configured upstream, so that reasoning
+          #    arrives inline in `content` alongside any tool_calls. Read
+          #    tool_calls structurally; don't parse the prose.
+          model: openai/nemotron35-lightning
+          api_base: http://${VLLM_DELL_HOST}:8000/v1
+          api_key: sk-noauth
+      - model_name: agent-precise
+        litellm_params:
+          # Slower (~5x) but follows fiddly instructions more literally --
+          # e.g. rewriting a vague request into a concrete search term where
+          # "agent" leaves it generic. Worth it when the argument matters more
+          # than the round-trip.
+          model: openai/qwen38-27b
+          api_base: http://${VLLM_DELL_HOST}:8001/v1
+          api_key: sk-noauth
+      # Explicit pins, same backends -- for A/B work where you need to name the
+      # model rather than the job. Mirrors the local/gemma4-12b pairing above.
+      - model_name: nemotron35-lightning
+        litellm_params:
+          model: openai/nemotron35-lightning
+          api_base: http://${VLLM_DELL_HOST}:8000/v1
+          api_key: sk-noauth
+      - model_name: qwen38-27b
+        litellm_params:
+          model: openai/qwen38-27b
+          api_base: http://${VLLM_DELL_HOST}:8001/v1
+          api_key: sk-noauth
       # --- future backends: add paid/free providers here, gated by sensitivity
       # tier. e.g. a cloud frontier model for hard/non-sensitive work:
       # - model_name: cloud-hard
@@ -47,7 +96,16 @@ data:
     litellm_settings:
       drop_params: true          # tolerate params a backend doesn't support
       # num_retries: 2
-      # fallbacks: [{"local": ["cloud-hard"]}]   # when local is down/gaming
+
+    router_settings:
+      # Degrade rather than fail: the agent tier runs on hardware that is not
+      # ours to keep, so every alias pointing at it has a way home. "local" is
+      # a much smaller model -- this is a floor, not an equivalent.
+      # NOTE: fallbacks belong under router_settings (validated against the
+      # Router signature); the older litellm_settings spelling is legacy.
+      fallbacks:
+        - agent: ["agent-precise", "local"]
+        - agent-precise: ["agent", "local"]
 
     general_settings:
       master_key: os.environ/LITELLM_MASTER_KEY
