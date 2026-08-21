@@ -25,11 +25,10 @@ data:
           api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth
       # Explicit names so you can pin a specific backend regardless of what "local" is.
-      - model_name: gemma4-26b
-        litellm_params:
-          model: openai/gemma4-26b
-          api_base: http://llamacpp.ai.svc.cluster.local:8080/v1
-          api_key: sk-noauth
+      # NOTE: no gemma4-26b alias. The llamacpp backend behind it is parked at 0
+      # replicas, so the alias only ever returned a 500 -- and every consumer that
+      # lists models (OpenWebUI et al) still showed it as a choice. Re-add it here
+      # if llamacpp is ever brought back up.
       - model_name: gemma4-12b
         litellm_params:
           # vLLM 12B — parked (its replicaCount is 0 while the 26B holds the GPU);
