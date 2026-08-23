@@ -1,8 +1,9 @@
 ---
-# LiteLLM proxy config — config-file-only mode (no DB).
-# Upgrade path to DB-backed (virtual keys, spend tracking, admin UI): stand up a
-# CloudNative-PG Cluster for litellm, add DATABASE_URL (from its secret) +
-# STORE_MODEL_IN_DB=true to the helm-release env, then keys/spend live in PG.
+# LiteLLM proxy config. Models are defined HERE and only here.
+# A CloudNative-PG cluster backs the proxy (see ../database) for virtual keys,
+# spend tracking and the admin UI -- but STORE_MODEL_IN_DB is deliberately left
+# off, so model_list below stays the single reviewable source of truth rather
+# than drifting into rows that only exist in Postgres.
 apiVersion: v1
 kind: ConfigMap
 metadata:

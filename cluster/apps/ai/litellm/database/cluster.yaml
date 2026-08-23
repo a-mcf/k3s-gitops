@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: litellm-cnpg
+  namespace: ai
+spec:
+  enableSuperuserAccess: true
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  inheritedMetadata:
+    labels:
+      kube-image-keeper.enix.io/image-caching-policy: ignore
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: proxmox-csi-ext4-ssd
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+  monitoring:
+    enablePodMonitor: true
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: litellm-objectstore
+        serverName: litellm-cnpg
+
+  # A NEW database, so initdb rather than the recovery bootstrap the older
+  # clusters here use (those were restored during the minio -> garage move).
+  bootstrap:
+    initdb:
+      database: litellm
+      owner: litellm

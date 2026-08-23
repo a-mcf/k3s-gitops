@@ -32,6 +32,22 @@ spec:
               - "/etc/litellm/config.yaml"
               - "--port"
               - "4000"
+            env:
+              # Lights up virtual keys, per-key spend tracking, and the admin UI
+              # (which returns "Not connected to DB!" on login without this).
+              # CNPG publishes a ready-made connection string in <cluster>-app,
+              # so there is nothing to assemble or keep in sync by hand.
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: litellm-cnpg-app
+                    key: uri
+              # STORE_MODEL_IN_DB is deliberately NOT set. It would let models be
+              # added through the UI, and those live only in Postgres -- invisible
+              # to git and silently divergent from the configmap. model_list stays
+              # the single source of truth; the database is here for keys, spend
+              # and the UI. Flip it on only if UI-managed models are ever wanted
+              # more than a reviewable history of what this gateway serves.
             envFrom:
               - secretRef:
                   name: litellm-secret
@@ -39,6 +55,20 @@ spec:
               # TCP probes for the MVP — robust against a path typo on first boot.
               # Upgrade to HTTP later: liveness /health/liveliness,
               # readiness /health/readiness (LiteLLM's own endpoints).
+              #
+              # With DATABASE_URL set, the first boot against an empty database
+              # runs Prisma migrations before the port is bound. Liveness alone
+              # would kill that at ~110s and crash-loop it; a startup probe holds
+              # liveness and readiness off until the port answers.
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 4000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 60
               liveness:
                 enabled: true
                 custom: true

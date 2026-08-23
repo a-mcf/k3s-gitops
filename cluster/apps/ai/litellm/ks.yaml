@@ -2,12 +2,35 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: cluster-apps-litellm-database
+  namespace: flux-system
+spec:
+  path: ./cluster/apps/ai/litellm/database
+  dependsOn:
+    - name: cluster-apps-external-secrets-store-onepassword
+    - name: cluster-apps-proxmox-csi
+    - name: cluster-apps-garage-premium
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: cluster-apps-litellm
   namespace: flux-system
 spec:
   path: "./cluster/apps/ai/litellm/app"
   dependsOn:
     - name: cluster-apps-external-secrets-store-onepassword
+    # The proxy crash-loops if DATABASE_URL points at a cluster that is not up
+    # yet, so the database Kustomization has to settle first.
+    - name: cluster-apps-litellm-database
   prune: true
   sourceRef:
     kind: GitRepository
