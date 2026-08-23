@@ -39,8 +39,9 @@ spec:
                   secretKeyRef:
                     name: litellm-cnpg-app
                     key: uri
-              # STORE_MODEL_IN_DB unset: when on, the DB deep-merges over
-              # router_settings/litellm_settings from this config, DB winning.
+              # DB rows deep-merge over general_settings/router_settings/
+              # litellm_settings from the configmap, with the DB winning.
+              STORE_MODEL_IN_DB: "true"
             envFrom:
               - secretRef:
                   name: litellm-secret
