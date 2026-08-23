@@ -97,14 +97,19 @@ data:
       # num_retries: 2
 
     router_settings:
-      # Degrade rather than fail: the agent tier runs on hardware that is not
-      # ours to keep, so every alias pointing at it has a way home. "local" is
-      # a much smaller model -- this is a floor, not an equivalent.
-      # NOTE: fallbacks belong under router_settings (validated against the
-      # Router signature); the older litellm_settings spelling is legacy.
+      # "local" is a much smaller model: a floor, not an equivalent.
+      # `fallbacks` belongs under router_settings; the litellm_settings
+      # spelling is legacy and is silently ignored.
       fallbacks:
         - agent: ["agent-precise", "local"]
         - agent-precise: ["agent", "local"]
+
+      # Context-window errors re-raise instead of walking `fallbacks` above.
+      # Must be non-empty and must not name a real alias: `[] or
+      # litellm.context_window_fallbacks` makes an empty list collapse to None,
+      # which restores the fallback behaviour. Names are never validated.
+      context_window_fallbacks:
+        - __no_context_window_fallback__: ["__none__"]
 
     general_settings:
       master_key: os.environ/LITELLM_MASTER_KEY
