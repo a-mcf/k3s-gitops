@@ -106,5 +106,30 @@ data:
         - agent: ["agent-precise", "local"]
         - agent-precise: ["agent", "local"]
 
+      # An over-length request must FAIL, not silently downgrade.
+      #
+      # Without this, a prompt longer than the agent tier's window raises
+      # ContextWindowExceededError, walks the chain above, and is answered by
+      # the much smaller "local" model -- HTTP 200, no warning, and no caller
+      # surfaces the `model` field to notice. That is substitution rather than
+      # truncation, and it is worse: the session looks fine and quietly gets
+      # answers from a model a fraction of the size.
+      #
+      # Mechanism, read from the running router rather than the docs: on a
+      # context-window error, if this setting is not None and has no entry for
+      # the requested group, the original exception is re-raised. If it IS
+      # None, control falls through to the generic fallbacks above.
+      #
+      # Two traps, both load-bearing:
+      #  - the sentinel must be NON-EMPTY. An empty list is falsy and collapses
+      #    straight back to None (`context_window_fallbacks or
+      #    litellm.context_window_fallbacks`), restoring the old behaviour.
+      #  - it must not name any real alias, or that alias gets a context
+      #    fallback instead of an error.
+      # Only the structure is validated (exactly one key per dict), never the
+      # names -- so an alias that cannot exist is the way to say "never".
+      context_window_fallbacks:
+        - __no_context_window_fallback__: ["__none__"]
+
     general_settings:
       master_key: os.environ/LITELLM_MASTER_KEY
