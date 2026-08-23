@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./scrapeconfig.yaml
+configMapGenerator:
+  - name: grafana-dashboards-switchyard
+    namespace: monitoring
+    files:
+      - dashboards/switchyard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true

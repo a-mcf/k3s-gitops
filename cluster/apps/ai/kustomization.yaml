@@ -7,4 +7,5 @@ resources:
   - ./vllm/ks.yaml
   - ./litellm/ks.yaml
   - ./llamacpp/ks.yaml
+  - ./switchyard/ks.yaml
   - ./netpol
