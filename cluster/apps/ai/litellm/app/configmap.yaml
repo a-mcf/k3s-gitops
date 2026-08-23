@@ -1,6 +1,6 @@
 ---
-# LiteLLM proxy config. Postgres backs keys/spend/UI (see ../database).
-# STORE_MODEL_IN_DB is off, so model_list here is authoritative.
+# LiteLLM proxy config. Postgres backs keys/spend/UI (see ../database) and
+# holds models added through the UI; model_list here loads either way.
 apiVersion: v1
 kind: ConfigMap
 metadata:
