@@ -42,7 +42,11 @@
         "orientation": "horizontal",
         "showUnfilled": true,
         "valueMode": "text",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
       },
       "fieldConfig": {
         "defaults": {
@@ -53,11 +57,21 @@
         "overrides": [
           {
             "matcher": { "id": "byName", "options": "nemotron35-lightning" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#4C8DF6" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#4C8DF6" }
+              }
+            ]
           },
           {
             "matcher": { "id": "byName", "options": "qwen38-27b" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#CC7A33" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#CC7A33" }
+              }
+            ]
           }
         ]
       }
@@ -77,7 +91,11 @@
         }
       ],
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
         "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "fieldConfig": {
@@ -88,15 +106,30 @@
         "overrides": [
           {
             "matcher": { "id": "byName", "options": "success" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "green" }
+              }
+            ]
           },
           {
             "matcher": { "id": "byName", "options": "retryable_error" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "orange" }
+              }
+            ]
           },
           {
             "matcher": { "id": "byName", "options": "other_error" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "red" }
+              }
+            ]
           }
         ]
       }
@@ -116,7 +149,11 @@
         }
       ],
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
         "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "fieldConfig": {
@@ -127,11 +164,21 @@
         "overrides": [
           {
             "matcher": { "id": "byName", "options": "nemotron35-lightning" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#4C8DF6" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#4C8DF6" }
+              }
+            ]
           },
           {
             "matcher": { "id": "byName", "options": "qwen38-27b" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#CC7A33" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#CC7A33" }
+              }
+            ]
           }
         ]
       }
@@ -151,7 +198,11 @@
         }
       ],
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
         "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "fieldConfig": {
@@ -162,11 +213,21 @@
         "overrides": [
           {
             "matcher": { "id": "byName", "options": "nemotron35-lightning" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#4C8DF6" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#4C8DF6" }
+              }
+            ]
           },
           {
             "matcher": { "id": "byName", "options": "qwen38-27b" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#CC7A33" } }]
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "fixed", "fixedColor": "#CC7A33" }
+              }
+            ]
           }
         ]
       }
