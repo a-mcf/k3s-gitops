@@ -97,11 +97,9 @@ data:
       # num_retries: 2
 
     router_settings:
-      # Degrade rather than fail: the agent tier runs on hardware that is not
-      # ours to keep, so every alias pointing at it has a way home. "local" is
-      # a much smaller model -- this is a floor, not an equivalent.
-      # NOTE: fallbacks belong under router_settings (validated against the
-      # Router signature); the older litellm_settings spelling is legacy.
+      # "local" is a much smaller model: a floor, not an equivalent.
+      # `fallbacks` belongs under router_settings; the litellm_settings
+      # spelling is legacy and is silently ignored.
       fallbacks:
         - agent: ["agent-precise", "local"]
         - agent-precise: ["agent", "local"]
