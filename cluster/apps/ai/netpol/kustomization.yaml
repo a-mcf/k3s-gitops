@@ -7,5 +7,8 @@ components:
   - ../../../base/components/netpol/baseline
   - ../../../base/components/netpol/ingress-controller
   - ../../../base/components/netpol/hostnetwork-clients
+  # The operator reaches instances from its own namespace; without this a
+  # Cluster never goes Ready.
+  - ../../../base/components/netpol/cnpg-operator
 resources:
   - ./extras.yaml
