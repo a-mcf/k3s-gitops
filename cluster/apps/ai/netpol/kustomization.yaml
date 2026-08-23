@@ -7,10 +7,8 @@ components:
   - ../../../base/components/netpol/baseline
   - ../../../base/components/netpol/ingress-controller
   - ../../../base/components/netpol/hostnetwork-clients
-  # Required by the litellm CNPG cluster. allow-same-namespace already covers
-  # the proxy reaching Postgres, but the operator lives in its own namespace and
-  # has to reach the instance -- without this the Cluster never goes Ready, and
-  # it fails looking like a storage or bootstrap problem rather than a netpol.
+  # The operator reaches instances from its own namespace; without this a
+  # Cluster never goes Ready.
   - ../../../base/components/netpol/cnpg-operator
 resources:
   - ./extras.yaml

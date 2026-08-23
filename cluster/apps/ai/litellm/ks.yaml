@@ -28,8 +28,6 @@ spec:
   path: "./cluster/apps/ai/litellm/app"
   dependsOn:
     - name: cluster-apps-external-secrets-store-onepassword
-    # The proxy crash-loops if DATABASE_URL points at a cluster that is not up
-    # yet, so the database Kustomization has to settle first.
     - name: cluster-apps-litellm-database
   prune: true
   sourceRef:

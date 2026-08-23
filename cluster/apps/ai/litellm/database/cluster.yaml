@@ -31,8 +31,6 @@ spec:
         barmanObjectName: litellm-objectstore
         serverName: litellm-cnpg
 
-  # A NEW database, so initdb rather than the recovery bootstrap the older
-  # clusters here use (those were restored during the minio -> garage move).
   bootstrap:
     initdb:
       database: litellm

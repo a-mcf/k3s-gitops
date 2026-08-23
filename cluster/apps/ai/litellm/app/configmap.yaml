@@ -1,9 +1,6 @@
 ---
-# LiteLLM proxy config. Models are defined HERE and only here.
-# A CloudNative-PG cluster backs the proxy (see ../database) for virtual keys,
-# spend tracking and the admin UI -- but STORE_MODEL_IN_DB is deliberately left
-# off, so model_list below stays the single reviewable source of truth rather
-# than drifting into rows that only exist in Postgres.
+# LiteLLM proxy config. Postgres backs keys/spend/UI (see ../database).
+# STORE_MODEL_IN_DB is off, so model_list here is authoritative.
 apiVersion: v1
 kind: ConfigMap
 metadata:

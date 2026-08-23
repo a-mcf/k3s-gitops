@@ -5,8 +5,6 @@ metadata:
   name: litellm-backup
   namespace: ai
 spec:
-  # Staggered away from the other cluster backups (21:00 authentik,
-  # 21:30 retrosync, 22:00 freshrss + mealie, 23:40 immich).
   schedule: "0 10 23 * *"
   backupOwnerReference: self
   cluster:
