@@ -71,6 +71,7 @@ def http(method, url, auth=None, body=None, headers=None):
             if attempt == 3 or not isinstance(err.reason, ConnectionRefusedError):
                 raise
             time.sleep(2 * (attempt + 1))
+    raise RuntimeError(f"{method} {url}: retries exhausted")
 
 
 def unfold(text):
@@ -103,6 +104,55 @@ def ical_escape(text):
     )
 
 
+def day_dishes(day):
+    """One published day -> (title items, 'Category: a, b' detail lines)."""
+    titles, detail = [], []
+    for meal in day.get("MenuMeals") or []:
+        for category in meal.get("RecipeCategories") or []:
+            name = (category.get("CategoryName") or "").strip()
+            items = [
+                (recipe.get("RecipeName") or "").strip()
+                for recipe in category.get("Recipes") or []
+                if (recipe.get("RecipeName") or "").strip()
+            ]
+            if not items:
+                continue
+            if name in TITLE_CATEGORIES:
+                titles.extend(items)
+            detail.append(f"{name}: {', '.join(items)}")
+    return titles, detail
+
+
+def day_event(date, titles, detail):
+    """Build the all-day VEVENT lines for one menu day."""
+    summary = f"{SESSION}: " + (" / ".join(titles[:3]) if titles else "see description")
+    next_day = (date + datetime.timedelta(days=1)).strftime("%Y%m%d")
+    lines = [
+        "BEGIN:VEVENT",
+        f"UID:lunch-{date.strftime('%Y%m%d')}@school-lunch-mirror",
+        f"DTSTART;VALUE=DATE:{date.strftime('%Y%m%d')}",
+        f"DTEND;VALUE=DATE:{next_day}",
+        f"SUMMARY:{ical_escape(summary)}",
+        "TRANSP:TRANSPARENT",
+        "END:VEVENT",
+    ]
+    if detail:
+        lines.insert(-1, f"DESCRIPTION:{ical_escape(chr(10).join(detail))}")
+    return lines
+
+
+def published_days(payload):
+    """Yield (date, day) for every day of the configured serving session."""
+    for session in payload.get("FamilyMenuSessions") or []:
+        if (session.get("ServingSession") or "").strip() != SESSION:
+            continue
+        for plan in session.get("MenuPlans") or []:
+            for day in plan.get("Days") or []:
+                raw = day.get("Date")
+                if raw:
+                    yield datetime.datetime.strptime(raw, "%m/%d/%Y").date(), day
+
+
 def fetch_menu(config, start, end):
     """Fetch the published menu -> {uid: (hash, vevent lines, date)}."""
     url = (
@@ -114,51 +164,15 @@ def fetch_menu(config, start, end):
     status, body = http("GET", url, headers={"User-Agent": BROWSER_UA})
     if status != 200:
         raise RuntimeError(f"menu fetch -> {status}")
-    payload = json.loads(body)
 
     events = {}
-    for session in payload.get("FamilyMenuSessions") or []:
-        if (session.get("ServingSession") or "").strip() != SESSION:
+    for date, day in published_days(json.loads(body)):
+        titles, detail = day_dishes(day)
+        if not titles and not detail:
             continue
-        for plan in session.get("MenuPlans") or []:
-            for day in plan.get("Days") or []:
-                raw = day.get("Date")
-                if not raw:
-                    continue
-                date = datetime.datetime.strptime(raw, "%m/%d/%Y").date()
-                titles, detail = [], []
-                for meal in day.get("MenuMeals") or []:
-                    for category in meal.get("RecipeCategories") or []:
-                        name = (category.get("CategoryName") or "").strip()
-                        items = [
-                            (r.get("RecipeName") or "").strip()
-                            for r in category.get("Recipes") or []
-                            if (r.get("RecipeName") or "").strip()
-                        ]
-                        if not items:
-                            continue
-                        if name in TITLE_CATEGORIES:
-                            titles.extend(items)
-                        detail.append(f"{name}: {', '.join(items)}")
-                if not titles and not detail:
-                    continue
-                summary = f"{SESSION}: " + (
-                    " / ".join(titles[:3]) if titles else "see description"
-                )
-                uid = f"lunch-{date.strftime('%Y%m%d')}@school-lunch-mirror"
-                lines = [
-                    "BEGIN:VEVENT",
-                    f"UID:{uid}",
-                    f"DTSTART;VALUE=DATE:{date.strftime('%Y%m%d')}",
-                    f"DTEND;VALUE=DATE:{(date + datetime.timedelta(days=1)).strftime('%Y%m%d')}",
-                    f"SUMMARY:{ical_escape(summary)}",
-                    "TRANSP:TRANSPARENT",
-                    "END:VEVENT",
-                ]
-                if detail:
-                    lines.insert(-1, f"DESCRIPTION:{ical_escape(chr(10).join(detail))}")
-                digest = hashlib.sha256("\n".join(lines).encode()).hexdigest()[:16]
-                events[uid] = (digest, lines, date)
+        lines = day_event(date, titles, detail)
+        digest = hashlib.sha256("\n".join(lines).encode()).hexdigest()[:16]
+        events[prop_value(lines, "UID")] = (digest, lines, date)
     return events
 
 
