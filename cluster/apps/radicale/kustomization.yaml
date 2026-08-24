@@ -7,4 +7,5 @@ resources:
   - ./radicale/ks.yaml
   - ./proton-mirror/ks.yaml
   - ./mealie-mirror/ks.yaml
+  - ./school-lunch-mirror/ks.yaml
   - ./netpol
