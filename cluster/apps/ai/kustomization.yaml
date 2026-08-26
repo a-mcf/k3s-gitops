@@ -8,4 +8,5 @@ resources:
   - ./litellm/ks.yaml
   - ./llamacpp/ks.yaml
   - ./switchyard/ks.yaml
+  - ./vllm-metrics/ks.yaml
   - ./netpol

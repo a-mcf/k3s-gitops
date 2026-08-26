@@ -1,0 +1,27 @@
+---
+# vLLM serves Prometheus natively on its API port -- no exporter involved.
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: vllm-hosts
+  namespace: ai
+  labels:
+    # The Prometheus CR's scrapeConfigSelector matches this; without it the
+    # config is ignored and nothing is logged.
+    release: kube-prometheus-stack
+spec:
+  metricsPath: /metrics
+  scrapeInterval: 30s
+  staticConfigs:
+    - targets:
+        - "${VLLM_DELL_HOST}:8000"
+      labels: { job: vllm, box: gb10, served: nemotron35-lightning }
+    - targets:
+        - "${VLLM_DELL_HOST}:8001"
+      labels: { job: vllm, box: gb10, served: qwen38-27b }
+    - targets:
+        - "${VLLM_GX10_HOST}:8000"
+      labels: { job: vllm, box: gx10, served: nemotron35-lightning }
+    - targets:
+        - "${VLLM_GX10_HOST}:8001"
+      labels: { job: vllm, box: gx10, served: qwen38-27b }

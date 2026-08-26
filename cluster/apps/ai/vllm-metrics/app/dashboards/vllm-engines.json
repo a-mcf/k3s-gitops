@@ -1,0 +1,221 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 1,
+  "title": "vLLM engines",
+  "uid": "vllm-engines",
+  "tags": ["ai", "vllm"],
+  "timezone": "browser",
+  "time": { "from": "now-6h", "to": "now" },
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "Data source",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {},
+        "hide": 0
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Memory bandwidth in use",
+      "description": "Bytes read from memory per second. The GB10 boxes have roughly 273 GB/s of bus; the 3090 roughly 936. Generation on these models is bandwidth-bound, so this is the number that decides throughput.",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "sum by (box, served) (rate(vllm:estimated_read_bytes_per_gpu_total{job=\"vllm\"}[5m]))",
+          "legendFormat": "{{box}} · {{served}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["max", "mean"]
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": { "lineWidth": 2, "fillOpacity": 8, "showPoints": "never" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "KV cache in use",
+      "description": "Fraction of each engine's reserved KV cache actually holding tokens. Capacity in tokens is in the table below - a low number here means the reservation is larger than the workload needs.",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "vllm:kv_cache_usage_perc{job=\"vllm\"}",
+          "legendFormat": "{{box}} · {{served}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["max", "mean"]
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "custom": { "lineWidth": 2, "fillOpacity": 8, "showPoints": "never" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Speculative decoding — accepted / drafted",
+      "description": "MTP earns its keep only when drafts are accepted. A rejected draft token costs compute and returns nothing, so a falling ratio is the signal to lower num_speculative_tokens.",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 9 },
+      "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "sum by (box, served) (rate(vllm:spec_decode_num_accepted_tokens_total{job=\"vllm\"}[15m])) / sum by (box, served) (rate(vllm:spec_decode_num_draft_tokens_total{job=\"vllm\"}[15m]))",
+          "legendFormat": "{{box}} · {{served}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["mean"]
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "custom": { "lineWidth": 2, "fillOpacity": 0, "showPoints": "never" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests queued for capacity",
+      "description": "Requests waiting because KV cache is full, rather than because the engine is busy. This is the only evidence that a reservation is actually too small - if it stays at zero, headroom is not the constraint.",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 9 },
+      "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "sum by (box, served) (vllm:num_requests_waiting_by_reason{job=\"vllm\", reason=\"capacity\"})",
+          "legendFormat": "{{box}} · {{served}}"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "sum by (box, served) (vllm:num_requests_running{job=\"vllm\"})",
+          "legendFormat": "running — {{box}} · {{served}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["max"]
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "custom": { "lineWidth": 2, "fillOpacity": 12, "showPoints": "never" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "type": "table",
+      "title": "What each engine reserved",
+      "description": "Straight from vLLM's own cache_config_info. These are the carve-out facts: how much of the device was claimed, and what that bought in tokens and concurrent full-context requests.",
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 17 },
+      "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "$${datasource}" },
+          "expr": "vllm:cache_config_info{job=\"vllm\"}",
+          "format": "table",
+          "instant": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "engine": true,
+              "container": true,
+              "endpoint": true,
+              "namespace": true,
+              "pod": true,
+              "service": true,
+              "_block_size_resolved": true,
+              "cache_dtype": true,
+              "kv_cache_dtype_skip_layers": true,
+              "kv_cache_memory_bytes": true,
+              "calculate_kv_scales": true,
+              "enable_prefix_caching": true,
+              "cpu_offload_gb": true,
+              "is_attention_free": true,
+              "num_cpu_blocks": true,
+              "sliding_window": true,
+              "swap_space_bytes": true
+            },
+            "renameByName": {
+              "box": "Box",
+              "served": "Model",
+              "gpu_memory_utilization": "Device reserved",
+              "kv_cache_size_tokens": "KV capacity (tokens)",
+              "kv_cache_max_concurrency": "Concurrent full-context requests",
+              "block_size": "Block size",
+              "num_gpu_blocks": "GPU blocks"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "custom": { "align": "left" } },
+        "overrides": []
+      }
+    }
+  ]
+}

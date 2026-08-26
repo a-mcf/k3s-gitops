@@ -1,0 +1,31 @@
+---
+# The in-cluster engines. Same native metrics as the standalone hosts, reached
+# through their services. Selects on the component rather than one model, so a
+# model swap keeps reporting without a manifest change; `served` comes from the
+# service's own label instead of being hardcoded.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vllm-engines
+  namespace: ai
+  labels:
+    release: kube-prometheus-stack
+spec:
+  namespaceSelector:
+    matchNames: [ai]
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: serving-engine
+  endpoints:
+    - port: service-port
+      path: /metrics
+      interval: 30s
+      relabelings:
+        # Match the job label the standalone hosts carry, so one query spans all
+        # engines regardless of where they run.
+        - targetLabel: job
+          replacement: vllm
+        - targetLabel: box
+          replacement: "3090"
+        - sourceLabels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+          targetLabel: served
