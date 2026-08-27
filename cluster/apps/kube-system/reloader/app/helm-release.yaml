@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: reloader
+  namespace: kube-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: reloader
+      version: 2.2.16
+      sourceRef:
+        kind: HelmRepository
+        name: stakater-charts
+        namespace: flux-system
+  values:
+    reloader:
+      # Acts only on workloads carrying reloader.stakater.com/auto, which 14
+      # files across 12 apps already do -- those annotations have been inert
+      # until now and all take effect together.
+      watchGlobally: true
+      reloadStrategy: annotations
+      deployment:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+      podMonitor:
+        enabled: false

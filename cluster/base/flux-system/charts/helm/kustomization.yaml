@@ -14,5 +14,6 @@ resources:
   - metallb-charts.yaml
   - nvidia-device-plugin-charts.yaml
   - prometheus-community-charts.yaml
+  - stakater-charts.yaml
   - traefik-charts.yaml
   - vllm-charts.yaml
