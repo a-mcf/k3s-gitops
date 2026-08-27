@@ -44,10 +44,16 @@ spec:
             resources:
               requests:
                 cpu: 15m
-                memory: 64M
+                # Its index working set is well over the old 64M request, which
+                # made scheduling decisions on a number nothing like reality.
+                memory: 512Mi
               limits:
                 cpu: 2000m
-                memory: 2Gi
+                # Raised from 2Gi: it sat pinned at 2046Mi and the cgroup evicted
+                # page cache to stay under, so the memory-mapped index was read
+                # back from disk continuously -- ~1,900 major faults/s and a full
+                # core burned, with nothing in the logs and 13GiB free on the node.
+                memory: 4Gi
     service:
       syncthing:
         controller: syncthing
