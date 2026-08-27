@@ -83,6 +83,13 @@ data:
           model: openai/qwen38-27b
           api_base: http://${VLLM_DELL_HOST}:8001/v1
           api_key: sk-noauth
+      # Experimental. 35B total, 3B active, so it answers in the fast tier's
+      # latency class despite the size.
+      - model_name: ornith15-35b
+        litellm_params:
+          model: openai/ornith15-35b
+          api_base: http://${VLLM_GX10_HOST}:8002/v1
+          api_key: sk-noauth
       # --- future backends: add paid/free providers here, gated by sensitivity
       # tier. e.g. a cloud frontier model for hard/non-sensitive work:
       # - model_name: cloud-hard
