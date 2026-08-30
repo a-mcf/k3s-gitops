@@ -60,7 +60,7 @@ data:
           #    arrives inline in `content` alongside any tool_calls. Read
           #    tool_calls structurally; don't parse the prose.
           model: openai/nemotron35-lightning
-          api_base: http://${VLLM_DELL_HOST}:8000/v1
+          api_base: http://${VLLM_GX10_HOST}:8000/v1
           api_key: sk-noauth
       - model_name: agent-precise
         litellm_params:
@@ -69,19 +69,19 @@ data:
           # "agent" leaves it generic. Worth it when the argument matters more
           # than the round-trip.
           model: openai/qwen38-27b
-          api_base: http://${VLLM_DELL_HOST}:8001/v1
+          api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
       # Explicit pins, same backends -- for A/B work where you need to name the
       # model rather than the job. Mirrors the local/gemma4-12b pairing above.
       - model_name: nemotron35-lightning
         litellm_params:
           model: openai/nemotron35-lightning
-          api_base: http://${VLLM_DELL_HOST}:8000/v1
+          api_base: http://${VLLM_GX10_HOST}:8000/v1
           api_key: sk-noauth
       - model_name: qwen38-27b
         litellm_params:
           model: openai/qwen38-27b
-          api_base: http://${VLLM_DELL_HOST}:8001/v1
+          api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
       # Experimental. 35B total, 3B active, so it answers in the fast tier's
       # latency class despite the size.
