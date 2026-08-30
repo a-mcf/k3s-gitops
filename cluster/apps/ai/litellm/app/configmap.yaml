@@ -14,19 +14,25 @@ data:
       # api_base/model below. THIS is the whole reason LiteLLM goes in first.
       - model_name: local
         litellm_params:
-          # Back on the vLLM Gemma 4 12B (2026-06-19): the llama.cpp 26B-A4B was
-          # abandoned — Gemma-4 thinking on llama.cpp has open upstream termination
-          # bugs (peg-gemma4 parser loop ggml-org/llama.cpp#21375 + INT_MAX
-          # reasoning-budget default) that hang the model. Downstream (HA/GLaDOS,
-          # Vane) follow automatically — the whole point of the gateway.
-          model: openai/google/gemma-4-12B-it-qat-w4a16-ct
-          api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
+          # Gemma 4 26B-A4B on vLLM (2026-08-30), moved off the in-cluster
+          # backend while that accelerator is committed elsewhere. Serves the
+          # same 131072 window the 12B did, so client-side context limits carry
+          # over unchanged. Downstream (HA/GLaDOS, Vane) follows automatically —
+          # the whole point of the gateway.
+          #
+          # Earlier note, still true: a llama.cpp 26B-A4B was abandoned because
+          # Gemma-4 thinking there has open upstream termination bugs (peg-gemma4
+          # parser loop ggml-org/llama.cpp#21375 + INT_MAX reasoning-budget
+          # default) that hang the model. This is vLLM, not llama.cpp.
+          model: openai/gemma4-26b
+          api_base: http://${VLLM_DELL_HOST}:8003/v1
           api_key: sk-noauth
       # Explicit names so you can pin a specific backend regardless of what "local" is.
-      # NOTE: no gemma4-26b alias. The llamacpp backend behind it is parked at 0
-      # replicas, so the alias only ever returned a 500 -- and every consumer that
-      # lists models (OpenWebUI et al) still showed it as a choice. Re-add it here
-      # if llamacpp is ever brought back up.
+      - model_name: gemma4-26b
+        litellm_params:
+          model: openai/gemma4-26b
+          api_base: http://${VLLM_DELL_HOST}:8003/v1
+          api_key: sk-noauth
       - model_name: gemma4-12b
         litellm_params:
           # vLLM 12B — parked (its replicaCount is 0 while the 26B holds the GPU);
