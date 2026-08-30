@@ -13,6 +13,11 @@ spec:
   metricsPath: /metrics
   scrapeInterval: 30s
   staticConfigs:
+    # Backs the "local" alias, so it is scraped despite living on the host whose
+    # other services are transient.
+    - targets:
+        - "${VLLM_DELL_HOST}:8003"
+      labels: { job: vllm, box: gb10, served: gemma4-26b }
     - targets:
         - "${VLLM_GX10_HOST}:8000"
       labels: { job: vllm, box: gx10, served: nemotron35-lightning }
