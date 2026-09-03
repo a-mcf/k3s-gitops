@@ -37,7 +37,7 @@ spec:
           zwave-js-ui:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
-              tag: 11.22.2
+              tag: 11.23.0
             env:
               TZ: ${TZ}
             securityContext:
