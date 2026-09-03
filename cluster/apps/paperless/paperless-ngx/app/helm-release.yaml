@@ -43,6 +43,9 @@ spec:
               PAPERLESS_URL: "https://paperless.${SECRET_DOMAIN}"
               PAPERLESS_PORT: 8000
               PAPERLESS_OCR_LANGUAGE: eng
+            envFrom:
+              - secretRef:
+                  name: paperless
 
     service:
       paperless:
