@@ -20,18 +20,23 @@ data:
           # over unchanged. Downstream (HA/GLaDOS, Vane) follows automatically —
           # the whole point of the gateway.
           #
+          # Moved again 2026-09-06 from VLLM_DELL_HOST to VLLM_GX10_HOST: same
+          # model/config, different accelerator in the pair. Moving this alias
+          # to different hardware is always a cluster-secrets var change, not a
+          # config change.
+          #
           # Earlier note, still true: a llama.cpp 26B-A4B was abandoned because
           # Gemma-4 thinking there has open upstream termination bugs (peg-gemma4
           # parser loop ggml-org/llama.cpp#21375 + INT_MAX reasoning-budget
           # default) that hang the model. This is vLLM, not llama.cpp.
           model: openai/gemma4-26b
-          api_base: http://${VLLM_DELL_HOST}:8003/v1
+          api_base: http://${VLLM_GX10_HOST}:8003/v1
           api_key: sk-noauth
       # Explicit names so you can pin a specific backend regardless of what "local" is.
       - model_name: gemma4-26b
         litellm_params:
           model: openai/gemma4-26b
-          api_base: http://${VLLM_DELL_HOST}:8003/v1
+          api_base: http://${VLLM_GX10_HOST}:8003/v1
           api_key: sk-noauth
       - model_name: gemma4-12b
         litellm_params:
