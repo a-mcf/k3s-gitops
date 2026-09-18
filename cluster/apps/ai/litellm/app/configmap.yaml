@@ -102,6 +102,9 @@ data:
           model: openai/qwen38-27b
           api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
+          # Same default as agent-precise above -- same backend, so the two
+          # aliases behave alike unless a request says otherwise.
+          reasoning_effort: medium
       # Experimental. 35B total, 3B active, so it answers in the fast tier's
       # latency class despite the size.
       - model_name: ornith15-35b
