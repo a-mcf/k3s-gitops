@@ -82,6 +82,14 @@ data:
           model: openai/qwen38-27b
           api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
+          # Default reasoning depth for callers that send none. A request's own
+          # reasoning_effort wins over this -- litellm_params is merged BEFORE
+          # request kwargs -- so this is a floor, not a ceiling.
+          # Without it the backend's own default applies, which is its deepest
+          # setting and prepends a reasoning instruction to every request.
+          # ⚠ This backend accepts low, medium, high and xhigh only; any other
+          # value is a 400 rather than a fallback to default.
+          reasoning_effort: medium
       # Explicit pins, same backends -- for A/B work where you need to name the
       # model rather than the job. Mirrors the local/gemma4-12b pairing above.
       - model_name: nemotron35-lightning
@@ -94,6 +102,9 @@ data:
           model: openai/qwen38-27b
           api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
+          # Same default as agent-precise above -- same backend, so the two
+          # aliases behave alike unless a request says otherwise.
+          reasoning_effort: medium
       # Experimental. 35B total, 3B active, so it answers in the fast tier's
       # latency class despite the size.
       - model_name: ornith15-35b
