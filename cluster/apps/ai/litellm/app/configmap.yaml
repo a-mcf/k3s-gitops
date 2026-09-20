@@ -28,10 +28,8 @@ data:
           api_key: sk-noauth
       - model_name: agent
         litellm_params:
-          # ⚠ Backend is gone; this alias 404s. Left in place pending a decision
-          # on what it should point at.
-          model: openai/nemotron35-lightning
-          api_base: http://${LLM0_HOST}:8000/v1
+          model: openai/ornith15-35b
+          api_base: http://${LLM0_HOST}:8002/v1
           api_key: sk-noauth
       - model_name: agent-precise
         litellm_params:
@@ -69,8 +67,6 @@ data:
       # ⚠ Must live under router_settings; the litellm_settings spelling is
       # legacy and silently ignored. Falling back to "local" succeeds with a
       # much smaller model -- a floor, not an equivalent.
-      # ⚠ "agent" is currently a dead backend, so agent-precise's first hop
-      # fails before reaching "local".
       fallbacks:
         - agent: ["agent-precise", "local"]
         - agent-precise: ["agent", "local"]
