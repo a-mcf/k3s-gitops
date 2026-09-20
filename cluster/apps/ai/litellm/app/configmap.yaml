@@ -13,12 +13,12 @@ data:
       - model_name: local
         litellm_params:
           model: openai/gemma4-26b
-          api_base: http://${VLLM_GX10_HOST}:8003/v1
+          api_base: http://${LLM0_HOST}:8003/v1
           api_key: sk-noauth
       - model_name: gemma4-26b
         litellm_params:
           model: openai/gemma4-26b
-          api_base: http://${VLLM_GX10_HOST}:8003/v1
+          api_base: http://${LLM0_HOST}:8003/v1
           api_key: sk-noauth
       - model_name: gemma4-12b
         litellm_params:
@@ -31,12 +31,12 @@ data:
           # ⚠ Backend is gone; this alias 404s. Left in place pending a decision
           # on what it should point at.
           model: openai/nemotron35-lightning
-          api_base: http://${VLLM_GX10_HOST}:8000/v1
+          api_base: http://${LLM0_HOST}:8000/v1
           api_key: sk-noauth
       - model_name: agent-precise
         litellm_params:
           model: openai/qwen38-27b
-          api_base: http://${VLLM_GX10_HOST}:8001/v1
+          api_base: http://${LLM0_HOST}:8001/v1
           api_key: sk-noauth
           # A request's own reasoning_effort overrides this; unset means the
           # backend's deepest setting. ⚠ Accepts low|medium|high|xhigh only --
@@ -45,7 +45,7 @@ data:
       - model_name: qwen38-27b
         litellm_params:
           model: openai/qwen38-27b
-          api_base: http://${VLLM_GX10_HOST}:8001/v1
+          api_base: http://${LLM0_HOST}:8001/v1
           api_key: sk-noauth
           reasoning_effort: medium
       - model_name: ornith15-35b
@@ -53,7 +53,7 @@ data:
           # ⚠ reasoning_effort is accepted here and silently ignored -- this
           # model's template exposes thinking as on/off only.
           model: openai/ornith15-35b
-          api_base: http://${VLLM_GX10_HOST}:8002/v1
+          api_base: http://${LLM0_HOST}:8002/v1
           api_key: sk-noauth
       # Template for adding a hosted provider:
       # - model_name: cloud-hard
