@@ -1,6 +1,7 @@
 ---
-# LiteLLM proxy config. Postgres backs keys/spend/UI (see ../database) and
-# holds models added through the UI; model_list here loads either way.
+# LiteLLM proxy config. Postgres backs keys/spend/UI (see ../database).
+# ⚠ Config rows stored in the DB deep-merge OVER this file and win, so a
+# setting that appears ignored here may be overridden there.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,30 +10,11 @@ metadata:
 data:
   config.yaml: |
     model_list:
-      # Stable alias — point downstream apps (vane, OpenClaw, voice agent…) at
-      # "local" and you never re-plumb on a model/engine swap; just change the
-      # api_base/model below. THIS is the whole reason LiteLLM goes in first.
       - model_name: local
         litellm_params:
-          # Gemma 4 26B-A4B on vLLM (2026-08-30), moved off the in-cluster
-          # backend while that accelerator is committed elsewhere. Serves the
-          # same 131072 window the 12B did, so client-side context limits carry
-          # over unchanged. Downstream (HA/GLaDOS, Vane) follows automatically —
-          # the whole point of the gateway.
-          #
-          # Moved again 2026-09-06 from VLLM_DELL_HOST to VLLM_GX10_HOST: same
-          # model/config, different accelerator in the pair. Moving this alias
-          # to different hardware is always a cluster-secrets var change, not a
-          # config change.
-          #
-          # Earlier note, still true: a llama.cpp 26B-A4B was abandoned because
-          # Gemma-4 thinking there has open upstream termination bugs (peg-gemma4
-          # parser loop ggml-org/llama.cpp#21375 + INT_MAX reasoning-budget
-          # default) that hang the model. This is vLLM, not llama.cpp.
           model: openai/gemma4-26b
           api_base: http://${VLLM_GX10_HOST}:8003/v1
           api_key: sk-noauth
-      # Explicit names so you can pin a specific backend regardless of what "local" is.
       - model_name: gemma4-26b
         litellm_params:
           model: openai/gemma4-26b
@@ -40,80 +22,40 @@ data:
           api_key: sk-noauth
       - model_name: gemma4-12b
         litellm_params:
-          # vLLM 12B — parked (its replicaCount is 0 while the 26B holds the GPU);
-          # this alias 404s until you toggle the 12B back up.
+          # Backend is scaled to 0; this alias 404s until it is toggled back up.
           model: openai/google/gemma-4-12B-it-qat-w4a16-ct
           api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth
-      # --- agent tier -----------------------------------------------------
-      # A separate accelerator with enough memory to keep several models
-      # resident at once, so switching between them costs nothing. Kept
-      # separate from "local" on purpose -- the agent hardware trades latency
-      # for capability, which is the opposite of what the voice path wants.
-      # Moving this tier to different hardware is a cluster-secrets var change,
-      # not a config change; consumers keep pointing at "agent".
-      #
-      # Routing rule, measured rather than assumed: generation here is
-      # memory-bandwidth-bound, so tok/s tracks model size, not cleverness.
-      # Anything that fits on the 3090 belongs on the 3090 -- these aliases
-      # earn their keep on tool-calling and long-context work, not on speed.
       - model_name: agent
         litellm_params:
-          # Mixture-of-experts, ~3B active params: generation tracks ACTIVE
-          # weights, so this answers faster than models a quarter its size.
-          # Best measured tool discipline + latency combination available here.
-          #
-          # CALLER BEWARE, both of these bit us during evaluation:
-          #  - it reasons at length with NO delimiter token, so a small
-          #    max_tokens truncates mid-thought and is indistinguishable from a
-          #    refusal or an empty tool call. Budget >=3000.
-          #  - no reasoning parser is configured upstream, so that reasoning
-          #    arrives inline in `content` alongside any tool_calls. Read
-          #    tool_calls structurally; don't parse the prose.
+          # ⚠ Backend is gone; this alias 404s. Left in place pending a decision
+          # on what it should point at.
           model: openai/nemotron35-lightning
           api_base: http://${VLLM_GX10_HOST}:8000/v1
           api_key: sk-noauth
       - model_name: agent-precise
         litellm_params:
-          # Slower (~5x) but follows fiddly instructions more literally --
-          # e.g. rewriting a vague request into a concrete search term where
-          # "agent" leaves it generic. Worth it when the argument matters more
-          # than the round-trip.
           model: openai/qwen38-27b
           api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
-          # Default reasoning depth for callers that send none. A request's own
-          # reasoning_effort wins over this -- litellm_params is merged BEFORE
-          # request kwargs -- so this is a floor, not a ceiling.
-          # Without it the backend's own default applies, which is its deepest
-          # setting and prepends a reasoning instruction to every request.
-          # ⚠ This backend accepts low, medium, high and xhigh only; any other
-          # value is a 400 rather than a fallback to default.
+          # A request's own reasoning_effort overrides this; unset means the
+          # backend's deepest setting. ⚠ Accepts low|medium|high|xhigh only --
+          # anything else 400s rather than falling back to the default.
           reasoning_effort: medium
-      # Explicit pins, same backends -- for A/B work where you need to name the
-      # model rather than the job. Mirrors the local/gemma4-12b pairing above.
-      - model_name: nemotron35-lightning
-        litellm_params:
-          model: openai/nemotron35-lightning
-          api_base: http://${VLLM_GX10_HOST}:8000/v1
-          api_key: sk-noauth
       - model_name: qwen38-27b
         litellm_params:
           model: openai/qwen38-27b
           api_base: http://${VLLM_GX10_HOST}:8001/v1
           api_key: sk-noauth
-          # Same default as agent-precise above -- same backend, so the two
-          # aliases behave alike unless a request says otherwise.
           reasoning_effort: medium
-      # Experimental. 35B total, 3B active, so it answers in the fast tier's
-      # latency class despite the size.
       - model_name: ornith15-35b
         litellm_params:
+          # ⚠ reasoning_effort is accepted here and silently ignored -- this
+          # model's template exposes thinking as on/off only.
           model: openai/ornith15-35b
           api_base: http://${VLLM_GX10_HOST}:8002/v1
           api_key: sk-noauth
-      # --- future backends: add paid/free providers here, gated by sensitivity
-      # tier. e.g. a cloud frontier model for hard/non-sensitive work:
+      # Template for adding a hosted provider:
       # - model_name: cloud-hard
       #   litellm_params:
       #     model: anthropic/<model-id>          # see claude-api skill for IDs
@@ -124,17 +66,19 @@ data:
       # num_retries: 2
 
     router_settings:
-      # "local" is a much smaller model: a floor, not an equivalent.
-      # `fallbacks` belongs under router_settings; the litellm_settings
-      # spelling is legacy and is silently ignored.
+      # ⚠ Must live under router_settings; the litellm_settings spelling is
+      # legacy and silently ignored. Falling back to "local" succeeds with a
+      # much smaller model -- a floor, not an equivalent.
+      # ⚠ "agent" is currently a dead backend, so agent-precise's first hop
+      # fails before reaching "local".
       fallbacks:
         - agent: ["agent-precise", "local"]
         - agent-precise: ["agent", "local"]
 
-      # Context-window errors re-raise instead of walking `fallbacks` above.
-      # Must be non-empty and must not name a real alias: `[] or
-      # litellm.context_window_fallbacks` makes an empty list collapse to None,
-      # which restores the fallback behaviour. Names are never validated.
+      # Makes context-window errors re-raise instead of walking `fallbacks`.
+      # ⚠ Must be non-empty and must not name a real alias -- an empty list
+      # collapses to None and silently restores fallback. Names are not
+      # validated, so the sentinel below is deliberate, not a typo.
       context_window_fallbacks:
         - __no_context_window_fallback__: ["__none__"]
 
