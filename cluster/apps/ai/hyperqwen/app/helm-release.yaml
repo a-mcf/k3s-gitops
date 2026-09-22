@@ -1,0 +1,153 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hyperqwen
+  namespace: ai
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  # First install runs the model preparation init container: a large download
+  # plus a requantisation pass, then a cold engine start that builds CUDA graphs
+  # and JITs kernels. 60m covers all of it; later upgrades are fast because both
+  # the prepared weights and the compile cache are persisted.
+  timeout: 60m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      runtimeClassName: nvidia
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: gpu
+                    operator: In
+                    values:
+                      - "true"
+
+    controllers:
+      hyperqwen:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        # Recreate, not RollingUpdate: a second replica would start loading
+        # weights onto the same card before the first released them.
+        strategy: Recreate
+        initContainers:
+          # Downloads the model and requantises it into the int8 tensor-core
+          # layout the serving profile expects, writing to /app/models. Idempotent
+          # — on every later start it finds the prepared weights and returns.
+          prepare:
+            image: &image
+              repository: ghcr.io/syv-ai/hyperqwen
+              tag: sha-fe09615@sha256:0ac55c696e39af8f781d7dc540d4df979923bc9feb1d0f2c515ddaec0dde1bcb
+            args: ["prepare"]
+            env: &baseEnv
+              TZ: "${TZ}"
+              # The image writes its caches under $HOME; pointing it at the
+              # persisted volume keeps them across restarts.
+              HOME: /cache
+            envFrom: []
+            resources:
+              requests:
+                cpu: "2"
+                memory: 4Gi
+              limits:
+                # Bounded so an over-hungry requantisation is OOMKilled inside the
+                # container rather than becoming node-level memory pressure.
+                memory: 12Gi
+
+        containers:
+          app:
+            image: *image
+            # The image entrypoint takes a profile name, not vLLM flags.
+            args: ["single"]
+            env:
+              <<: *baseEnv
+              PORT: "18020"
+              # Speculative decoding profile and prefix caching, per the
+              # upstream single-user defaults for a 24GB card.
+              SPEC: dflash2
+              PREFIX_CACHE: "1"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18020
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18020
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18020
+                  periodSeconds: 10
+                  # ~20m. A cold start compiles graphs and JITs kernels before
+                  # /health answers; the liveness probe must not fire during it.
+                  failureThreshold: 120
+            resources:
+              requests:
+                cpu: 0
+                memory: 4Gi
+            # No nvidia.com/gpu request: the card is deliberately shared rather
+            # than exclusively claimed, so replicaCount is what arbitrates which
+            # engine holds it.
+
+    service:
+      app:
+        controller: hyperqwen
+        ports:
+          http:
+            port: 18020
+
+    persistence:
+      data:
+        existingClaim: nfs-vllm-data-pvc
+        globalMounts:
+          - path: /app/models
+            subPath: hyperqwen/models
+          - path: /cache
+            subPath: hyperqwen/cache
+      # The engine needs far more shared memory than the container default.
+      shm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Gi
+        globalMounts:
+          - path: /dev/shm
