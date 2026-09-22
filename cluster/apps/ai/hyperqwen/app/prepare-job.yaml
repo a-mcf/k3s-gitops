@@ -3,10 +3,18 @@
 #
 # Deliberately NOT the serving pod's init container doing the heavy lift. The
 # requantisation widens a 2.5GB bf16 lm_head to float32 and builds grouped
-# intermediates on top, peaking around 14-18GB — more than the GPU node has
-# free, and that node has a history of host-level memory pressure. The step is
-# CPU-only, so it runs anywhere; this Job requires a node WITHOUT the gpu label
-# so it lands on one with headroom.
+# intermediates on top. It was OOMKilled nine times at a 12Gi limit on the GPU
+# node, which has ~12Gi genuinely free, so raising the limit there would have
+# moved the kill to the host. How much it actually needs is NOT measured.
+#
+# The step is CPU-only, so it runs anywhere — and no placement rule is set here
+# on purpose.
+# Memory requests across this cluster are over-provisioned relative to real
+# usage (one node shows 10Gi free by requests but 18Gi free in fact), so
+# requests cannot steer this honestly and a label-based rule would only be
+# manual placement wearing a disguise. The peak is not measured yet; the limit
+# below is deliberately generous so the first run produces a real number
+# instead of another estimate.
 #
 # The serving release keeps its own `prepare` init container. That call is
 # idempotent and cheap once this Job has run — it finds the prepared weights and
@@ -27,15 +35,6 @@ spec:
     spec:
       restartPolicy: Never
       automountServiceAccountToken: false
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: gpu
-                    operator: NotIn
-                    values:
-                      - "true"
       containers:
         - name: prepare
           image: ghcr.io/syv-ai/hyperqwen:sha-fe09615@sha256:0ac55c696e39af8f781d7dc540d4df979923bc9feb1d0f2c515ddaec0dde1bcb
