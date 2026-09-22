@@ -81,7 +81,11 @@ spec:
               NVIDIA_VISIBLE_DEVICES: "void"
             resources:
               requests:
-                cpu: "2"
+                # 500m, not 2: no node has two cores free by requests (the most
+                # spare is ~1280m), and the pod sat Pending on "Insufficient cpu".
+                # There is no cpu limit, so the request only has to fit — the work
+                # still bursts to whatever the node has idle.
+                cpu: 500m
                 memory: 4Gi
               limits:
                 # Requests stay small so it schedules; the limit covers the
