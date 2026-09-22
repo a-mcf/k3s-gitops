@@ -1,11 +1,6 @@
 ---
-# Same NFS export as the vllm claim, but ReadWriteMany.
-#
-# The model preparation step is CPU-only and memory-hungry — it loads the shard
-# holding lm_head and widens a 2.5GB bf16 matrix (248k vocab) to float32 before
-# grouping it, peaking well above what the GPU node has free. RWO forced that
-# work onto the GPU node because that is where the serving pod has to run; RWX
-# lets preparation run on a node with headroom and the engine read the result.
+# Same NFS export as the vllm claim, but ReadWriteMany, so model preparation
+# can run on a node other than the one serving it.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
