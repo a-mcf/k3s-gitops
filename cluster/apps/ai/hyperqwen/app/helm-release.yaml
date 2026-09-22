@@ -48,6 +48,21 @@ spec:
       # are over-provisioned against real usage, so the scheduler cannot see it.
       prepare:
         type: job
+        # A Helm HOOK, not an ordinary resource. Without this the release
+        # deadlocks: Helm aborts the upgrade on the stalled Deployment — stalled
+        # precisely because the artefact does not exist yet — and so never gets
+        # around to creating the Job that would produce it. As a pre-install /
+        # pre-upgrade hook it runs to completion first, and the Deployment is
+        # only applied afterwards.
+        #
+        # It therefore runs on every upgrade, which is fine and is the safer
+        # shape: the step is idempotent and returns immediately once the weights
+        # are prepared, so it doubles as a guarantee that they exist.
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-weight: "-5"
+          # Keep the finished Job around until the next run so it can be read.
+          helm.sh/hook-delete-policy: before-hook-creation
         pod:
           nodeSelector:
             kubernetes.io/hostname: k3s-node1
