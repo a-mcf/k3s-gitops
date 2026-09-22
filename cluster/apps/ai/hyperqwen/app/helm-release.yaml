@@ -35,7 +35,6 @@ spec:
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
-      runtimeClassName: nvidia
 
     controllers:
       # One-shot model preparation. A controller here rather than a bare Job
@@ -102,6 +101,9 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          # Only the GPU node has the nvidia runtime; the prepare job must not
+          # inherit it.
+          runtimeClassName: nvidia
           nodeSelector:
             gpu: "true"
         # Recreate, not RollingUpdate: a second replica would start loading
