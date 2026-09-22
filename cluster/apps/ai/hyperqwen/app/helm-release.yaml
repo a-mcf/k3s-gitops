@@ -63,6 +63,12 @@ spec:
           helm.sh/hook-weight: "-5"
           # Keep the finished Job around until the next run so it can be read.
           helm.sh/hook-delete-policy: before-hook-creation
+        # Hooks run before the release's ordinary resources, so the chart's own
+        # ServiceAccount does not exist yet on a fresh install and the Job cannot
+        # create its pod. Use the namespace default, which always exists; the pod
+        # mounts no token and never talks to the API.
+        serviceAccount:
+          name: default
         pod:
           nodeSelector:
             kubernetes.io/hostname: k3s-node1
@@ -121,9 +127,9 @@ spec:
                 cpu: "2"
                 memory: 2Gi
               limits:
-                # The heavy requantisation runs in hyperqwen-prepare-v1 on a node
-                # with headroom. By the time this runs the artefact exists, so this
-                # call only verifies and returns; it retries until the Job is done.
+                # The heavy requantisation runs in the prepare hook on a node with
+                # headroom. By the time this runs the artefact exists, so this call
+                # only verifies and returns.
                 memory: 8Gi
 
         containers:
