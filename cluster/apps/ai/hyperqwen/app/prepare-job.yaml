@@ -1,0 +1,68 @@
+---
+# One-shot model preparation: download, then requantise lm_head to int8.
+#
+# Deliberately NOT the serving pod's init container doing the heavy lift. The
+# requantisation widens a 2.5GB bf16 lm_head to float32 and builds grouped
+# intermediates on top, peaking around 14-18GB — more than the GPU node has
+# free, and that node has a history of host-level memory pressure. The step is
+# CPU-only, so it runs anywhere; this Job requires a node WITHOUT the gpu label
+# so it lands on one with headroom.
+#
+# The serving release keeps its own `prepare` init container. That call is
+# idempotent and cheap once this Job has run — it finds the prepared weights and
+# returns — so the two compose rather than conflict: the pod retries until this
+# Job has produced the artefact, then starts.
+#
+# Jobs are immutable, so bumping the model or the image means bumping the name
+# suffix here to force a fresh run.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hyperqwen-prepare-v1
+  namespace: ai
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: gpu
+                    operator: NotIn
+                    values:
+                      - "true"
+      containers:
+        - name: prepare
+          image: ghcr.io/syv-ai/hyperqwen:sha-fe09615@sha256:0ac55c696e39af8f781d7dc540d4df979923bc9feb1d0f2c515ddaec0dde1bcb
+          args: ["prepare"]
+          env:
+            - name: HOME
+              value: /cache
+            # No device needed, and asking for none keeps this off the card while
+            # the engine may be using it.
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "void"
+          resources:
+            requests:
+              cpu: "2"
+              memory: 4Gi
+            limits:
+              # Requests stay small so this schedules; the limit is what the
+              # requantisation actually needs at peak.
+              memory: 20Gi
+          volumeMounts:
+            - name: data
+              mountPath: /app/models
+              subPath: hyperqwen/models
+            - name: data
+              mountPath: /cache
+              subPath: hyperqwen/cache
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nfs-hyperqwen-data-pvc

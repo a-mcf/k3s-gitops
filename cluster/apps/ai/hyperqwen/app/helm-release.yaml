@@ -71,11 +71,12 @@ spec:
             resources:
               requests:
                 cpu: "2"
-                memory: 4Gi
+                memory: 2Gi
               limits:
-                # Bounded so an over-hungry requantisation is OOMKilled inside the
-                # container rather than becoming node-level memory pressure.
-                memory: 12Gi
+                # The heavy requantisation runs in hyperqwen-prepare-v1 on a node
+                # with headroom. By the time this runs the artefact exists, so this
+                # call only verifies and returns; it retries until the Job is done.
+                memory: 8Gi
 
         containers:
           app:
@@ -150,7 +151,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: nfs-vllm-data-pvc
+        existingClaim: nfs-hyperqwen-data-pvc
         globalMounts:
           - path: /app/models
             subPath: hyperqwen/models
