@@ -89,6 +89,12 @@ spec:
               # upstream single-user defaults for a 24GB card.
               SPEC: dflash2
               PREFIX_CACHE: "1"
+              # Set explicitly rather than inherited. This is what actually hands
+              # the container the card — the vLLM images bake these in, and this
+              # is not a vLLM image, so relying on the default would schedule
+              # onto the GPU node and then find no device.
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: all
             probes:
               liveness:
                 enabled: true
@@ -125,9 +131,15 @@ spec:
               requests:
                 cpu: 0
                 memory: 4Gi
-            # No nvidia.com/gpu request: the card is deliberately shared rather
-            # than exclusively claimed, so replicaCount is what arbitrates which
-            # engine holds it.
+                # Zero, never one. The card is deliberately shared rather than
+                # exclusively claimed, so replica counts are what arbitrate which
+                # engine holds it; requesting 1 would park it against a single
+                # workload. Declared rather than omitted so the GPU shows up in
+                # the pod's resource profile for scheduling.
+                nvidia.com/gpu: 0
+              limits:
+                # Extended resources reject a request without a matching limit.
+                nvidia.com/gpu: 0
 
     service:
       app:
