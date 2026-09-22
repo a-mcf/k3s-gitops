@@ -67,9 +67,10 @@ spec:
               # persisted volume keeps them across restarts.
               HOME: /cache
               PORT: "18020"
-              # Speculative decoding profile and prefix caching, per the
-              # upstream single-user defaults for a 24GB card.
-              SPEC: dflash2
+              # 150k context: fp8 KV cache via FlashInfer with the MTP drafter.
+              # DFlash2 with CTX=long falls back to an int8 Triton cache at 128k.
+              SPEC: mtp
+              CTX: long
               PREFIX_CACHE: "1"
               # Load the vision tower (off by default upstream). Its weights stay in
               # pinned host memory and are copied to the GPU per image, which is what
