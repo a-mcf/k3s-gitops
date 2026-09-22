@@ -46,6 +46,17 @@ data:
           api_base: http://${LLM0_HOST}:8001/v1
           api_key: sk-noauth
           reasoning_effort: medium
+      - model_name: qwen38-27b-3090
+        litellm_params:
+          model: openai/qwen3.8-27b
+          api_base: http://hyperqwen.ai.svc.cluster.local:18020/v1
+          api_key: sk-noauth
+          reasoning_effort: medium
+      - model_name: qwen38-flash-next
+        litellm_params:
+          model: openai/qwen3.8-flash-next
+          api_base: http://${LLM1_HOST}:18300/v1
+          api_key: sk-noauth
       - model_name: ornith15-35b
         litellm_params:
           # ⚠ reasoning_effort is accepted here and silently ignored -- this
