@@ -30,11 +30,21 @@ metadata:
   namespace: ai
 spec:
   backoffLimit: 3
-  ttlSecondsAfterFinished: 604800
+  # No ttlSecondsAfterFinished ON PURPOSE. A TTL deletes the Job object once it
+  # finishes, and Flux would then recreate it from git on the next reconcile —
+  # turning a one-shot into a recurring one. Keeping the object means Flux sees
+  # it as already present and never runs it again.
   template:
     spec:
       restartPolicy: Never
       automountServiceAccountToken: false
+      # Pinned, and only defensible because this genuinely runs once: the
+      # artefact it writes is permanent and the Job object is never recreated.
+      # It is here rather than anywhere because this is the node with real free
+      # memory — cluster memory requests are over-provisioned against actual
+      # usage, so the scheduler cannot see that by itself.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-node1
       containers:
         - name: prepare
           image: ghcr.io/syv-ai/hyperqwen:sha-fe09615@sha256:0ac55c696e39af8f781d7dc540d4df979923bc9feb1d0f2c515ddaec0dde1bcb
