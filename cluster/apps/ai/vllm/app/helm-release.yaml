@@ -112,9 +112,13 @@ spec:
           repository: vllm/vllm-openai
           tag: v0.24.0
           modelURL: google/gemma-4-12B-it-qat-w4a16-ct
-          # LIVE — daily driver. (The llama.cpp 26B-A4B experiment was abandoned:
-          # open upstream Gemma-4 thinking termination bugs hang it. llamacpp -> 0.)
-          replicaCount: 1
+          # Parked at 0, not removed. Served zero requests over its last 7 days of
+          # uptime (vllm:request_success_total and generation_tokens_total both 0) —
+          # the vision path runs through the gateway's `local` alias. Config is kept
+          # intact so restoring is a one-line change.
+          # (The llama.cpp 26B-A4B experiment was abandoned: open upstream Gemma-4
+          # thinking termination bugs hang it. llamacpp -> 0.)
+          replicaCount: 0
           requestCPU: 0
           requestMemory: 4Gi
           requestGPU: 0
