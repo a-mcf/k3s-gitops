@@ -1,0 +1,39 @@
+---
+# Same NFS export as the vllm claim, but ReadWriteMany.
+#
+# The model preparation step is CPU-only and memory-hungry — it loads the shard
+# holding lm_head and widens a 2.5GB bf16 matrix (248k vocab) to float32 before
+# grouping it, peaking well above what the GPU node has free. RWO forced that
+# work onto the GPU node because that is where the serving pod has to run; RWX
+# lets preparation run on a node with headroom and the engine read the result.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-hyperqwen-data-pv
+  namespace: ai
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/appscratch/vllm
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-hyperqwen-data-pvc
+  namespace: ai
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  volumeName: nfs-hyperqwen-data-pv
