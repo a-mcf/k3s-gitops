@@ -75,7 +75,7 @@ spec:
               # Load the vision tower (off by default upstream). Its weights stay in
               # pinned host memory and are copied to the GPU per image, which is what
               # lets it coexist with the speculative decoder on 24GB.
-              VISION: "0"
+              VISION: "1"
               NVIDIA_VISIBLE_DEVICES: all
               NVIDIA_DRIVER_CAPABILITIES: all
             probes:
