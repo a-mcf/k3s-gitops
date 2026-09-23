@@ -27,6 +27,9 @@ spec:
       # One controller per model: a fine-tuned voice ships its own weights,
       # so it cannot share an instance with stock voicepacks.
       alba:
+        pod:
+          securityContext:
+            supplementalGroups: [2316]
         initContainers:
           fetch-model:
             image: &image
@@ -38,26 +41,28 @@ spec:
             command: ["/bin/bash", "-ec"]
             # FastAPI loads <MODEL_DIR>/v1_0/kokoro-v1_0.pth with config.json
             # beside it; the voice prefix (bf_) selects British English G2P.
+            # Files are fetched only when missing or failing their checksum.
             args:
               - |
-                mkdir -p /models/v1_0 /models/voices
-                cd /models
-                [ -f v1_0/kokoro-v1_0.pth ] || curl -fsSL -o v1_0/kokoro-v1_0.pth "$RELEASE/alba_stock.pth"
-                curl -fsSL -o v1_0/config.json "$RAW/config.json"
-                curl -fsSL -o voices/bf_alba.pt "$RAW/alba_voicepack_pitchfix.pt"
-                sha256sum -c - <<'SUMS'
-                49fa2f895efc7fb8c76931dbc8f6424581ece402f7182e264b21df303b401333  v1_0/kokoro-v1_0.pth
-                5abb01e2403b072bf03d04fde160443e209d7a0dad49a423be15196b9b43c17f  v1_0/config.json
-                311965f3e812d8eabd4c2621a66b051332ab79e58b8cb6c187b3eddbe8cd013e  voices/bf_alba.pt
-                SUMS
+                mkdir -p /models/alba/v1_0 /models/alba/voices
+                cd /models/alba
+                fetch() {
+                  echo "$3  $1" | sha256sum -c --status - && return 0
+                  curl -fsSL -o "$1.tmp" "$2"
+                  mv "$1.tmp" "$1"
+                  echo "$3  $1" | sha256sum -c -
+                }
+                fetch v1_0/kokoro-v1_0.pth "$RELEASE/alba_stock.pth" 49fa2f895efc7fb8c76931dbc8f6424581ece402f7182e264b21df303b401333
+                fetch v1_0/config.json "$RAW/config.json" 5abb01e2403b072bf03d04fde160443e209d7a0dad49a423be15196b9b43c17f
+                fetch voices/bf_alba.pt "$RAW/alba_voicepack_pitchfix.pt" 311965f3e812d8eabd4c2621a66b051332ab79e58b8cb6c187b3eddbe8cd013e
         containers:
           app:
             image: *image
             env:
               TZ: ${TZ}
               DOWNLOAD_MODEL: "false"
-              MODEL_DIR: /models
-              VOICES_DIR: /models/voices
+              MODEL_DIR: /models/alba
+              VOICES_DIR: /models/alba/voices
               DEFAULT_VOICE: bf_alba
               OMP_NUM_THREADS: "4"
             probes:
@@ -86,7 +91,7 @@ spec:
                 cpu: 500m
                 memory: 1536Mi
               limits:
-                memory: 3Gi
+                memory: 4Gi
     service:
       alba:
         controller: alba
@@ -105,7 +110,7 @@ spec:
                   port: http
     persistence:
       models:
-        type: emptyDir
+        existingClaim: nfs-kokoro-pvc
         advancedMounts:
           alba:
             fetch-model:
