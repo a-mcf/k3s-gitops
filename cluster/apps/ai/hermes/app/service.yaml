@@ -1,0 +1,30 @@
+---
+# No selector: the backend is an external host, reached over the nebula
+# sidecar in the ingress controller pod.
+apiVersion: v1
+kind: Service
+metadata:
+  name: hermes
+  namespace: ai
+spec:
+  ports:
+    - name: http
+      port: 9119
+      targetPort: 9119
+      protocol: TCP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: hermes
+  namespace: ai
+  labels:
+    kubernetes.io/service-name: hermes
+addressType: IPv4
+ports:
+  - name: http
+    port: 9119
+    protocol: TCP
+endpoints:
+  - addresses:
+      - "${HERMES_NEBULA_IP}"
