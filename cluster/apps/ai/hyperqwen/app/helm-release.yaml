@@ -67,9 +67,9 @@ spec:
               # persisted volume keeps them across restarts.
               HOME: /cache
               PORT: "18020"
-              # 150k context: fp8 KV cache via FlashInfer with the MTP drafter.
-              # DFlash2 with CTX=long falls back to an int8 Triton cache at 128k.
-              SPEC: mtp
+              # 128k context: int8 per-token-head KV cache on the Triton backend,
+              # with the DFlash2 drafter.
+              SPEC: dflash2
               CTX: long
               PREFIX_CACHE: "1"
               # Load the vision tower (off by default upstream). Its weights stay in
