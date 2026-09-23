@@ -27,9 +27,6 @@ spec:
       # One controller per model: a fine-tuned voice ships its own weights,
       # so it cannot share an instance with stock voicepacks.
       alba:
-        pod:
-          securityContext:
-            supplementalGroups: [2316]
         initContainers:
           fetch-model:
             image: &image
