@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kokoro
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      # One controller per model: a fine-tuned voice ships its own weights,
+      # so it cannot share an instance with stock voicepacks.
+      alba:
+        initContainers:
+          fetch-model:
+            image: &image
+              repository: ghcr.io/remsky/kokoro-fastapi-cpu
+              tag: v0.9.0@sha256:ee3111d6a2c903ed62f3b4fa19543c6901205ed39fce3c177e895b34a8386b9c
+            env:
+              RELEASE: https://github.com/a-mcf/kokoro-alba/releases/download/v1.0
+              RAW: https://raw.githubusercontent.com/a-mcf/kokoro-alba/v1.0/alba
+            command: ["/bin/bash", "-ec"]
+            # FastAPI loads <MODEL_DIR>/v1_0/kokoro-v1_0.pth with config.json
+            # beside it; the voice prefix (bf_) selects British English G2P.
+            args:
+              - |
+                mkdir -p /models/v1_0 /models/voices
+                cd /models
+                [ -f v1_0/kokoro-v1_0.pth ] || curl -fsSL -o v1_0/kokoro-v1_0.pth "$RELEASE/alba_stock.pth"
+                curl -fsSL -o v1_0/config.json "$RAW/config.json"
+                curl -fsSL -o voices/bf_alba.pt "$RAW/alba_voicepack_pitchfix.pt"
+                sha256sum -c - <<'SUMS'
+                49fa2f895efc7fb8c76931dbc8f6424581ece402f7182e264b21df303b401333  v1_0/kokoro-v1_0.pth
+                5abb01e2403b072bf03d04fde160443e209d7a0dad49a423be15196b9b43c17f  v1_0/config.json
+                311965f3e812d8eabd4c2621a66b051332ab79e58b8cb6c187b3eddbe8cd013e  voices/bf_alba.pt
+                SUMS
+        containers:
+          app:
+            image: *image
+            env:
+              TZ: ${TZ}
+              DOWNLOAD_MODEL: "false"
+              MODEL_DIR: /models
+              VOICES_DIR: /models/voices
+              DEFAULT_VOICE: bf_alba
+              OMP_NUM_THREADS: "4"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8880
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  periodSeconds: 5
+                  failureThreshold: 60
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1536Mi
+              limits:
+                memory: 3Gi
+    service:
+      alba:
+        controller: alba
+        ports:
+          http:
+            port: *port
+    ingress:
+      alba:
+        className: traefik
+        hosts:
+          - host: "kokoro-alba.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: alba
+                  port: http
+    persistence:
+      models:
+        type: emptyDir
+        advancedMounts:
+          alba:
+            fetch-model:
+              - path: /models
+            app:
+              - path: /models
