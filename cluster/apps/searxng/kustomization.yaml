@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./searxng/ks.yaml
+  - ./crw/ks.yaml
   - ./netpol

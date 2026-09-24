@@ -1,0 +1,345 @@
+[server]
+host = "0.0.0.0"
+port = 3000
+# Tower outer timeout. Issue #35: when
+# `request.auto_extend_deadline_for_ladder = true` (default), this baseline is
+# auto-widened at startup to cover the longest legitimate handler runtime
+# (auto-extended scrape, search enrichment fan-out, map's 300s ceiling). Set
+# this above 305s only if you also raised request.deadline_ms_default beyond
+# the default ladder_min.
+request_timeout_secs = 120
+rate_limit_rps = 10              # Max requests/second (global). 0 = unlimited.
+# Cross-origin allowlist for browser callers. Empty (default) = NO CORS headers
+# are sent, so browsers block cross-origin JS access — the safe default for a
+# server-to-server API. Set explicit origins only if a browser app must call the
+# engine directly. A literal "*" is rejected (that is the permissive wildcard
+# this setting replaces). Env: CRW_SERVER__CORS_ALLOWED_ORIGINS="https://a,https://b".
+# cors_allowed_origins = ["https://app.example.com"]
+
+# [request]
+# deadline_ms_default = 8000
+# auto_extend_deadline_for_ladder = true
+#   Issue #35: when an implicit request omits `deadlineMs`, auto-extend the
+#   effective deadline to max(deadline_ms_default, ladder_min). Prevents
+#   chrome_timeout_ms = 30000 from appearing inert when deadline_ms_default
+#   is small. Set to false to enforce a strict SLO regardless of tier sizing.
+
+[renderer]
+mode = "auto"                     # auto | lightpanda | playwright | chrome | camoufox | none
+page_timeout_ms = 30000
+pool_size = 2
+# camoufox_timeout_ms = 60000     # camoufox per-request REST budget override
+# camoufox_challenge_wait_ms = 20000
+#                                 # ceiling for polling out a Cloudflare-style JS
+#                                 # challenge on the camoufox tier (0 disables)
+# render_js_default = true        # alias: force_js = true
+                                  # Forces JS rendering when a request omits `renderJs`.
+                                  # Per-request `renderJs` always wins over this default.
+
+# Failover order: LightPanda → Chrome. Configure one or both.
+# In auto mode, CRW tries each renderer in order. LightPanda is fast and
+# light, but its JS engine can crash on complex SPAs (Next.js App Router
+# hydration, modern React 18+, etc.). When that happens — or when the
+# rendered output contains framework error boundaries — the chain falls
+# through to Chrome. Chrome also handles Cloudflare challenges via
+# built-in stealth injection + challenge retry.
+#
+# Strongly recommended for production: configure both. LightPanda alone
+# will return broken HTML for sites that crash during hydration.
+
+# LightPanda is not configured: it has no upstream-proxy support and is
+# skipped when [crawler].proxy is set, so Chrome is the only JS tier.
+[renderer.chrome]
+ws_url = "ws://127.0.0.1:9222/"
+
+# Chrome-impersonation HTTP tier (wreq). No endpoint to configure: the tier is
+# in-process. Requires a build with `--features impersonated` (the published
+# Docker image ships it ON). Sits between the plain HTTP tier and the browser
+# ladder in auto mode, fires only when the plain tier hit an anti-bot wall (e.g.
+# the Amazon.it interstitial), and is pinnable per request with
+# renderer = "impersonated-http". When a browser ladder is configured the hop is
+# capped at half the remaining request deadline so it can never starve it.
+# ON by default; disable with enabled = false.
+# [renderer.impersonated]
+# enabled = true               # runtime kill switch (default true)
+# timeout_ms = 15000           # falls back to http_timeout_ms when unset
+
+# [renderer.chrome]
+# ws_url = "ws://127.0.0.1:9223/"
+
+# [renderer.playwright]
+# ws_url = "ws://playwright:9222"
+
+# Opt-in Camoufox stealth tier (REST, not CDP). Requires a build with
+# `--features camoufox` AND a running camofox-browser server. Covers
+# fingerprint / bot-challenge blocks (e.g. Cloudflare 403) the CDP tiers miss.
+#
+# Opt-in semantics: a configured endpoint does NOT join the default `auto`
+# ladder. Reach it by one of:
+#   - per-request   renderer = "camoufox"   (always works once configured)
+#   - config        mode = "camoufox"       (pins every request to it)
+#   - include_in_auto = true                (joins the auto failover chain)
+# [renderer.camoufox]
+# base_url = "http://127.0.0.1:9377"
+# api_key = ""                 # optional bearer token if the sidecar is protected
+# include_in_auto = false      # default: stay out of the auto ladder
+#
+# The two camoufox budgets (camoufox_timeout_ms, camoufox_challenge_wait_ms)
+# are top-level [renderer] keys, shown in that section above. Placed under
+# [renderer.camoufox] they are silently ignored.
+
+[crawler]
+max_concurrency = 10
+requests_per_second = 10.0
+respect_robots_txt = true
+user_agent = "CRW/0.0.1"
+default_max_depth = 2
+default_max_pages = 100
+job_ttl_secs = 3600
+# all outbound fetches (HTTP tiers and Chrome contexts) egress via the gluetun
+# VPN proxy
+proxy = "http://gluetun.gluetun.svc.cluster.local:8888"
+#
+# Interactive-vs-batch traffic isolation (reserved lanes). Single `/scrape`
+# requests are "interactive"; batch-scrape/crawl/extract/monitor jobs are
+# "batch". At every shared chokepoint (per-host limiter, Chrome render pool,
+# HTML extract pool, PDF parse pool, LLM calls) a slice is RESERVED for
+# interactive so a heavy batch can never starve interactive latency. Each
+# reserve knob: absent = ~1/4 of that pool (scaled to the actual size); a
+# number = that many slots; 0 = disable the reservation for that lane. Defaults
+# are safe; tune only if you measure contention.
+#
+# per_host_max_concurrent = 1          # batch in-flight cap per host (politeness)
+# per_host_interactive_reserve = 1     # extra dedicated per-host slots for interactive
+# max_batch_concurrency = 100          # ceiling on one batch job's outer URL fan-out
+# max_aggregate_batch_pipelines = 0    # 0 = UNBOUNDED total batch pipelines (NOT a lock);
+#                                      # set >0 to cap process-wide in-flight batch URLs
+# Proxy support — route crawler requests through an HTTP or SOCKS5 proxy.
+# Useful for bypassing IP-based rate limiting on sites like Reddit, LinkedIn, etc.
+#
+# Examples:
+#   proxy = "http://user:pass@proxy:8080"                      # HTTP proxy
+#   proxy = "socks5://user:pass@proxy:1080"                    # SOCKS5 proxy
+#   proxy = "http://user:pass@geo.iproyal.com:12321"           # Residential (IPRoyal)
+#   proxy = "http://user:pass@pr.oxylabs.io:7777"              # Residential (Oxylabs)
+#   proxy = "http://user:pass@gate.smartproxy.com:7000"        # Residential (Smartproxy)
+#
+# Residential proxies use real ISP IPs and are much harder for sites to detect.
+# Most providers give you a single gateway URL that auto-rotates IPs per request.
+# proxy = "http://proxy:8080"
+#
+# Proxy rotation — supply your OWN pool and crw rotates across it per request.
+# When proxy_list is non-empty it takes precedence over the single `proxy` above.
+# Each entry is validated at startup; a malformed URL is a hard error (crw never
+# silently falls back to a direct connection, which would leak your real IP).
+# Accepts a TOML array here, or a comma-separated / JSON-array string via the
+# env var CRW_CRAWLER__PROXY_LIST.
+#
+#   proxy_list = ["http://user:pass@a:8080", "http://user:pass@b:8080", "socks5://c:1080"]
+#
+# proxy_rotation strategy (default: sticky_per_host):
+#   sticky_per_host — pin each target host to one proxy (best for sessions /
+#                     anti-bot; keeps cookies + TLS coherent per host).
+#   round_robin     — cycle through the pool, one step per request.
+#   random          — pick a random proxy per request.
+#   proxy_rotation = "sticky_per_host"
+#
+# Coverage: rotation applies to the HTTP fetch path AND the JS/Chrome (CDP) path
+# — for scrape, crawl, and map. Vanilla Chrome routes per request via a
+# per-context proxyServer; LightPanda has no proxy support and is skipped
+# (fail-closed) when a proxy is active. SOCKS5 proxies with credentials are not
+# supported on the JS/Chrome path (Chrome can't auth SOCKS) — use http/https
+# there, or a credential-less SOCKS proxy.
+# proxy_list = []
+# proxy_rotation = "sticky_per_host"
+
+# Stealth mode — make the crawler look like a real browser on every HTTP request.
+# User-Agent is rotated from a built-in Chrome/Firefox/Safari pool; 12 browser-like
+# headers (Accept, Sec-Fetch-*, etc.) are injected. Override per-request with
+# `stealth: true/false` in the scrape body. Env: CRW_CRAWLER__STEALTH__ENABLED.
+# [crawler.stealth]
+# enabled = true
+# inject_headers = true    # send Accept, Sec-Fetch-*, etc. on every HTTP request
+# jitter_factor = 0.2      # ±20% random jitter on rate-limit intervals
+# user_agents = []         # custom UA pool; empty = use built-in pool
+
+[extraction]
+default_format = "markdown"
+only_main_content = true
+# max_concurrent_extracts = 8         # process-wide HTML→markdown parse cap (default ~2/3 cores)
+# reserved_interactive_extracts = 2   # extract slots reserved for interactive (absent = ~1/4; 0 disables)
+
+# Per-domain CSS selector overrides applied before readability narrowing.
+# User-supplied request `selector` still wins over these defaults. Map key is
+# exact host (no wildcards). Useful for sites where readability misidentifies
+# the article container.
+[extraction.domain_selectors]
+"www.smartcompany.com.au" = ".post-content, .entry-content, article"
+"www.simplyhired.com" = "main, [data-testid='viewJobBodyContainer']"
+"scanpy.readthedocs.io" = ".body, .main-content, article"
+"www.service-public.fr" = "#main-content, .panel-body, article"
+"www.raspberrypi.com" = "article.entry-content, main"
+"news.mingpao.com" = ".article-content, [itemprop=articleBody], .news-content"
+"acpr.banque-france.fr" = "main, .search-results, .content"
+"www.w3schools.com" = "#main, .w3-main"
+"www.xt.com" = "main, [role=main], .article-content"
+"carole-vercheyre-grard.fr" = "article, .entry-content, .post-content"
+"www.floorandecor.com" = "main, [data-testid='product-content']"
+# NOTE: quora.com and niche.com selectors were tried but regressed on the
+# 150-URL diagnose set — readability+heuristics already does better there.
+# Add per-domain overrides only after verifying on representative URLs.
+
+# Optional LLM-assisted extraction fallback. When the top markdown candidate
+# scores below `quality_threshold`, the raw HTML (truncated to `max_html_bytes`)
+# is sent to the configured `[extraction.llm]` provider for re-extraction.
+# Disabled by default — requires an API key in [extraction.llm].
+[extraction.llm_fallback]
+enable = false
+quality_threshold = 0.3
+max_html_bytes = 100000
+# When true (and `enable` true), the LLM is invoked on every page rather
+# than only when the DOM-based score is below `quality_threshold`. This is
+# the "LLM as primary extractor" pattern (Reader-LM, Firecrawl, etc.):
+# higher cost per page, but materially higher recall on JS-heavy pages,
+# paywalls, and sites where readability picks the wrong container.
+always_run = false
+
+[auth]
+# api_keys = ["crw_live_key-1234"]
+
+# LLM configuration — powers both:
+#   1. structured JSON extraction (formats: ["json"] with jsonSchema)
+#   2. summary generation (formats: ["summary"])  ← user-facing AI feature
+#   3. search answer synthesis (/v1/search with answer: true)
+#
+# Uncomment a block below and set api_key (or CRW_EXTRACTION__LLM__API_KEY env)
+# to enable. Without this, `formats: ["summary"]` and answer/summarizeResults
+# return HTTP 400 with a clear error pointing back here.
+#
+# [extraction.llm]
+# provider = "anthropic"        # "anthropic" | "openai" | "openai-responses" | "deepseek" | "azure" | "openai-compatible"
+# api_key = "sk-..."            # or use CRW_EXTRACTION__LLM__API_KEY env var
+# model = "claude-sonnet-4-20250514"
+# max_tokens = 4096
+# base_url = "https://custom-endpoint.example.com"  # optional, for OpenAI-compatible APIs
+# max_concurrency = 4           # bound for LLM-call fan-out (now enforced; was previously unbounded)
+# reserved_interactive_llm = 1  # LLM-call slots reserved for interactive (absent = ~1/4; 0 disables)
+# max_html_bytes = 100000       # truncate content past this before sending
+# require_byok_header = ""      # SaaS-only: header name that must be set on LLM-touching requests
+#
+# DeepSeek example (OpenAI-compatible):
+#   provider = "deepseek"                     # or "openai" — dispatched the same way
+#   api_key = "..."
+#   model = "deepseek-chat"
+#   base_url = "https://api.deepseek.com/v1"
+#
+# OpenAI Responses-compatible example:
+#   provider = "openai-responses"
+#   api_key = "..."
+#   model = "provider-model-id"
+#   base_url = "https://gateway.example.com/v1"         # CRW appends /responses
+#
+# Azure OpenAI example:
+#   provider = "azure"
+#   api_key = "..."                                     # or CRW_EXTRACTION__LLM__API_KEY
+#   model = "gpt-4o-mini"                               # Azure deployment name
+#   base_url = "https://<resource>.openai.azure.com"    # endpoint, no trailing path
+#   azure_api_version = "2024-05-01-preview"
+#   max_tokens = 4096
+
+# /v1/search endpoint — proxies to a SearXNG instance.
+# When `searxng_url` is unset the endpoint returns a 503 error
+# (`search_disabled`); the bundled docker-compose flips it to the
+# `searxng` sidecar.
+[search]
+# search is served by searxng directly; crw is used for page extraction only
+enabled = false
+# searxng_url = "http://localhost:8080"
+timeout_ms = 15000
+default_limit = 5
+max_limit = 20
+# W0 (gated, default false): pin SearXNG infoboxes[]/answers[] (Wikidata/Wikipedia
+# structured facts the results[] path discards) at the front of the answer pool.
+# Still UNTRUSTED-wrapped. Flip with CRW_SEARCH__USE_STRUCTURED_SOURCES=true after
+# the diag500 re-baseline. See crates/crw-search/src/structured.rs.
+# use_structured_sources = false
+# W3 (gated, default false): deterministic Wikidata lookup for "<relation> of
+# <entity>" questions (obscure entity tail). CRW_SEARCH__WIKIDATA_LOOKUP=true.
+# use_structured_sources should also be on (W3 pins via the same mechanism).
+# wikidata_lookup = false
+# Engines invoked when the request includes `categories: ["research"]`.
+research_engines = ["arxiv", "crossref", "google scholar", "semantic scholar"]
+# Engines invoked when the request includes `categories: ["github"]`.
+github_engines = ["github"]
+
+# ── /v1/map URL filter ──────────────────────────────────────────────────
+# Strips tracking params and drops transactional action URLs from /map
+# results. See `crates/crw-crawl/src/url_filter_data.rs` for the built-in
+# deny-lists. Per-request overrides are documented on `MapRequest` —
+# pass `{"ignoreQueryParameters": false}` for raw-URL output.
+[map.url_filter]
+strip_tracking_params = true
+drop_action_urls = true
+gov_tld_drop_actions = false
+# Additive on top of built-ins (max 64 keys each). Keys are normalized to
+# canonical form (lowercase, hyphens folded to underscores), so "add-to-cart"
+# and "add_to_cart" are equivalent.
+extra_tracking_params = []
+extra_action_params = []
+extra_preserve_params = []
+
+# ── Document (PDF) parsing ──────────────────────────────────────────────────
+# Controls conversion of binary documents (currently PDF) to markdown. A URL
+# that returns application/pdf is auto-converted; files can also be uploaded to
+# POST /v2/parse. PDF support is also a compile-time cargo feature (`pdf`,
+# default ON) — this section only governs runtime behaviour. All keys honor
+# CRW_DOCUMENT__* env overrides.
+[document]
+# Master runtime switch. When false, PDFs are left unparsed (raw bytes).
+enabled = true
+# Cap pages converted per document. 0 = no limit.
+max_pages = 0
+# Best-effort text from scanned/image PDFs. pdf-inspector has NO OCR, so this
+# is usually empty — left off by default.
+attempt_scanned = false
+# Maximum upload size (bytes) for POST /v2/parse. Default 50 MiB, matching the
+# HTTP renderer's response cap.
+max_upload_bytes = 52428800
+# Max concurrent uploads being parsed (bounds peak memory: each in-flight
+# upload buffers up to max_upload_bytes).
+upload_concurrency = 4
+# Process-wide cap on concurrent PDF parses across ALL surfaces (URL scrape,
+# crawl, batch, upload). Primary memory/CPU-DoS guard — a malicious PDF can
+# decompress far beyond its wire size, so bound how many parse at once.
+max_concurrent_parses = 4
+# reserved_interactive_parses = 1   # PDF parse slots reserved for interactive
+#                                   # scrapes (absent = ~1/4 of the pool; 0 disables)
+# Wall-clock timeout (ms) per PDF parse. A document exceeding this returns a
+# pdf_timeout error instead of pinning a worker. 0 disables.
+parse_timeout_ms = 30000
+# Decompression-bomb guard: max total DECOMPRESSED bytes a PDF's FlateDecode
+# streams may inflate to. Checked in bounded memory BEFORE parsing, so a small
+# file that explodes to many GB is rejected (pdf_too_large) having allocated
+# only kilobytes — the primary OOM-crash guard. Default 100 MiB (huge for text;
+# raise only for image-heavy PDFs). 0 disables.
+max_decompressed_bytes = 104857600
+# Run each PDF parse in an ISOLATED child process (Unix only). The child gets a
+# hard OS memory ceiling + CPU limit, inherits no secrets, and is killed on
+# timeout — a crash/OOM/parser-exploit is contained to the child, the server
+# (scrape/crawl) keeps running. ~1-3ms spawn overhead per parse. Turn ON for
+# hosts that accept untrusted uploads.
+sandbox = true
+# Hard address-space limit (bytes) for a sandbox child (RLIMIT_AS). Aborted by
+# the OS if exceeded — the ultimate memory-DoS backstop. Default 512 MiB.
+sandbox_memory_bytes = 536870912
+
+[mcp]
+# Strip credit-billing fields (`creditCost` / `creditsUsed`) from every MCP
+# tool response. Credits exist for the managed SaaS billing layer; a
+# self-hosted deployment has no billing consumer for them, so hiding them
+# saves a few context tokens per response and keeps the model's attention on
+# the payload fields. Affects only the MCP surfaces (/mcp endpoint, `crw-mcp`,
+# `crw mcp`, embedded and proxy alike) — the REST API keeps emitting credit
+# fields, and fields you extracted yourself are never stripped. Default false
+# preserves the existing response shape.
+# hide_credits = false

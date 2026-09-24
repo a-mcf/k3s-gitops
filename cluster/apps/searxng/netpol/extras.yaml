@@ -45,3 +45,21 @@ spec:
               kubernetes.io/metadata.name: vane
       ports:
         - port: 8080
+---
+# crw is reached through traefik on its own port
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller-crw
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: crw
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress
+      ports:
+        - port: 3000

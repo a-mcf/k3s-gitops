@@ -1,0 +1,136 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crw
+  namespace: searxng
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      crw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/us/crw
+              tag: 0.36.0@sha256:569611fe6bc0833d7349bcec99e5c5f6cb6814bd5f756eb17d302fe4e3d7480a
+            env:
+              RUST_LOG: info
+              HOME: /tmp
+            envFrom:
+              - secretRef:
+                  name: crw-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 3000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 1Gi
+          chrome:
+            image:
+              repository: docker.io/chromedp/headless-shell
+              tag: 151.0.7922.109@sha256:2d349b544a1ea6b5b5fd7c0fe99215ff662339c57407ee2e8c0a11af93516b04
+            # appended to the image entrypoint (which already sets --no-sandbox
+            # and the remote-debugging port); the global proxy covers any
+            # browser traffic outside crw's per-context proxy
+            args:
+              - --remote-allow-origins=*
+              - --remote-debugging-address=127.0.0.1
+              - --proxy-server=http://gluetun.gluetun.svc.cluster.local:8888
+              - --disable-blink-features=AutomationControlled
+              - --no-first-run
+              - --disable-background-networking
+              - --disable-component-update
+              - --disable-sync
+              - --metrics-recording-only
+            env:
+              HOME: /tmp
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: crw
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: &host "crw.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        type: configMap
+        name: crw-configmap
+        advancedMounts:
+          crw:
+            app:
+              - path: /app/config.default.toml
+                subPath: config.toml
+                readOnly: true
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          crw:
+            app:
+              - path: /tmp
+                subPath: app
+            chrome:
+              - path: /tmp
+                subPath: chrome
+      shm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        advancedMounts:
+          crw:
+            chrome:
+              - path: /dev/shm
