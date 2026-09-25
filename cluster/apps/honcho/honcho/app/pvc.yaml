@@ -1,0 +1,15 @@
+---
+# proxmox-csi for the embedding model cache: regenerable (re-downloadable
+# from HF), so no NFS/backup needed
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: honcho-embeddings-models
+  namespace: honcho
+spec:
+  storageClassName: proxmox-csi-ext4-ssd-zfs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

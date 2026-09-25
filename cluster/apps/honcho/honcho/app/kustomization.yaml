@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: honcho
+resources:
+  - ./externalsecret.yaml
+  - ./pvc.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: honcho-configmap
+    files:
+      - config.toml=./resources/config.toml
+    options:
+      disableNameSuffixHash: true

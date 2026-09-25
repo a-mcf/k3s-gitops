@@ -1,0 +1,146 @@
+# Honcho settings; env vars override these. Secrets (AUTH_JWT_SECRET,
+# LLM_OPENAI_API_KEY, DB_CONNECTION_URI) come from env.
+# Reference: https://github.com/plastic-labs/honcho/blob/main/config.toml.example
+
+[app]
+LOG_LEVEL = "INFO"
+NAMESPACE = "honcho"
+
+[db]
+SCHEMA = "public"
+POOL_SIZE = 10
+MAX_OVERFLOW = 20
+
+[auth]
+USE_AUTH = true
+
+[sentry]
+ENABLED = false
+
+[telemetry]
+ENABLED = false
+
+[metrics]
+ENABLED = false
+
+[cache]
+ENABLED = true
+URL = "redis://honcho-redis.honcho.svc.cluster.local:6379/0?suppress=true"
+
+[vector_store]
+TYPE = "pgvector"
+
+# The schema's vector width is set by configure_embeddings.py (api init
+# container); changing the model or width later means re-embedding.
+[embedding]
+VECTOR_DIMENSIONS = 1024
+# stays within the embedder's --max-batch-tokens
+MAX_INPUT_TOKENS = 2048
+MAX_TOKENS_PER_REQUEST = 4096
+
+[embedding.model_config]
+transport = "openai"
+model = "BAAI/bge-m3"
+# bge-m3 is natively 1024-d, so no truncation request is sent
+dimensions_mode = "never"
+encoding_format_mode = "float"
+
+[embedding.model_config.overrides]
+base_url = "http://honcho-embeddings.honcho.svc.cluster.local:8080/v1"
+# the embedder has no auth; keeps the LLM key from being sent to it
+api_key = "unused"
+
+# Qwen3.8 reasoning tokens count against max_tokens, so output caps sized for
+# non-reasoning models are raised where they would truncate the answer.
+
+[deriver]
+WORKERS = 1
+
+[deriver.model_config]
+transport = "openai"
+model = "qwen38-27b"
+max_output_tokens = 8192
+
+[deriver.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[summary]
+ENABLED = true
+
+[summary.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[summary.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dream]
+ENABLED = true
+
+[dream.deduction_model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dream.deduction_model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dream.induction_model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dream.induction_model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+# Every level must set MAX_TOOL_ITERATIONS or startup fails.
+[dialectic.levels.minimal]
+MAX_TOOL_ITERATIONS = 1
+MAX_OUTPUT_TOKENS = 4096
+TOOL_CHOICE = "auto"
+
+[dialectic.levels.minimal.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dialectic.levels.minimal.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dialectic.levels.low]
+MAX_TOOL_ITERATIONS = 5
+TOOL_CHOICE = "auto"
+
+[dialectic.levels.low.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dialectic.levels.low.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dialectic.levels.medium]
+MAX_TOOL_ITERATIONS = 2
+
+[dialectic.levels.medium.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dialectic.levels.medium.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dialectic.levels.high]
+MAX_TOOL_ITERATIONS = 4
+
+[dialectic.levels.high.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dialectic.levels.high.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
+
+[dialectic.levels.max]
+MAX_TOOL_ITERATIONS = 10
+
+[dialectic.levels.max.model_config]
+transport = "openai"
+model = "qwen38-27b"
+
+[dialectic.levels.max.model_config.overrides]
+base_url = "http://litellm.ai.svc.cluster.local:4000/v1"

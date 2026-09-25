@@ -1,0 +1,224 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.2.0/charts/library/common/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: honcho
+  namespace: honcho
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      api:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          # Both steps are idempotent: migrations to head, then resize the
+          # vector columns to EMBEDDING_VECTOR_DIMENSIONS (a no-op once they
+          # match; refuses to run if any embeddings already exist).
+          bootstrap:
+            image: &image
+              repository: ghcr.io/plastic-labs/honcho
+              tag: v3.2.1@sha256:a6bf2f03d47d91281521830ba2a32710a60bde207c37c8f2049fd1ac7619c6d9
+            command:
+              - sh
+              - -c
+              - >-
+                /app/.venv/bin/python scripts/provision_db.py &&
+                /app/.venv/bin/python scripts/configure_embeddings.py --yes
+            env: &env
+              - name: PG_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-cnpg-app
+                    key: password
+              - name: DB_CONNECTION_URI
+                value: postgresql+psycopg://honcho:$(PG_PASSWORD)@honcho-cnpg-rw.honcho.svc.cluster.local:5432/honcho
+            envFrom: &envFrom
+              - secretRef:
+                  name: honcho-secret
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+        containers:
+          app:
+            image: *image
+            env: *env
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 20m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+      deriver:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: *image
+            command: ["/app/.venv/bin/python", "-m", "src.deriver"]
+            env: *env
+            envFrom: *envFrom
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 20m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+      redis:
+        containers:
+          app:
+            image:
+              repository: docker.io/library/redis
+              tag: 8.10.1@sha256:8a1efc5f479551822b47424ccae982026b633f28818eab0387348120a61e10e2
+            # cache only; nothing needs to survive a restart
+            args: ["--save", "", "--appendonly", "no"]
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+      embeddings:
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/huggingface/text-embeddings-inference
+              tag: cpu-1.9.4@sha256:2538ea1c9640d3763b15af668039d24172d063b42337b0c27796fc2be180c78d
+            args:
+              - --model-id
+              - BAAI/bge-m3
+              - --port
+              - "8080"
+              - --auto-truncate
+              # also caps the warmup sequence; at the model's full 8k context
+              # the warmup attention allocation is several GiB
+              - --max-batch-tokens
+              - "4096"
+            env:
+              HF_HUB_DISABLE_TELEMETRY: "1"
+              HUGGINGFACE_HUB_CACHE: /data
+            probes:
+              liveness: &teiProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &teiPort 8080
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *teiProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *teiPort
+                  periodSeconds: 10
+                  failureThreshold: 60
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: *port
+      redis:
+        controller: redis
+        ports:
+          redis:
+            port: 6379
+      embeddings:
+        controller: embeddings
+        ports:
+          http:
+            port: *teiPort
+
+    ingress:
+      api:
+        className: traefik
+        hosts:
+          - host: &host "honcho.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: api
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        type: configMap
+        name: honcho-configmap
+        advancedMounts:
+          api:
+            bootstrap:
+              - path: /app/config.toml
+                subPath: config.toml
+                readOnly: true
+            app:
+              - path: /app/config.toml
+                subPath: config.toml
+                readOnly: true
+          deriver:
+            app:
+              - path: /app/config.toml
+                subPath: config.toml
+                readOnly: true
+      models:
+        existingClaim: honcho-embeddings-models
+        advancedMounts:
+          embeddings:
+            app:
+              - path: /data

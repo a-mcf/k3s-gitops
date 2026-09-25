@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://gist.githubusercontent.com/a-mcf/4adb544a0629376aefb4b259223e6bcc/raw/28fd33b190394e1777948ec7908f488133721e3d/gistfile1.txt
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: honcho-cnpg
+  namespace: honcho
+spec:
+  instances: 1
+  enablePDB: false
+  # ships pgvector (extension "vector") alongside vchord; honcho needs only vector
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.14-1.1.1@sha256:4a26ca6aad2482289f4a3d3317ccbf1439ce3de140994598375a1f4c4e2e9f8d
+  inheritedMetadata:
+    labels:
+      kube-image-keeper.enix.io/image-caching-policy: ignore
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: proxmox-csi-ext4-ssd
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+  monitoring:
+    enablePodMonitor: true
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: honcho-objectstore
+        serverName: honcho-cnpg
+
+  bootstrap:
+    initdb:
+      database: honcho
+      owner: honcho
+      # created as superuser so the app role never needs it; honcho's own
+      # CREATE EXTENSION IF NOT EXISTS then no-ops
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector;

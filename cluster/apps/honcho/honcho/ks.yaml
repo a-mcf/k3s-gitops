@@ -1,0 +1,39 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-honcho-database
+  namespace: flux-system
+spec:
+  path: ./cluster/apps/honcho/honcho/database
+  dependsOn:
+    - name: cluster-apps-external-secrets-store-onepassword
+    - name: cluster-apps-proxmox-csi
+    - name: cluster-apps-garage-premium
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-honcho
+  namespace: flux-system
+spec:
+  path: ./cluster/apps/honcho/honcho/app
+  dependsOn:
+    - name: cluster-apps-external-secrets-store-onepassword
+    - name: cluster-apps-honcho-database
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
