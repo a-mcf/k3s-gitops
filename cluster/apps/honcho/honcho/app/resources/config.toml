@@ -34,9 +34,10 @@ TYPE = "pgvector"
 # container); changing the model or width later means re-embedding.
 [embedding]
 VECTOR_DIMENSIONS = 1024
-# stays within the embedder's --max-batch-tokens
-MAX_INPUT_TOKENS = 2048
-MAX_TOKENS_PER_REQUEST = 4096
+# the embedder rejects requests over its --max-batch-tokens (2048); these
+# counts use honcho's tokenizer, which runs lower than bge-m3's
+MAX_INPUT_TOKENS = 1536
+MAX_TOKENS_PER_REQUEST = 1536
 
 [embedding.model_config]
 transport = "openai"
