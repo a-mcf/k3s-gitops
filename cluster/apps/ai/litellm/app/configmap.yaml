@@ -76,13 +76,12 @@ data:
 
     router_settings:
       # ⚠ Must live under router_settings; the litellm_settings spelling is
-      # legacy and silently ignored. gemma4-26b is the floor: a smaller model,
-      # not an equivalent. `local` shares agent's backend, so it is not a
-      # fallback for agent.
+      # legacy and silently ignored. agent and agent-precise fall back only to
+      # each other; `local` shares agent's backend.
       fallbacks:
         - local: ["gemma4-26b"]
-        - agent: ["agent-precise", "gemma4-26b"]
-        - agent-precise: ["agent", "gemma4-26b"]
+        - agent: ["agent-precise"]
+        - agent-precise: ["agent"]
 
       # Makes context-window errors re-raise instead of walking `fallbacks`.
       # ⚠ Must be non-empty and must not name a real alias -- an empty list
