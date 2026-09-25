@@ -1,0 +1,14 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: honcho-backup
+  namespace: honcho
+spec:
+  schedule: "0 20 23 * *"
+  backupOwnerReference: self
+  cluster:
+    name: honcho-cnpg
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io

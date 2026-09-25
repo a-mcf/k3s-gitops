@@ -17,3 +17,6 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: ollama
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: honcho

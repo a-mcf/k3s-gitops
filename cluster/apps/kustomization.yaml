@@ -12,6 +12,7 @@ resources:
   - garage
   - gluetun
   - home
+  - honcho
   - homepage
   - immich
   - ingress

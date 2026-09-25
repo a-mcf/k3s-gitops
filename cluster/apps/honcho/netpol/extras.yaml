@@ -1,0 +1,19 @@
+---
+# only the API is exposed through traefik; the deriver, redis, embeddings
+# and database stay namespace-internal
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller-api
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/controller: api
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress
+      ports:
+        - port: 8000
