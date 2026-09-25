@@ -52,6 +52,14 @@ data:
           api_base: http://hyperqwen.ai.svc.cluster.local:18020/v1
           api_key: sk-noauth
           reasoning_effort: medium
+      # Honcho's memory work (deriver, dialectic, summaries, dreams); falls
+      # back to the gx10 copy of the same model when the 3090 is offline.
+      - model_name: memory
+        litellm_params:
+          model: openai/qwen3.8-27b
+          api_base: http://hyperqwen.ai.svc.cluster.local:18020/v1
+          api_key: sk-noauth
+          reasoning_effort: medium
       - model_name: qwen38-flash-next
         litellm_params:
           model: openai/qwen3.8-flash-next
@@ -82,6 +90,7 @@ data:
         - local: ["gemma4-26b"]
         - agent: ["agent-precise"]
         - agent-precise: ["agent"]
+        - memory: ["qwen38-27b"]
 
       # Makes context-window errors re-raise instead of walking `fallbacks`.
       # ⚠ Must be non-empty and must not name a real alias -- an empty list
