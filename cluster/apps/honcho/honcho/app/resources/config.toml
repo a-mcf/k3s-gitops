@@ -59,7 +59,7 @@ WORKERS = 1
 
 [deriver.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 max_output_tokens = 8192
 
 [deriver.model_config.overrides]
@@ -70,7 +70,7 @@ ENABLED = true
 
 [summary.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [summary.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -80,14 +80,14 @@ ENABLED = true
 
 [dream.deduction_model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dream.deduction_model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
 
 [dream.induction_model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dream.induction_model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -100,7 +100,7 @@ TOOL_CHOICE = "auto"
 
 [dialectic.levels.minimal.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dialectic.levels.minimal.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -111,7 +111,7 @@ TOOL_CHOICE = "auto"
 
 [dialectic.levels.low.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dialectic.levels.low.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -121,7 +121,7 @@ MAX_TOOL_ITERATIONS = 2
 
 [dialectic.levels.medium.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dialectic.levels.medium.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -131,7 +131,7 @@ MAX_TOOL_ITERATIONS = 4
 
 [dialectic.levels.high.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dialectic.levels.high.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
@@ -141,7 +141,7 @@ MAX_TOOL_ITERATIONS = 10
 
 [dialectic.levels.max.model_config]
 transport = "openai"
-model = "qwen38-27b"
+model = "memory"
 
 [dialectic.levels.max.model_config.overrides]
 base_url = "http://litellm.ai.svc.cluster.local:4000/v1"
