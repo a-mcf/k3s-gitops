@@ -10,15 +10,13 @@ metadata:
 data:
   config.yaml: |
     model_list:
+      # Temporarily on the 3090 while gx10 is down; Ornith is the normal primary.
       - model_name: local
         litellm_params:
-          model: openai/ornith15-35b
-          api_base: http://${LLM0_HOST}:8002/v1
+          model: openai/qwen3.8-27b
+          api_base: http://hyperqwen.ai.svc.cluster.local:18020/v1
           api_key: sk-noauth
-          # A hung backend accepts the request and never answers; these bound
-          # the wait so the fallback is reached in seconds, not the 600 s default.
-          stream_timeout: 15
-          timeout: 60
+          reasoning_effort: medium
       - model_name: gemma4-26b
         litellm_params:
           model: openai/gemma4-26b
@@ -91,7 +89,6 @@ data:
       # legacy and silently ignored. agent and agent-precise fall back only to
       # each other; `local` shares agent's backend.
       fallbacks:
-        - local: ["qwen38-27b-3090"]
         - agent: ["agent-precise"]
         - agent-precise: ["agent"]
         - memory: ["qwen38-27b"]
