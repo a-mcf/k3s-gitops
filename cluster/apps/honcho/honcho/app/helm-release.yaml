@@ -121,10 +121,10 @@ spec:
               - --port
               - "8080"
               - --auto-truncate
-              # also caps the warmup sequence; at the model's full 8k context
-              # the warmup attention allocation is several GiB
+              # also caps the warmup sequence, whose attention allocation grows
+              # with its square; 4096 exceeded a 4Gi limit
               - --max-batch-tokens
-              - "4096"
+              - "2048"
             env:
               HF_HUB_DISABLE_TELEMETRY: "1"
               HUGGINGFACE_HUB_CACHE: /data
@@ -155,7 +155,7 @@ spec:
                 cpu: 100m
                 memory: 1Gi
               limits:
-                memory: 4Gi
+                memory: 5Gi
 
     defaultPodOptions:
       securityContext:
