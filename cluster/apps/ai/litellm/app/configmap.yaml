@@ -12,8 +12,8 @@ data:
     model_list:
       - model_name: local
         litellm_params:
-          model: openai/gemma4-26b
-          api_base: http://${LLM0_HOST}:8003/v1
+          model: openai/ornith15-35b
+          api_base: http://${LLM0_HOST}:8002/v1
           api_key: sk-noauth
       - model_name: gemma4-26b
         litellm_params:
@@ -76,11 +76,13 @@ data:
 
     router_settings:
       # ⚠ Must live under router_settings; the litellm_settings spelling is
-      # legacy and silently ignored. Falling back to "local" succeeds with a
-      # much smaller model -- a floor, not an equivalent.
+      # legacy and silently ignored. gemma4-26b is the floor: a smaller model,
+      # not an equivalent. `local` shares agent's backend, so it is not a
+      # fallback for agent.
       fallbacks:
-        - agent: ["agent-precise", "local"]
-        - agent-precise: ["agent", "local"]
+        - local: ["gemma4-26b"]
+        - agent: ["agent-precise", "gemma4-26b"]
+        - agent-precise: ["agent", "gemma4-26b"]
 
       # Makes context-window errors re-raise instead of walking `fallbacks`.
       # ⚠ Must be non-empty and must not name a real alias -- an empty list
