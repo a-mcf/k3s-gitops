@@ -12,14 +12,25 @@ data:
     model_list:
       - model_name: local
         litellm_params:
-          model: openai/ornith15-35b
-          api_base: http://${LLM0_HOST}:8002/v1
+          model: openai/qwen3.8-flash-next
+          api_base: http://${LLM1_HOST}:18300/v1
           api_key: sk-noauth
+          # Thinking on at reasoning_effort low, with the model card's
+          # thinking-mode sampling. ⚠ LiteLLM REPLACES this extra_body when a
+          # request carries its own (e.g. a client sending chat_template_kwargs
+          # or proxy metadata), which silently drops back to the template
+          # default (xhigh).
+          temperature: 1.0
+          top_p: 0.95
+          extra_body:
+            top_k: 20
+            chat_template_kwargs:
+              reasoning_effort: low
           # A hung backend accepts the request and never answers. The timeouts
           # bound each attempt; both retry layers (client and router) must be
           # off or the hung backend is retried before the fallback is tried.
           stream_timeout: 15
-          timeout: 60
+          timeout: 120
           max_retries: 0
           num_retries: 0
       - model_name: gemma4-12b
@@ -90,7 +101,7 @@ data:
       # each other; `local` shares agent's backend.
       fallbacks:
         - agent: ["agent-precise"]
-        - local: ["qwen38-27b-3090"]
+        - local: ["ornith15-35b", "qwen38-27b-3090"]
         - agent-precise: ["agent"]
         - memory: ["qwen38-27b"]
 
