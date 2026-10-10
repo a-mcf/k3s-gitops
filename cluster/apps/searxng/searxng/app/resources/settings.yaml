@@ -62,3 +62,12 @@ hostnames:
     - (.*\.)?stackoverflow.com$
     - (.*\.)?askubuntu.com$
     - (.*\.)?superuser.com$
+# Extra general engines so bursts spread across more providers. With
+# use_default_settings these merge by name into the defaults.
+engines:
+  - name: bing
+    disabled: false
+  - name: yahoo
+    disabled: false
+  - name: mwmbl
+    disabled: false
