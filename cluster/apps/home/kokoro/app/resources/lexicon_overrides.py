@@ -20,6 +20,7 @@ SKIP = {"the", "a", "to"}
 
 
 def final_schwa(word, ps):
+    """Return ps with a word-final ə replaced by ɐ, where the rule applies."""
     if word.lower() in SKIP or word.endswith(".") or word.lower().endswith(("r", "re")):
         return ps
     if isinstance(ps, dict):
@@ -29,15 +30,21 @@ def final_schwa(word, ps):
     return ps
 
 
-for name, words in (("gb_gold.json", WORDS), ("gb_silver.json", {})):
-    path = DATA / name
-    lex = json.loads(path.read_text(encoding="utf-8"))
-    changed = 0
-    for word, ps in lex.items():
-        new = final_schwa(word, ps)
-        if new != ps:
-            lex[word] = new
-            changed += 1
-    lex.update(words)
-    path.write_text(json.dumps(lex, ensure_ascii=False), encoding="utf-8")
-    print(f"lexicon overrides: {name}: {changed} final-schwa, {len(words)} word(s)")
+def main():
+    """Rewrite the installed gold and silver lexicons."""
+    for name, words in (("gb_gold.json", WORDS), ("gb_silver.json", {})):
+        path = DATA / name
+        lex = json.loads(path.read_text(encoding="utf-8"))
+        changed = 0
+        for word, ps in lex.items():
+            new = final_schwa(word, ps)
+            if new != ps:
+                lex[word] = new
+                changed += 1
+        lex.update(words)
+        path.write_text(json.dumps(lex, ensure_ascii=False), encoding="utf-8")
+        print(f"lexicon overrides: {name}: {changed} final-schwa, {len(words)} word(s)")
+
+
+if __name__ == "__main__":
+    main()
