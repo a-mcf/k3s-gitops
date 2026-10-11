@@ -55,6 +55,21 @@ spec:
         containers:
           app:
             image: *image
+            # Pronunciation overrides are merged into misaki's British gold
+            # lexicon before the server starts. A failed merge is logged and
+            # the server starts with the stock lexicon.
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                python - <<'EOF' || echo "lexicon overrides NOT applied" >&2
+                import json, pathlib, misaki.data
+                f = pathlib.Path(misaki.data.__file__).parent / "gb_gold.json"
+                lex = json.loads(f.read_text(encoding="utf-8"))
+                lex.update({"yeah": "jˈɛ"})
+                f.write_text(json.dumps(lex, ensure_ascii=False), encoding="utf-8")
+                print(f"lexicon overrides applied to {f}")
+                EOF
+                exec ./entrypoint.sh
             env:
               TZ: ${TZ}
               DOWNLOAD_MODEL: "false"
