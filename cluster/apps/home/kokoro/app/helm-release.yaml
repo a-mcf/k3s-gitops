@@ -27,6 +27,8 @@ spec:
       # One controller per model: a fine-tuned voice ships its own weights,
       # so it cannot share an instance with stock voicepacks.
       alba:
+        annotations:
+          reloader.stakater.com/auto: "true"
         initContainers:
           fetch-model:
             image: &image
@@ -55,22 +57,13 @@ spec:
         containers:
           app:
             image: *image
-            # Merges pronunciation overrides into misaki's British gold lexicon
-            # before the server starts; a failed merge is logged and the stock
-            # lexicon is used. Why "yeah" needs one:
-            # https://github.com/a-mcf/kokoro-alba/issues/1
-            # Remove when Kokoro-FastAPI supports custom lexicon entries.
+            # Merges pronunciation overrides into misaki's lexicons before the
+            # server starts; a failed merge is logged and the stock lexicons
+            # are used. See resources/lexicon_overrides.py.
             command: ["/bin/bash", "-c"]
             args:
               - |
-                python - <<'EOF' || echo "lexicon overrides NOT applied" >&2
-                import json, pathlib, misaki.data
-                f = pathlib.Path(misaki.data.__file__).parent / "gb_gold.json"
-                lex = json.loads(f.read_text(encoding="utf-8"))
-                lex.update({"yeah": "jˈɛ"})
-                f.write_text(json.dumps(lex, ensure_ascii=False), encoding="utf-8")
-                print(f"lexicon overrides applied to {f}")
-                EOF
+                python /config/lexicon_overrides.py || echo "lexicon overrides NOT applied" >&2
                 exec ./entrypoint.sh
             env:
               TZ: ${TZ}
@@ -131,3 +124,12 @@ spec:
               - path: /models
             app:
               - path: /models
+      lexicon:
+        type: configMap
+        name: kokoro-lexicon
+        advancedMounts:
+          alba:
+            app:
+              - path: /config/lexicon_overrides.py
+                subPath: lexicon_overrides.py
+                readOnly: true
