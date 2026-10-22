@@ -74,6 +74,13 @@
   ],
   packageRules: [
     {
+      description: 'python base image: digest updates only, no major/minor bumps',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['python'],
+      matchUpdateTypes: ['major', 'minor'],
+      enabled: false,
+    },
+    {
       matchDatasources: [
         'helm',
       ],
