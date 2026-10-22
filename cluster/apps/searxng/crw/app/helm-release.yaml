@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/us/crw
-              tag: 0.36.0@sha256:569611fe6bc0833d7349bcec99e5c5f6cb6814bd5f756eb17d302fe4e3d7480a
+              tag: 0.39.0@sha256:09f9cb335b11f6936d2757152b126400b22c5abc27ee9b5665b8213c29b0e4e1
             env:
               RUST_LOG: info
               HOME: /tmp
