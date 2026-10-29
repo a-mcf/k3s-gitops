@@ -28,7 +28,7 @@ spec:
           bootstrap:
             image: &image
               repository: ghcr.io/plastic-labs/honcho
-              tag: v3.4.0@sha256:6a8c74cf6cbd51a0e14e56b6b8503b4182f546059eb9d7d0190ac177cf075603
+              tag: v3.5.0@sha256:23ff96bf62ab2ca14928e6766db1a30a7729f5b7c9e2285af0cd4a179c0d393d
             command:
               - sh
               - -c
