@@ -36,6 +36,9 @@ spec:
         type: persistentVolumeClaim
         values:
           claimName: proxmox-csi-onepassword-connect-data
+      podSecurityContext:
+        # Connect refuses to start if data/files is group-accessible
+        fsGroupChangePolicy: OnRootMismatch
     operator:
       create: false
   postRenderers:
