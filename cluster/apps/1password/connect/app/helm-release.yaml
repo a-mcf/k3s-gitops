@@ -31,5 +31,23 @@ spec:
       credentialsName: "op-credentials"
       credentialsKey: "1password-credentials.json"
       serviceType: ClusterIP
+      dataVolume:
+        name: shared-data
+        type: persistentVolumeClaim
+        values:
+          claimName: proxmox-csi-onepassword-connect-data
     operator:
       create: false
+  postRenderers:
+    # RWO volume: the old pod must release it before the new one starts
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: onepassword-connect
+            patch: |
+              - op: add
+                path: /spec/strategy
+                value:
+                  type: Recreate
+                  rollingUpdate: null
