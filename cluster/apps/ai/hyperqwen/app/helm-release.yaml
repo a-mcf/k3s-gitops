@@ -45,6 +45,8 @@ spec:
           runtimeClassName: nvidia
           nodeSelector:
             gpu: "true"
+        # Parked at 0 while chatterbox holds the card. Restore by removing this.
+        replicas: 0
         # Recreate, not RollingUpdate: a second replica would start loading
         # weights onto the same card before the first released them.
         strategy: Recreate

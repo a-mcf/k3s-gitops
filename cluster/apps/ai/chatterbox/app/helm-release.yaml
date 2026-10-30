@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chatterbox
+  namespace: ai
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.3.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+
+    controllers:
+      chatterbox:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          runtimeClassName: nvidia
+          nodeSelector:
+            gpu: "true"
+        strategy: Recreate
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/devnen/chatterbox-tts-server
+              tag: sha-915ae28-nvidia@sha256:c556231191c367c9cb5621125419c8c8be39bbcb720068259ce6d6a9c9a5d119
+            env:
+              TZ: "${TZ}"
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: compute,utility
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/model-info
+                    port: &port 8004
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/model-info
+                    port: *port
+                  periodSeconds: 10
+                  # The first start downloads the model weights.
+                  failureThreshold: 90
+            resources:
+              requests:
+                cpu: 500m
+                memory: 4Gi
+                # Shared card: see the hyperqwen release.
+                nvidia.com/gpu: 0
+              limits:
+                memory: 8Gi
+                nvidia.com/gpu: 0
+
+    service:
+      app:
+        controller: chatterbox
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: "chatterbox.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      # Voices for cloning are reference clips on the NFS share, not in git.
+      # A request's `voice` is the clip's filename, e.g. "skippy.wav".
+      data:
+        existingClaim: nfs-chatterbox-pvc
+        globalMounts:
+          - path: /app/reference_audio
+            subPath: reference_audio
+          - path: /app/hf_cache
+            subPath: hf_cache
+          - path: /app/model_cache
+            subPath: model_cache
