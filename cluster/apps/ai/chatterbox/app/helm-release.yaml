@@ -61,14 +61,28 @@ spec:
                   timeoutSeconds: 5
                   failureThreshold: 3
               readiness: *probes
+              # Synthesizes a line before the pod goes Ready: the first request
+              # after a start takes ~15s while CUDA warms up, and a client
+              # should not be the one to pay for it. Uses a voice baked into the
+              # image so it does not depend on the share.
               startup:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /api/model-info
-                    port: *port
+                  exec:
+                    command:
+                      - python3
+                      - -c
+                      - |
+                        import json, urllib.request
+                        req = urllib.request.Request(
+                            "http://localhost:8004/v1/audio/speech",
+                            data=json.dumps({"voice": "Emily.wav", "input": "Warming up.", "response_format": "wav"}).encode(),
+                            headers={"Content-Type": "application/json"},
+                        )
+                        assert urllib.request.urlopen(req, timeout=55).status == 200
                   periodSeconds: 10
+                  timeoutSeconds: 60
                   # The first start downloads the model weights.
                   failureThreshold: 90
             resources:
