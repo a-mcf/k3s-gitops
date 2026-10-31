@@ -77,7 +77,7 @@ spec:
                         import json, urllib.request
                         req = urllib.request.Request(
                             "http://localhost:8004/v1/audio/speech",
-                            data=json.dumps({"voice": "Emily.wav", "input": "Warming up.", "response_format": "wav"}).encode(),
+                            data=json.dumps({"model": "chatterbox", "voice": "Emily.wav", "input": "Warming up.", "response_format": "wav"}).encode(),
                             headers={"Content-Type": "application/json"},
                         )
                         assert urllib.request.urlopen(req, timeout=55).status == 200
