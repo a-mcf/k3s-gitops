@@ -32,7 +32,7 @@ spec:
           photoprism:
             image:
               repository: photoprism/photoprism
-              tag: latest@sha256:0f85369636ad99ca9a1c33f2d04df6c590802d16b7c33b4a1ea026b595be06d1
+              tag: latest@sha256:9409cf8e5a6ebcbe3170d14537556cbc20997aaa307096d6eeedbfc5eeef6719
               pullPolicy: IfNotPresent
             env:
               # https://github.com/photoprism/photoprism/discussions/2799
