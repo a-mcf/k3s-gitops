@@ -33,7 +33,7 @@ spec:
           fetch-model:
             image: &image
               repository: ghcr.io/remsky/kokoro-fastapi-cpu
-              tag: v0.9.0@sha256:ee3111d6a2c903ed62f3b4fa19543c6901205ed39fce3c177e895b34a8386b9c
+              tag: v0.10.0@sha256:f54c5960c2b9387f6349080a9944f8bc7e8cdb98a4ef9238cb0b0f9ff9795f44
             env:
               RELEASE: https://github.com/a-mcf/kokoro-alba/releases/download/v1.0
               RAW: https://raw.githubusercontent.com/a-mcf/kokoro-alba/v1.0/alba
