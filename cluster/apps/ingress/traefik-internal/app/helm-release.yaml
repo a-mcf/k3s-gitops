@@ -73,8 +73,8 @@ spec:
 
     service:
       enabled: true
-      type: LoadBalancer
       spec:
+        type: LoadBalancer
         loadBalancerIP: "${INGRESS_NGINX_INTERNAL_LB}"
         externalTrafficPolicy: Local
 
