@@ -14,8 +14,5 @@ spec:
   scrapeInterval: 30s
   staticConfigs:
     - targets:
-        - "${LLM0_HOST}:8001"
-      labels: { job: vllm, box: gx10, served: qwen38-27b }
-    - targets:
-        - "${LLM0_HOST}:8002"
-      labels: { job: vllm, box: gx10, served: ornith15-35b }
+        - "${LLM0_HOST}:8003"
+      labels: { job: vllm, box: gx10, served: nemotron-super }
