@@ -39,26 +39,6 @@ data:
           model: openai/google/gemma-4-12B-it-qat-w4a16-ct
           api_base: http://vllm-router-service.ai.svc.cluster.local:80/v1
           api_key: sk-noauth
-      - model_name: agent
-        litellm_params:
-          model: openai/ornith15-35b
-          api_base: http://${LLM0_HOST}:8002/v1
-          api_key: sk-noauth
-      - model_name: agent-precise
-        litellm_params:
-          model: openai/qwen38-27b
-          api_base: http://${LLM0_HOST}:8001/v1
-          api_key: sk-noauth
-          # A request's own reasoning_effort overrides this; unset means the
-          # backend's deepest setting. ⚠ Accepts low|medium|high|xhigh only --
-          # anything else 400s rather than falling back to the default.
-          reasoning_effort: medium
-      - model_name: qwen38-27b
-        litellm_params:
-          model: openai/qwen38-27b
-          api_base: http://${LLM0_HOST}:8001/v1
-          api_key: sk-noauth
-          reasoning_effort: medium
       - model_name: qwen38-27b-3090
         litellm_params:
           model: openai/qwen3.8-27b
@@ -79,12 +59,13 @@ data:
           model: openai/qwen3.8-flash-next
           api_base: http://${LLM1_HOST}:18300/v1
           api_key: sk-noauth
-      - model_name: ornith15-35b
+      # gx10. Nemotron 3.5 Super VL (120B-A12B), alone on the box. Reasoning is on
+      # by default; send chat_template_kwargs.enable_thinking=false (or
+      # reasoning_effort "none") to turn it off.
+      - model_name: nemotron-super
         litellm_params:
-          # ⚠ reasoning_effort is accepted here and silently ignored -- this
-          # model's template exposes thinking as on/off only.
-          model: openai/ornith15-35b
-          api_base: http://${LLM0_HOST}:8002/v1
+          model: openai/nemotron-super
+          api_base: http://${LLM0_HOST}:8003/v1
           api_key: sk-noauth
       # Template for adding a hosted provider:
       # - model_name: cloud-hard
@@ -98,12 +79,11 @@ data:
 
     router_settings:
       # ⚠ Must live under router_settings; the litellm_settings spelling is
-      # legacy and silently ignored. agent and agent-precise fall back only to
-      # each other; `local` shares agent's backend.
+      # legacy and silently ignored. qwen38-27b-3090 is down while the 3090
+      # serves chatterbox (hyperqwen at 0 replicas), so nemotron-super is
+      # local's working fallback.
       fallbacks:
-        - agent: ["agent-precise"]
-        - local: ["ornith15-35b", "qwen38-27b-3090"]
-        - agent-precise: ["agent"]
+        - local: ["nemotron-super", "qwen38-27b-3090"]
 
       # Makes context-window errors re-raise instead of walking `fallbacks`.
       # ⚠ Must be non-empty and must not name a real alias -- an empty list
