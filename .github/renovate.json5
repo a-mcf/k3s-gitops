@@ -1,8 +1,10 @@
 {
   enabled: true,
   semanticCommits: "enabled",
-  dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard",
+  dependencyDashboard: {
+    enabled: true,
+    title: "Renovate Dashboard",
+  },
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
   prConcurrentLimit: 0,
