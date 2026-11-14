@@ -9,7 +9,6 @@ resources:
   - ./chatterbox/ks.yaml
   - ./litellm/ks.yaml
   - ./llamacpp/ks.yaml
-  - ./switchyard/ks.yaml
   - ./hermes/ks.yaml
   - ./vllm-metrics/ks.yaml
   - ./netpol
