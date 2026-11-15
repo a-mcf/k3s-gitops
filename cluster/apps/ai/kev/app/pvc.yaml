@@ -1,0 +1,34 @@
+---
+# Same NFS scratch export as the hyperqwen claim; Kev keeps its weights under
+# the kev/ subpath, which the kubelet creates on first mount.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-kev-pv
+  namespace: ai
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4
+    - port=2049
+  nfs:
+    path: /dumpster/appscratch/vllm
+    server: "${NFS_SERVER}"
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-kev-pvc
+  namespace: ai
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: nfs-kev-pv
