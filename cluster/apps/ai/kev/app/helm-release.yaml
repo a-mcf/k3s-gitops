@@ -38,6 +38,8 @@ spec:
           runtimeClassName: nvidia
           nodeSelector:
             gpu: "true"
+        # Parked at 0 after a test. Restore by removing this.
+        replicas: 0
         strategy: Recreate
 
         initContainers:
