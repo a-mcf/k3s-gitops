@@ -15,6 +15,14 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      # One rollback, no retry: each failed attempt takes the app down
+      # until the timeout, so retrying a bad release repeats the outage.
+      retries: 0
+      remediateLastFailure: true
+      strategy: rollback
   values:
     controllers:
       homepage:
