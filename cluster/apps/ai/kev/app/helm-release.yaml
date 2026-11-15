@@ -109,7 +109,7 @@ spec:
                 drop: [ALL]
             resources:
               requests:
-                cpu: 500m
+                cpu: 250m
                 memory: 6Gi
                 # Shared card: see the hyperqwen release.
                 nvidia.com/gpu: 0
