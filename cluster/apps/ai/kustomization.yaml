@@ -7,6 +7,7 @@ resources:
   - ./vllm/ks.yaml
   - ./hyperqwen/ks.yaml
   - ./chatterbox/ks.yaml
+  - ./kev/ks.yaml
   - ./litellm/ks.yaml
   - ./llamacpp/ks.yaml
   - ./hermes/ks.yaml

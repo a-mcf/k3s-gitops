@@ -1,0 +1,135 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kev
+  namespace: ai
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.3.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+
+    controllers:
+      kev:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          runtimeClassName: nvidia
+          nodeSelector:
+            gpu: "true"
+        strategy: Recreate
+
+        initContainers:
+          # The kubelet creates the kev/ subpaths root-owned; the server runs
+          # as uid 10001 and has to write its downloads there.
+          chown:
+            image: &image
+              repository: ghcr.io/a-mcf/kev-container
+              tag: kev-2074cc4-slim@sha256:f8c49eb7634a29dfccd373ba2d9fe73972df5d121970fd8d0278dee7ee2414d2
+            command: ["chown", "-R", "10001:10001", "/data/hf", "/data/triton"]
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+                add: [CHOWN, DAC_OVERRIDE]
+
+        containers:
+          app:
+            image: *image
+            # The checkpoint is pinned to a Hugging Face commit; the base
+            # model revision is pinned in the checkpoint's own metadata.
+            args:
+              - --host
+              - 0.0.0.0
+              - --port
+              - "8009"
+              - --run
+              - jaredpalmer/kev-4b@6cfce5c2fa4b4bd64026336ab649c5ca78857d52
+            env:
+              TZ: "${TZ}"
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: compute,utility
+              HF_HOME: /data/hf
+              TRITON_CACHE_DIR: /data/triton
+              HF_HUB_DISABLE_TELEMETRY: "1"
+            envFrom:
+              - secretRef:
+                  name: kev-secret
+            # /v1 requires the bearer key, so probe the port: uvicorn only
+            # starts listening once the model is loaded.
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 8009
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  periodSeconds: 10
+                  # The first start downloads the checkpoint and its base model.
+                  failureThreshold: 120
+            securityContext:
+              runAsUser: 10001
+              runAsGroup: 10001
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 500m
+                memory: 6Gi
+                # Shared card: see the hyperqwen release.
+                nvidia.com/gpu: 0
+              limits:
+                memory: 12Gi
+                nvidia.com/gpu: 0
+
+    service:
+      app:
+        controller: kev
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+
+    persistence:
+      data:
+        existingClaim: nfs-kev-pvc
+        globalMounts:
+          - path: /data/hf
+            subPath: kev/hf
+          - path: /data/triton
+            subPath: kev/triton
