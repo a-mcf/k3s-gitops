@@ -55,7 +55,7 @@ spec:
           chrome:
             image:
               repository: docker.io/chromedp/headless-shell
-              tag: 159.0.8144.0@sha256:691a2f658d68e9855d4be3611b6818378c40bb92a0381a1a239db5c021117e9f
+              tag: 159.0.8154.13@sha256:381353d3530ab9d579d2fe8b9c0f4519c995617f5a71daf6bb649e2d12005bd9
             # appended to the image entrypoint (which already sets --no-sandbox
             # and the remote-debugging port); the global proxy covers any
             # browser traffic outside crw's per-context proxy
