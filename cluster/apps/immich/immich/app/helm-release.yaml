@@ -53,6 +53,9 @@ spec:
                     key: password
               DB_DATABASE_NAME: app
               TZ: ${TZ}
+              # immich 3.4 passes the default host "::" to the OTel prometheus
+              # exporter, which then 400s every scrape (invalid base URL)
+              IMMICH_HOST: "0.0.0.0"
 
             image:
               repository: ghcr.io/immich-app/immich-server
