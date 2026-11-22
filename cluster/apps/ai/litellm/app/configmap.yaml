@@ -59,8 +59,16 @@ data:
           model: openai/qwen3.8-flash-next
           api_base: http://${LLM1_HOST}:18300/v1
           api_key: sk-noauth
-      # gx10. Nemotron 3.5 Super VL (120B-A12B), alone on the box. Reasoning is on
-      # by default; send chat_template_kwargs.enable_thinking=false (or
+      # gx10. Inkling 2 Mini, on trial in place of nemotron-super (the two can't
+      # share the box). Reasoning parser and tool parser are both `inkling`.
+      - model_name: inkling-2-mini
+        litellm_params:
+          model: openai/inkling-2-mini
+          api_base: http://${LLM0_HOST}:8004/v1
+          api_key: sk-noauth
+      # gx10. Nemotron 3.5 Super VL (120B-A12B). OFF while Inkling is on trial;
+      # calls to this alias fail until it is restored. Reasoning is on by
+      # default; send chat_template_kwargs.enable_thinking=false (or
       # reasoning_effort "none") to turn it off.
       - model_name: nemotron-super
         litellm_params:
@@ -80,10 +88,10 @@ data:
     router_settings:
       # ⚠ Must live under router_settings; the litellm_settings spelling is
       # legacy and silently ignored. qwen38-27b-3090 is down while the 3090
-      # serves chatterbox (hyperqwen at 0 replicas), so nemotron-super is
-      # local's working fallback.
+      # serves chatterbox (hyperqwen at 0 replicas), so the gx10 model is
+      # local's working fallback (inkling-2-mini while it is on trial).
       fallbacks:
-        - local: ["nemotron-super", "qwen38-27b-3090"]
+        - local: ["inkling-2-mini", "nemotron-super", "qwen38-27b-3090"]
 
       # Makes context-window errors re-raise instead of walking `fallbacks`.
       # ⚠ Must be non-empty and must not name a real alias -- an empty list
