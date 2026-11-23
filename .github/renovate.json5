@@ -7,6 +7,11 @@
   },
   suppressNotifications: ["prIgnoreNotification"],
   rebaseWhen: "conflicted",
+  // Batch PR activity into one weekly window instead of a steady trickle.
+  // Security updates (vulnerabilityAlerts) ignore the schedule by default.
+  // Anything urgent can be opened early from the Dependency Dashboard.
+  timezone: "America/New_York",
+  schedule: ["* 0-11 * * 6"],
   prConcurrentLimit: 0,
   prHourlyLimit: 0,
   ignoreDeps: [
@@ -65,6 +70,25 @@
     },
   ],
   packageRules: [
+    {
+      description: "Roll routine patch and digest bumps into one PR. Cluster-wide components stay as their own PRs so they can be merged and verified alone.",
+      matchUpdateTypes: ["patch", "digest"],
+      matchPackageNames: [
+        "!/fluxcd/",
+        "!/proxmox-csi/",
+        "!/cloudnative-pg/",
+        "!/barman/",
+        "!/traefik/",
+        "!/kube-prometheus-stack/",
+        "!/app-template/",
+        "!/external-secrets/",
+        "!/metallb/",
+        "!/cert-manager/",
+        "!/nvidia-device-plugin/",
+      ],
+      groupName: "routine patch and digest updates",
+      groupSlug: "routine-patch-digest",
+    },
     {
       description: "python base image: digest updates only, no major/minor bumps",
       matchDatasources: ["docker"],
