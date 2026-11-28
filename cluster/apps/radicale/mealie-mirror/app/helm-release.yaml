@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: python
-              tag: 3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+              tag: 3.13-slim@sha256:168d3a5d10f2152f8e8d77b6843ac82c22a846cfefeef7afdf9aa630404e82a7
             command: ["python", "/app/mealie_mirror.py"]
             env:
               RADICALE_URL: http://radicale.radicale.svc.cluster.local:5232
