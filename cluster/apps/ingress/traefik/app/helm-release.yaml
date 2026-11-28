@@ -139,7 +139,8 @@ spec:
     log:
       level: INFO
     accessLog:
-      enabled: false
+      enabled: true
+      format: json
 
     metrics:
       prometheus:
